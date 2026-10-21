@@ -12,6 +12,7 @@ public class LoadWatchDbContext(DbContextOptions<LoadWatchDbContext> options) : 
     public DbSet<FavouriteArea> FavouriteAreas => Set<FavouriteArea>();
     public DbSet<OutageReport> OutageReports => Set<OutageReport>();
     public DbSet<AccuracySummary> AccuracySummaries => Set<AccuracySummary>();
+    public DbSet<StageStatus> StageStatus => Set<StageStatus>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -109,6 +110,17 @@ public class LoadWatchDbContext(DbContextOptions<LoadWatchDbContext> options) : 
             entity.Property(a => a.AccuracyScore).HasPrecision(3, 2);
             entity.ToTable(t => t.HasCheckConstraint(
                 "CK_AccuracySummaries_AccuracyScore", "[AccuracyScore] BETWEEN 0 AND 1"));
+        });
+
+        modelBuilder.Entity<StageStatus>(entity =>
+        {
+            entity.HasKey(s => s.Id);
+            entity.Property(s => s.Id).ValueGeneratedNever();
+            entity.ToTable("StageStatus", t =>
+            {
+                t.HasCheckConstraint("CK_StageStatus_SingleRow", "[Id] = 1");
+                t.HasCheckConstraint("CK_StageStatus_Stage", "[Stage] BETWEEN 0 AND 8");
+            });
         });
     }
 }
