@@ -11,6 +11,6 @@ public class SyncController : ControllerBase
     [HttpPost("outage-reports")]
     public ActionResult<SyncResult> SyncOutageReports([FromBody] SyncBatch batch)
     {
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        return this.FinalPoeScope();
     }
 }

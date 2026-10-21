@@ -11,6 +11,6 @@ public class HistoryController : ControllerBase
     [HttpGet]
     public ActionResult<IEnumerable<HistoryDay>> GetHistory(string areaId, [FromQuery] string month)
     {
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        return this.FinalPoeScope();
     }
 }

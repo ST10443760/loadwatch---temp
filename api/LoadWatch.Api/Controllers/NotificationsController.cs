@@ -11,6 +11,6 @@ public class NotificationsController : ControllerBase
     [HttpPost("registrations")]
     public IActionResult RegisterDevice([FromBody] NotificationRegistrationCreate request)
     {
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        return this.FinalPoeScope();
     }
 }
