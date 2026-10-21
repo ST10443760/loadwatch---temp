@@ -7,6 +7,7 @@ public class LoadWatchDbContext(DbContextOptions<LoadWatchDbContext> options) : 
 {
     public DbSet<Area> Areas => Set<Area>();
     public DbSet<ScheduleEvent> ScheduleEvents => Set<ScheduleEvent>();
+    public DbSet<UserProfile> UserProfiles => Set<UserProfile>();
     public DbSet<UserSettings> UserSettings => Set<UserSettings>();
     public DbSet<FavouriteArea> FavouriteAreas => Set<FavouriteArea>();
     public DbSet<OutageReport> OutageReports => Set<OutageReport>();
@@ -31,6 +32,11 @@ public class LoadWatchDbContext(DbContextOptions<LoadWatchDbContext> options) : 
             entity.HasIndex(s => new { s.AreaId, s.StartAt });
             entity.ToTable(t => t.HasCheckConstraint(
                 "CK_ScheduleEvents_EndAfterStart", "[EndAt] > [StartAt]"));
+        });
+
+        modelBuilder.Entity<UserProfile>(entity =>
+        {
+            entity.HasKey(u => u.UserId);
         });
 
         modelBuilder.Entity<UserSettings>(entity =>
