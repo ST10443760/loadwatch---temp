@@ -1,0 +1,6 @@
+@LoadWatch.Api_HostAddress = http://localhost:5170
+
+GET {{LoadWatch.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
