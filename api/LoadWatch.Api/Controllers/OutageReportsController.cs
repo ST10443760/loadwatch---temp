@@ -140,10 +140,25 @@ public class OutageReportsController(
     }
 
     // GET /api/areas/{areaId}/accuracy (anonymous)
+    // An area nobody has reported on yet gets a zero score with sampleSize 0 rather than a 404,
+    // so the client can always render the badge.
     [HttpGet("areas/{areaId}/accuracy")]
-    public ActionResult<AccuracySummary> GetAreaAccuracy(string areaId)
+    public async Task<ActionResult<AccuracySummary>> GetAreaAccuracy(string areaId, CancellationToken ct)
     {
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        if (!await db.Areas.AnyAsync(a => a.AreaId == areaId, ct))
+        {
+            return this.AreaNotFound(areaId);
+        }
+
+        var summary = await db.AccuracySummaries.AsNoTracking().FirstOrDefaultAsync(s => s.AreaId == areaId, ct);
+        return summary ?? new AccuracySummary
+        {
+            AreaId = areaId,
+            AccuracyScore = 0m,
+            SampleSize = 0,
+            WindowHours = AccuracyService.WindowHours,
+            CalculatedAt = time.GetUtcNow(),
+        };
     }
 
     private Task<OutageReport?> FindByClientReportIdAsync(string userId, string clientReportId, CancellationToken ct) =>
