@@ -8,7 +8,7 @@ namespace LoadWatch.Api.Controllers;
 
 [ApiController]
 [Route("api/schedules")]
-public class SchedulesController(LoadWatchDbContext db) : ControllerBase
+public class SchedulesController(LoadWatchDbContext db, TimeProvider time) : ControllerBase
 {
     // Only the requested window is transferred (NFR-09), so cap how wide it can be
     private static readonly TimeSpan MaxWindow = TimeSpan.FromDays(31);
@@ -58,9 +58,38 @@ public class SchedulesController(LoadWatchDbContext db) : ControllerBase
     }
 
     // GET /api/schedules/next?areaId= (anonymous)
+    // Inside an event window the state is OFF and the window is the current event, so the client
+    // counts down to NextEndAt. Otherwise the state is ON and the window is the next event, so the
+    // client counts down to NextStartAt.
     [HttpGet("next")]
-    public ActionResult<NextEvent> GetNextEvent([FromQuery] string areaId)
+    public async Task<ActionResult<NextEvent>> GetNextEvent([FromQuery] string areaId, CancellationToken ct)
     {
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        var area = await db.Areas.AsNoTracking().FirstOrDefaultAsync(a => a.AreaId == areaId, ct);
+        if (area is null)
+        {
+            return this.AreaNotFound(areaId);
+        }
+
+        var now = time.GetUtcNow();
+        var upcoming = await db.ScheduleEvents.AsNoTracking()
+            .Where(e => e.AreaId == areaId && e.EndAt > now)
+            .OrderBy(e => e.StartAt)
+            .FirstOrDefaultAsync(ct);
+        if (upcoming is null)
+        {
+            return Problem(statusCode: StatusCodes.Status404NotFound, title: "No upcoming event",
+                detail: $"Area '{areaId}' has no scheduled events after {now:O}.");
+        }
+
+        var currentState = upcoming.StartAt <= now ? "OFF" : "ON";
+        return new NextEvent(
+            area.AreaId,
+            area.Name,
+            currentState,
+            upcoming.Stage,
+            upcoming.StartAt,
+            upcoming.EndAt,
+            now,
+            upcoming.UpdatedAt);
     }
 }
