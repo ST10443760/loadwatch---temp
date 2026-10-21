@@ -1,8 +1,10 @@
 namespace LoadWatch.Api.Dtos;
 
 // A batch of reports queued on the device while offline.
-public record SyncBatch(
-    IReadOnlyList<OutageReportCreate> Reports);
+public record SyncBatch
+{
+    public IReadOnlyList<OutageReportCreate> Reports { get; init; } = null!;
+}
 
 // Authoritative per-item outcome, keyed by clientReportId. Server state wins any conflict.
 public record SyncResult(

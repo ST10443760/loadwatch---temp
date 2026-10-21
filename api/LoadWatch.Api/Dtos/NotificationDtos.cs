@@ -1,5 +1,7 @@
 namespace LoadWatch.Api.Dtos;
 
-public record NotificationRegistrationCreate(
-    string FcmToken,
-    string Platform);
+public record NotificationRegistrationCreate
+{
+    public string FcmToken { get; init; } = null!;
+    public string Platform { get; init; } = null!;
+}

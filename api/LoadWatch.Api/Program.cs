@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using LoadWatch.Api.Data;
 using LoadWatch.Api.Json;
 using LoadWatch.Api.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +15,11 @@ builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<UserProfileService>();
 
 builder.Services.AddControllers(options =>
-        options.ModelBinderProviders.Insert(0, new UtcDateTimeOffsetModelBinderProvider()))
+    {
+        options.ModelBinderProviders.Insert(0, new UtcDateTimeOffsetModelBinderProvider());
+        // Report validation errors under the camelCase JSON field names the client sends
+        options.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
+    })
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
