@@ -1,16 +1,27 @@
+using LoadWatch.Api.Data;
 using LoadWatch.Api.Dtos;
+using LoadWatch.Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LoadWatch.Api.Controllers;
 
 [ApiController]
 [Route("api/stages")]
-public class StagesController : ControllerBase
+public class StagesController(LoadWatchDbContext db) : ControllerBase
 {
     // GET /api/stages/current (anonymous)
     [HttpGet("current")]
-    public ActionResult<CurrentStage> GetCurrentStage()
+    public async Task<ActionResult<CurrentStage>> GetCurrentStage(CancellationToken ct)
     {
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        var status = await db.StageStatus.AsNoTracking()
+            .FirstOrDefaultAsync(s => s.Id == StageStatus.SingletonId, ct);
+        if (status is null)
+        {
+            return Problem(statusCode: StatusCodes.Status503ServiceUnavailable, title: "Stage unavailable",
+                detail: "The current load-shedding stage has not been set.");
+        }
+
+        return new CurrentStage(status.Stage, status.UpdatedAt);
     }
 }
