@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using LoadWatch.Api.Data;
+using LoadWatch.Api.Json;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +13,10 @@ builder.Services.AddSingleton(TimeProvider.System);
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.JsonSerializerOptions.Converters.Add(new UtcDateTimeOffsetConverter());
+    });
 
 // Every error, including unhandled exceptions and unmatched routes, is returned as ProblemDetails JSON
 builder.Services.AddProblemDetails();
