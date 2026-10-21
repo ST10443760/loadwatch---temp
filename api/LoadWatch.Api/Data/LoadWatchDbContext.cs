@@ -42,6 +42,10 @@ public class LoadWatchDbContext(DbContextOptions<LoadWatchDbContext> options) : 
         modelBuilder.Entity<UserSettings>(entity =>
         {
             entity.HasKey(u => u.UserId);
+            entity.HasOne<UserProfile>()
+                .WithOne()
+                .HasForeignKey<UserSettings>(u => u.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
             entity.HasOne<Area>()
                 .WithMany()
                 .HasForeignKey(u => u.DefaultAreaId)
@@ -60,6 +64,10 @@ public class LoadWatchDbContext(DbContextOptions<LoadWatchDbContext> options) : 
         modelBuilder.Entity<FavouriteArea>(entity =>
         {
             entity.HasKey(f => f.FavouriteId);
+            entity.HasOne<UserProfile>()
+                .WithMany()
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
             // Removing a favourite must never cascade to the public Area (FR-FAV-03)
             entity.HasOne<Area>()
                 .WithMany()
@@ -71,6 +79,10 @@ public class LoadWatchDbContext(DbContextOptions<LoadWatchDbContext> options) : 
         modelBuilder.Entity<OutageReport>(entity =>
         {
             entity.HasKey(r => r.ReportId);
+            entity.HasOne<UserProfile>()
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
             entity.HasOne<Area>()
                 .WithMany()
                 .HasForeignKey(r => r.AreaId)
