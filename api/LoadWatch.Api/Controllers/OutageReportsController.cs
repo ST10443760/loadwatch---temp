@@ -24,6 +24,8 @@ public class OutageReportsController(
     // Device clocks drift, so allow a report to be slightly ahead of server time
     private static readonly TimeSpan MaxClockSkew = TimeSpan.FromMinutes(5);
 
+    private const int MaxReportsReturned = 500;
+
     // POST /api/outage-reports (bearer)
     // -> 201 OutageReport for a new report
     // -> 200 with the original report when the clientReportId was already submitted by this user (safe retry)
@@ -119,10 +121,22 @@ public class OutageReportsController(
     }
 
     // GET /api/areas/{areaId}/outage-reports?since= (anonymous)
+    // Newest first. since defaults to the accuracy window, and the result is capped so it cannot grow without bound.
     [HttpGet("areas/{areaId}/outage-reports")]
-    public ActionResult<IEnumerable<OutageReport>> GetAreaReports(string areaId, [FromQuery] DateTimeOffset since)
+    public async Task<ActionResult<IEnumerable<OutageReport>>> GetAreaReports(
+        string areaId, [FromQuery] DateTimeOffset? since, CancellationToken ct)
     {
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        if (!await db.Areas.AnyAsync(a => a.AreaId == areaId, ct))
+        {
+            return this.AreaNotFound(areaId);
+        }
+
+        var cutoff = since ?? time.GetUtcNow().AddHours(-AccuracyService.WindowHours);
+        return await db.OutageReports.AsNoTracking()
+            .Where(r => r.AreaId == areaId && r.ReportedAt >= cutoff)
+            .OrderByDescending(r => r.ReportedAt)
+            .Take(MaxReportsReturned)
+            .ToListAsync(ct);
     }
 
     // GET /api/areas/{areaId}/accuracy (anonymous)
