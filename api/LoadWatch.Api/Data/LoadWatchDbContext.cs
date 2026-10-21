@@ -11,6 +11,7 @@ public class LoadWatchDbContext(DbContextOptions<LoadWatchDbContext> options) : 
     public DbSet<UserSettings> UserSettings => Set<UserSettings>();
     public DbSet<FavouriteArea> FavouriteAreas => Set<FavouriteArea>();
     public DbSet<OutageReport> OutageReports => Set<OutageReport>();
+    public DbSet<AccuracySummary> AccuracySummaries => Set<AccuracySummary>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -91,6 +92,18 @@ public class LoadWatchDbContext(DbContextOptions<LoadWatchDbContext> options) : 
             entity.Property(r => r.SyncStatus).HasConversion<string>().HasMaxLength(16);
             entity.HasIndex(r => new { r.UserId, r.ClientReportId }).IsUnique();
             entity.HasIndex(r => new { r.AreaId, r.ReportedAt });
+        });
+
+        modelBuilder.Entity<AccuracySummary>(entity =>
+        {
+            entity.HasKey(a => a.AreaId);
+            entity.HasOne<Area>()
+                .WithOne()
+                .HasForeignKey<AccuracySummary>(a => a.AreaId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.Property(a => a.AccuracyScore).HasPrecision(3, 2);
+            entity.ToTable(t => t.HasCheckConstraint(
+                "CK_AccuracySummaries_AccuracyScore", "[AccuracyScore] BETWEEN 0 AND 1"));
         });
     }
 }

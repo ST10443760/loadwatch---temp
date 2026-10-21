@@ -9,11 +9,3 @@ public record OutageReportCreate(
     DateTimeOffset ReportedAt,
     DateTimeOffset ClientCreatedAt,
     string ClientReportId);
-
-// AccuracyScore is between 0.00 and 1.00, recomputed on report ingestion.
-public record AccuracySummary(
-    string AreaId,
-    decimal AccuracyScore,
-    int SampleSize,
-    int WindowHours,
-    DateTimeOffset CalculatedAt);
