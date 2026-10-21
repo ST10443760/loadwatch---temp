@@ -22,6 +22,32 @@ namespace LoadWatch.Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("LoadWatch.Api.Models.AccuracySummary", b =>
+                {
+                    b.Property<string>("AreaId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("AccuracyScore")
+                        .HasPrecision(3, 2)
+                        .HasColumnType("decimal(3,2)");
+
+                    b.Property<DateTimeOffset>("CalculatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("SampleSize")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WindowHours")
+                        .HasColumnType("int");
+
+                    b.HasKey("AreaId");
+
+                    b.ToTable("AccuracySummaries", t =>
+                        {
+                            t.HasCheckConstraint("CK_AccuracySummaries_AccuracyScore", "[AccuracyScore] BETWEEN 0 AND 1");
+                        });
+                });
+
             modelBuilder.Entity("LoadWatch.Api.Models.Area", b =>
                 {
                     b.Property<string>("AreaId")
@@ -172,6 +198,51 @@ namespace LoadWatch.Api.Migrations
                         });
                 });
 
+            modelBuilder.Entity("LoadWatch.Api.Models.StageStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Stage")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StageStatus", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_StageStatus_SingleRow", "[Id] = 1");
+
+                            t.HasCheckConstraint("CK_StageStatus_Stage", "[Stage] BETWEEN 0 AND 8");
+                        });
+                });
+
+            modelBuilder.Entity("LoadWatch.Api.Models.UserProfile", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("LastSeenAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("UserProfiles");
+                });
+
             modelBuilder.Entity("LoadWatch.Api.Models.UserSettings", b =>
                 {
                     b.Property<string>("UserId")
@@ -183,6 +254,11 @@ namespace LoadWatch.Api.Migrations
                     b.Property<string>("DefaultAreaId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("EnabledAlertTypes")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
                     b.Property<string>("LanguageCode")
                         .IsRequired()
                         .HasMaxLength(2)
@@ -193,6 +269,11 @@ namespace LoadWatch.Api.Migrations
 
                     b.Property<bool>("NotificationsEnabled")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ThemePreference")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
@@ -206,7 +287,18 @@ namespace LoadWatch.Api.Migrations
                             t.HasCheckConstraint("CK_UserSettings_LanguageCode", "[LanguageCode] IN ('en', 'zu', 'af')");
 
                             t.HasCheckConstraint("CK_UserSettings_NotificationLeadMinutes", "[NotificationLeadMinutes] BETWEEN 5 AND 120");
+
+                            t.HasCheckConstraint("CK_UserSettings_ThemePreference", "[ThemePreference] IN ('system', 'light', 'dark')");
                         });
+                });
+
+            modelBuilder.Entity("LoadWatch.Api.Models.AccuracySummary", b =>
+                {
+                    b.HasOne("LoadWatch.Api.Models.Area", null)
+                        .WithOne()
+                        .HasForeignKey("LoadWatch.Api.Models.AccuracySummary", "AreaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LoadWatch.Api.Models.FavouriteArea", b =>
@@ -216,6 +308,12 @@ namespace LoadWatch.Api.Migrations
                         .HasForeignKey("AreaId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("LoadWatch.Api.Models.UserProfile", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LoadWatch.Api.Models.OutageReport", b =>
@@ -224,6 +322,12 @@ namespace LoadWatch.Api.Migrations
                         .WithMany()
                         .HasForeignKey("AreaId")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LoadWatch.Api.Models.UserProfile", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -242,6 +346,12 @@ namespace LoadWatch.Api.Migrations
                         .WithMany()
                         .HasForeignKey("DefaultAreaId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("LoadWatch.Api.Models.UserProfile", null)
+                        .WithOne()
+                        .HasForeignKey("LoadWatch.Api.Models.UserSettings", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
