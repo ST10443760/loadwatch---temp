@@ -11,7 +11,8 @@ builder.Services.AddDbContext<LoadWatchDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("LoadWatchDb")));
 builder.Services.AddSingleton(TimeProvider.System);
 
-builder.Services.AddControllers()
+builder.Services.AddControllers(options =>
+        options.ModelBinderProviders.Insert(0, new UtcDateTimeOffsetModelBinderProvider()))
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
