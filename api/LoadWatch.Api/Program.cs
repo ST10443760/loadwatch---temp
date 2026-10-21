@@ -14,6 +14,7 @@ builder.Services.AddDbContext<LoadWatchDbContext>(options =>
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<UserProfileService>();
 builder.Services.AddScoped<AccuracyService>();
+builder.Services.Configure<OutageReportOptions>(builder.Configuration.GetSection(OutageReportOptions.SectionName));
 
 builder.Services.AddControllers(options =>
     {
