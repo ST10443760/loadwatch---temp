@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<LoadWatchDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("LoadWatchDb")));
+builder.Services.AddSingleton(TimeProvider.System);
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -20,6 +21,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<LoadWatchDbContext>();
+    await DbSeeder.SeedAsync(db, scope.ServiceProvider.GetRequiredService<TimeProvider>());
+}
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
