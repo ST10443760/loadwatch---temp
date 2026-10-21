@@ -52,8 +52,13 @@ public class LoadWatchDbContext(DbContextOptions<LoadWatchDbContext> options) : 
                 .HasForeignKey(u => u.DefaultAreaId)
                 .OnDelete(DeleteBehavior.Restrict);
             entity.Property(u => u.LanguageCode).HasMaxLength(2);
+            entity.Property(u => u.ThemePreference).HasMaxLength(8);
+            entity.Property(u => u.EnabledAlertTypes).HasMaxLength(128);
             entity.ToTable(t =>
             {
+                t.HasCheckConstraint(
+                    "CK_UserSettings_ThemePreference",
+                    "[ThemePreference] IN ('system', 'light', 'dark')");
                 t.HasCheckConstraint(
                     "CK_UserSettings_NotificationLeadMinutes",
                     "[NotificationLeadMinutes] BETWEEN 5 AND 120");

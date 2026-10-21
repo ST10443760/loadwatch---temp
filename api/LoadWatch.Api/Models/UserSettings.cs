@@ -11,8 +11,14 @@ public class UserSettings
 
     public bool NotificationsEnabled { get; set; }
 
+    // Comma-separated alert types, e.g. "POWER_OFF,POWER_BACK_ON,STAGE_CHANGE"
+    public string EnabledAlertTypes { get; set; } = string.Empty;
+
     // en, zu or af
     public string LanguageCode { get; set; } = "en";
+
+    // system, light or dark
+    public string ThemePreference { get; set; } = "system";
 
     public bool BiometricEnabled { get; set; }
     public DateTimeOffset UpdatedAt { get; set; }
