@@ -42,8 +42,9 @@ public class AreasController(LoadWatchDbContext db) : ControllerBase
 
     // GET /api/areas/{areaId} (anonymous)
     [HttpGet("{areaId}")]
-    public ActionResult<Area> GetArea(string areaId)
+    public async Task<ActionResult<Area>> GetArea(string areaId, CancellationToken ct)
     {
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        var area = await db.Areas.AsNoTracking().FirstOrDefaultAsync(a => a.AreaId == areaId, ct);
+        return area is null ? this.AreaNotFound(areaId) : area;
     }
 }
