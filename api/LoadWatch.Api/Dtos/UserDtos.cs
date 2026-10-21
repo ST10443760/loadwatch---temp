@@ -16,5 +16,7 @@ public record UserSettingsUpdate
 public record FavouriteAreaCreate
 {
     public string AreaId { get; init; } = null!;
-    public string Label { get; init; } = null!;
+
+    // Optional, such as Home or Work
+    public string? Label { get; init; }
 }
