@@ -13,6 +13,7 @@ builder.Services.AddDbContext<LoadWatchDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("LoadWatchDb")));
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<UserProfileService>();
+builder.Services.AddScoped<AccuracyService>();
 
 builder.Services.AddControllers(options =>
     {
