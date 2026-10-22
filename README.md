@@ -80,12 +80,27 @@ the API directly (NFR-01).
 
 ```bash
 cd api/LoadWatch.Api
-dotnet ef database update
 dotnet run
 ```
 
 The development connection string in `appsettings.Development.json` points at a LocalDB database named
-`LoadWatchDb`. On first start the API seeds Durban areas, a 14-day schedule and the current stage.
+`LoadWatchDb`. On every start the API applies any pending EF Core migrations, logging which ones it applied,
+and then seeds Durban areas, a 14-day schedule and the current stage if they are missing. If a migration
+fails, the API logs the error and refuses to start. `GET /health` needs no sign-in and returns
+`{"status":"Healthy","database":"Healthy",...}`, or a 503 when the database cannot be reached.
+
+On Azure the same keys come from the web app's settings instead of `appsettings.json`: the connection string
+named `LoadWatchDb` and the app setting `Firebase__ProjectId`. No connection string or password is committed.
+
+### Test the API
+
+```bash
+dotnet test api/LoadWatch.Api.Tests
+```
+
+Each test class creates its own throwaway database and deletes it afterwards. Locally the tests use LocalDB.
+To use another SQL Server instead, set `LOADWATCH_TEST_SQL` to a connection string without a database name;
+CI does this with a SQL Server container.
 
 ## GitHub Actions
 
