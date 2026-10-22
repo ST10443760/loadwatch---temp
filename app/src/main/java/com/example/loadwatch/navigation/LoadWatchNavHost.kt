@@ -64,7 +64,9 @@ fun LoadWatchNavHost(
         composable<ReportRoute> {
             CommunityConfirmationScreen(onChooseArea = { navController.navigate(AreaSelectorRoute()) })
         }
-        composable<CompareRoute> { FavouritesCompareScreen() }
+        composable<CompareRoute> {
+            FavouritesCompareScreen(onAddArea = { navController.navigate(AreaSelectorRoute(addFavourite = true)) })
+        }
         composable<SettingsRoute> {
             // Sign-out returns to S02 with nothing behind it (FR-AUTH-04)
             SettingsScreen(onSignedOut = { navController.navigateClearingBackStack(LoginRoute()) })

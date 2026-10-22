@@ -192,9 +192,25 @@
     <string name="report_sync_rejected">Not accepted</string>
 
     <!-- S08 Favourites and Compare -->
-    <string name="favourites_screen_id">S08</string>
     <string name="favourites_title">Your saved areas</string>
-    <string name="favourites_purpose">Compare your saved areas side by side, each with its next outage and countdown, and edit their labels.</string>
+    <string name="favourites_add_another">Add another area</string>
+    <string name="favourites_add_area">Add an area</string>
+    <string name="favourites_empty_title">No saved areas yet</string>
+    <string name="favourites_empty_message">Save the areas you care about, such as home and work, to compare their next outages side by side.</string>
+    <string name="favourites_schedule_not_loaded">Schedule not loaded yet. Pull down to refresh.</string>
+    <!-- %1$s is "Power is on" or "Power is off", %2$d the stage -->
+    <string name="favourites_state_stage">%1$s · Stage %2$d</string>
+    <!-- %1$s is a day and time range, e.g. "Tomorrow, 20:00 – 22:30" -->
+    <string name="favourites_next">Next: %1$s</string>
+    <string name="favourites_more_options">More options for %1$s</string>
+    <string name="favourites_edit_label">Edit label</string>
+    <string name="favourites_remove">Remove</string>
+    <string name="favourites_remove_title">Remove %1$s?</string>
+    <string name="favourites_remove_message">It leaves your favourites only. The area and its schedule stay available, and you can add it again any time.</string>
+    <string name="favourites_label_title">Label for %1$s</string>
+    <string name="favourites_relabelled">Label updated for %1$s.</string>
+    <string name="favourites_cached_offline">You\'re offline. Showing schedules saved on this phone.</string>
+    <string name="favourites_cached_error">Could not refresh every area. Showing schedules saved on this phone.</string>
 
     <!-- S09 Settings -->
     <string name="settings_screen_id">S09</string>
