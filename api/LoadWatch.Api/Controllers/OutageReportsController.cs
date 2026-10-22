@@ -2,6 +2,7 @@ using LoadWatch.Api.Data;
 using LoadWatch.Api.Dtos;
 using LoadWatch.Api.Models;
 using LoadWatch.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -30,6 +31,7 @@ public class OutageReportsController(
     // -> 201 OutageReport for a new report
     // -> 200 with the original report when the clientReportId was already submitted by this user (safe retry)
     // -> 409 when the same user reported the same event for the same area inside the duplicate window
+    [Authorize]
     [HttpPost("outage-reports")]
     public async Task<ActionResult<OutageReport>> CreateReport([FromBody] OutageReportCreate request, CancellationToken ct)
     {

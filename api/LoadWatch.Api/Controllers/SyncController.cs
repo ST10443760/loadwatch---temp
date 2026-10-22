@@ -1,9 +1,11 @@
 using LoadWatch.Api.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LoadWatch.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/sync")]
 public class SyncController : ControllerBase
 {

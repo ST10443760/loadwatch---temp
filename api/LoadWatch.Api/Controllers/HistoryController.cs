@@ -1,9 +1,11 @@
 using LoadWatch.Api.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LoadWatch.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/areas/{areaId}/history")]
 public class HistoryController : ControllerBase
 {

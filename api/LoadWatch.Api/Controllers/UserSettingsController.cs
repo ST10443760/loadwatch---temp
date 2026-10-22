@@ -2,12 +2,14 @@ using LoadWatch.Api.Data;
 using LoadWatch.Api.Dtos;
 using LoadWatch.Api.Models;
 using LoadWatch.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace LoadWatch.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/users/{userId}/settings")]
 public class UserSettingsController(LoadWatchDbContext db, UserProfileService profiles, TimeProvider time)
     : ControllerBase
