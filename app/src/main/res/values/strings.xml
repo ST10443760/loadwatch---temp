@@ -100,4 +100,5 @@
     <string name="settings_title">Settings</string>
     <string name="settings_purpose">Default area, alert lead time (5 to 120 minutes), which alerts you receive, language, theme and biometric unlock.</string>
     <string name="settings_sign_out">Sign out</string>
+    <string name="settings_signing_out">Signing out…</string>
 </resources>
