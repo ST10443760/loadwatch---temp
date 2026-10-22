@@ -48,4 +48,10 @@
     <string name="favourites_screen_id">S08</string>
     <string name="favourites_title">Your saved areas</string>
     <string name="favourites_purpose">Compare your saved areas side by side, each with its next outage and countdown, and edit their labels.</string>
+
+    <!-- S09 Settings -->
+    <string name="settings_screen_id">S09</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_purpose">Default area, alert lead time (5 to 120 minutes), which alerts you receive, language, theme and biometric unlock.</string>
+    <string name="settings_sign_out">Sign out</string>
 </resources>
