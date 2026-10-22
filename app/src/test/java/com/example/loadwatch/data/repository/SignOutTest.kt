@@ -12,6 +12,7 @@ import com.example.loadwatch.core.database.dao.RecentAreaDao
 import com.example.loadwatch.core.database.dao.UserSettingsDao
 import com.example.loadwatch.core.database.entity.AreaEntity
 import com.example.loadwatch.core.database.entity.FavouriteAreaEntity
+import com.example.loadwatch.core.database.entity.FavouriteWithArea
 import com.example.loadwatch.core.database.entity.OutageReportEntity
 import com.example.loadwatch.core.database.entity.PendingSyncEntity
 import com.example.loadwatch.core.database.entity.PendingSyncStatus
@@ -171,6 +172,8 @@ class SignOutTest {
                 favourites.removeAll { it.userId == userId }
             }
             override suspend fun deleteAll() = delete(favourites)
+            override fun observeWithAreas(userId: String): Flow<List<FavouriteWithArea>> =
+                flowOf(favourites.filter { it.userId == userId }.map { fav -> FavouriteWithArea(fav, areas.first { it.areaId == fav.areaId }) })
         }
 
         val outageReportDao = object : OutageReportDao {
@@ -189,6 +192,13 @@ class SignOutTest {
                 outageReports.replaceAll { if (it.reportId == reportId) it.copy(syncStatus = status) else it }
             }
             override suspend fun deleteAll() = delete(outageReports)
+            override fun observeRecentForArea(userId: String, areaId: String, limit: Int): Flow<List<OutageReportEntity>> =
+                flowOf(outageReports.filter { it.userId == userId && it.areaId == areaId }.take(limit))
+            override suspend fun getForAreaWithStatus(userId: String, areaId: String, statuses: List<SyncStatus>) =
+                outageReports.filter { it.userId == userId && it.areaId == areaId && it.syncStatus in statuses }
+            override suspend fun deleteByClientReportId(userId: String, clientReportId: String) {
+                outageReports.removeAll { it.userId == userId && it.clientReportId == clientReportId }
+            }
         }
 
         val pendingSyncDao = object : PendingSyncDao {
