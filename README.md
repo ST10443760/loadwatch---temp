@@ -92,6 +92,16 @@ fails, the API logs the error and refuses to start. `GET /health` needs no sign-
 On Azure the same keys come from the web app's settings instead of `appsettings.json`: the connection string
 named `LoadWatchDb` and the app setting `Firebase__ProjectId`. No connection string or password is committed.
 
+### Run the API in a container
+
+```bash
+docker build -t loadwatch-api api
+docker run -p 8080:8080 -e "ConnectionStrings__LoadWatchDb=<your connection string>" loadwatch-api
+```
+
+This is the same image the deploy workflow publishes. It listens on port 8080, so `/health` is at
+`http://localhost:8080/health`. The container cannot reach LocalDB, so give it a SQL Server it can reach.
+
 ### Test the API
 
 ```bash
