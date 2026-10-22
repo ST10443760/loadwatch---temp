@@ -104,7 +104,35 @@ CI does this with a SQL Server container.
 
 ## GitHub Actions
 
-_To be added._
+Two workflows in `.github/workflows` build and check the project on GitHub's own Linux machines. Each run
+starts from a fresh checkout, with no Android Studio, no `local.properties` and no LocalDB. A green run shows
+that everything needed to build is in the repository, not only on my laptop.
+
+### CI (`ci.yml`)
+
+Runs on every push to any branch and on every pull request. The badge at the top of this README shows its
+latest result. It has two jobs that run side by side:
+
+- **Android app.** Sets up JDK 21 (AGP 9.0.1 needs at least 17, and the Gradle daemon is pinned to 21),
+  installs SDK platform 36.1 and caches Gradle between runs. It then runs `./gradlew assembleDebug` and
+  `./gradlew testDebugUnitTest`. With no `local.properties`, the build uses the placeholder API URL.
+  `google-services.json` is committed. The debug APK is uploaded as a downloadable artifact named
+  `loadwatch-debug-apk`, and if a test fails the test report is uploaded too.
+- **API.** Starts SQL Server in a Docker container, because LocalDB only exists on Windows. It then builds the
+  API and test project in Release and runs `dotnet test`. The tests get the container through the
+  `LOADWATCH_TEST_SQL` environment variable. The container's password is generated for each run and
+  hidden in the logs, so it is never stored. These steps live in `api-tests.yml`, a reusable workflow that
+  the deploy workflow calls too, so both run exactly the same tests.
+
+### Deploy API (`deploy-api.yml`)
+
+Runs when a push to `main` changes files under `api/`, and can also be started by hand from the Actions tab.
+First it runs the same API tests as CI. Only if they pass does it publish `api/LoadWatch.Api` in Release with
+`dotnet publish` and deploy it to Azure App Service with `azure/webapps-deploy`. The deploy step uses the
+`AZURE_WEBAPP_PUBLISH_PROFILE` repository secret and the `AZURE_WEBAPP_NAME` repository variable. Finally
+it calls the live API's `/health` for up to five minutes, which covers startup migrations, and fails the
+run unless the API and its database report healthy. The connection string and Firebase project id are set
+on the web app in the Azure portal and never pass through GitHub.
 
 ## Demo Video
 
