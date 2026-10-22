@@ -2,8 +2,10 @@ package com.example.loadwatch.core.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Upsert
 import com.example.loadwatch.core.database.entity.FavouriteAreaEntity
+import com.example.loadwatch.core.database.entity.FavouriteWithArea
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -24,4 +26,15 @@ interface FavouriteAreaDao {
 
     @Query("DELETE FROM favourite_areas")
     suspend fun deleteAll()
+
+    @Transaction
+    @Query("SELECT * FROM favourite_areas WHERE userId = :userId ORDER BY sortOrder, createdAt")
+    fun observeWithAreas(userId: String): Flow<List<FavouriteWithArea>>
+
+    // Mirrors the server's list for this user in one step
+    @Transaction
+    suspend fun replaceAllForUser(userId: String, favourites: List<FavouriteAreaEntity>) {
+        deleteAllForUser(userId)
+        upsertAll(favourites)
+    }
 }

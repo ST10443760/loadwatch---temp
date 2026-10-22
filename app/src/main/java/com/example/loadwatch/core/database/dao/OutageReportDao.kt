@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Upsert
 import com.example.loadwatch.core.common.SyncStatus
 import com.example.loadwatch.core.database.entity.OutageReportEntity
@@ -34,4 +35,33 @@ interface OutageReportDao {
 
     @Query("DELETE FROM outage_reports")
     suspend fun deleteAll()
+
+    @Query(
+        """
+        SELECT * FROM outage_reports
+        WHERE userId = :userId AND areaId = :areaId
+        ORDER BY clientCreatedAt DESC
+        LIMIT :limit
+        """,
+    )
+    fun observeRecentForArea(userId: String, areaId: String, limit: Int): Flow<List<OutageReportEntity>>
+
+    @Query(
+        """
+        SELECT * FROM outage_reports
+        WHERE userId = :userId AND areaId = :areaId AND syncStatus IN (:statuses)
+        ORDER BY clientCreatedAt
+        """,
+    )
+    suspend fun getForAreaWithStatus(userId: String, areaId: String, statuses: List<SyncStatus>): List<OutageReportEntity>
+
+    @Query("DELETE FROM outage_reports WHERE userId = :userId AND clientReportId = :clientReportId")
+    suspend fun deleteByClientReportId(userId: String, clientReportId: String)
+
+    // Swaps the locally queued copy (keyed by clientReportId) for the server's accepted report
+    @Transaction
+    suspend fun replaceWithServerCopy(serverReport: OutageReportEntity) {
+        deleteByClientReportId(serverReport.userId, serverReport.clientReportId)
+        upsertAll(listOf(serverReport))
+    }
 }
