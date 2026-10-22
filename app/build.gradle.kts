@@ -59,6 +59,10 @@ android {
         compose = true
         buildConfig = true
     }
+    testOptions {
+        // Lets JVM unit tests run code that calls android.util.Log, which then does nothing
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 dependencies {
