@@ -9,4 +9,5 @@ object LogTags {
     const val API = "LW.Api"
     const val ROOM = "LW.Room"
     const val SYNC = "LW.Sync"
+    const val COUNTDOWN = "LW.Countdown"
 }
