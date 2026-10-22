@@ -1,7 +1,9 @@
 package com.example.loadwatch.core.authentication
 
+import com.google.firebase.auth.FirebaseAuth
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
@@ -10,5 +12,10 @@ import dagger.hilt.components.SingletonComponent
 abstract class AuthModule {
 
     @Binds
-    abstract fun bindAuthSession(impl: PlaceholderAuthSession): AuthSession
+    abstract fun bindAuthSession(impl: FirebaseAuthSession): AuthSession
+
+    companion object {
+        @Provides
+        fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+    }
 }
