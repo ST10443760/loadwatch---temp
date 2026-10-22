@@ -31,4 +31,7 @@ interface OutageReportDao {
 
     @Query("UPDATE outage_reports SET syncStatus = :status WHERE reportId = :reportId")
     suspend fun updateSyncStatus(reportId: String, status: SyncStatus)
+
+    @Query("DELETE FROM outage_reports")
+    suspend fun deleteAll()
 }

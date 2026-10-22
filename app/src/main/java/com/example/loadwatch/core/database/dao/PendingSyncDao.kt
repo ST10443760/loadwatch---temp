@@ -33,4 +33,7 @@ interface PendingSyncDao {
 
     @Query("SELECT * FROM pending_sync ORDER BY nextAttemptAt")
     fun observeAll(): Flow<List<PendingSyncEntity>>
+
+    @Query("DELETE FROM pending_sync")
+    suspend fun deleteAll()
 }

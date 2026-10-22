@@ -21,4 +21,7 @@ interface FavouriteAreaDao {
 
     @Query("DELETE FROM favourite_areas WHERE userId = :userId")
     suspend fun deleteAllForUser(userId: String)
+
+    @Query("DELETE FROM favourite_areas")
+    suspend fun deleteAll()
 }

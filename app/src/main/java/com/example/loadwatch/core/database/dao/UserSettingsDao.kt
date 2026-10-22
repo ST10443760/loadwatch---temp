@@ -21,4 +21,7 @@ interface UserSettingsDao {
     // Sign-out clears user-scoped cache but not the public area catalogue (FR-AUTH-04)
     @Query("DELETE FROM user_settings WHERE userId = :userId")
     suspend fun delete(userId: String)
+
+    @Query("DELETE FROM user_settings")
+    suspend fun deleteAll()
 }
