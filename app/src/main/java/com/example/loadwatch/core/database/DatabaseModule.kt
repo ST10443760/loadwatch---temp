@@ -10,6 +10,7 @@ import com.example.loadwatch.core.database.dao.AreaDao
 import com.example.loadwatch.core.database.dao.FavouriteAreaDao
 import com.example.loadwatch.core.database.dao.OutageReportDao
 import com.example.loadwatch.core.database.dao.PendingSyncDao
+import com.example.loadwatch.core.database.dao.RecentAreaDao
 import com.example.loadwatch.core.database.dao.ScheduleEventDao
 import com.example.loadwatch.core.database.dao.UserSettingsDao
 import dagger.Module
@@ -51,4 +52,6 @@ object DatabaseModule {
     @Provides fun provideOutageReportDao(db: LoadWatchDatabase): OutageReportDao = db.outageReportDao()
 
     @Provides fun providePendingSyncDao(db: LoadWatchDatabase): PendingSyncDao = db.pendingSyncDao()
+
+    @Provides fun provideRecentAreaDao(db: LoadWatchDatabase): RecentAreaDao = db.recentAreaDao()
 }
