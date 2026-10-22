@@ -127,12 +127,18 @@ latest result. It has two jobs that run side by side:
 ### Deploy API (`deploy-api.yml`)
 
 Runs when a push to `main` changes files under `api/`, and can also be started by hand from the Actions tab.
-First it runs the same API tests as CI. Only if they pass does it publish `api/LoadWatch.Api` in Release with
-`dotnet publish` and deploy it to Azure App Service with `azure/webapps-deploy`. The deploy step uses the
-`AZURE_WEBAPP_PUBLISH_PROFILE` repository secret and the `AZURE_WEBAPP_NAME` repository variable. Finally
-it calls the live API's `/health` for up to five minutes, which covers startup migrations, and fails the
-run unless the API and its database report healthy. The connection string and Firebase project id are set
-on the web app in the Azure portal and never pass through GitHub.
+First it runs the same API tests as CI. Only if they pass does it build `api/Dockerfile` into a container
+image and push it to GitHub Container Registry as `ghcr.io/st10443760/loadwatch-api`. Each image gets two
+tags: `latest` and the commit SHA, so any earlier build can still be run. The workflow signs in to the
+registry with the built-in `GITHUB_TOKEN`, which it is given `packages: write` permission for. No Azure
+secret is involved.
+
+The workflow does not touch Azure itself. The Azure web app is set to run the
+`ghcr.io/st10443760/loadwatch-api:latest` image, and it pulls the newest `latest` image whenever it is
+restarted. So after a green run, restarting the web app puts the new API live. The container listens on port
+8080. The API applies its migrations on startup, and `/health` shows whether it came up and can reach the
+database. The connection string and Firebase project id are set on the web app in the Azure portal and never
+pass through GitHub.
 
 ## Demo Video
 
