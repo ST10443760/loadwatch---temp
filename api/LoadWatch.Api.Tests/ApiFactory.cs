@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -14,7 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace LoadWatch.Api.Tests;
 
-// Hosts the real API against a throwaway LocalDB database. Firebase token validation runs exactly as configured
+// Hosts the real API against a throwaway SQL Server database. Firebase token validation runs exactly as configured
 // (issuer, audience, lifetime); only the signing key is swapped for a test key, because real tokens can only be
 // signed by Google.
 public class ApiFactory : WebApplicationFactory<Program>
@@ -22,20 +23,29 @@ public class ApiFactory : WebApplicationFactory<Program>
     public const string ProjectId = "loadwatch-ee062";
     public const string Issuer = "https://securetoken.google.com/" + ProjectId;
 
-    private const string ConnectionString =
-        @"Server=(localdb)\MSSQLLocalDB;Database=LoadWatchDb_ApiTests;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True";
+    // CI points this at its SQL Server container; locally the tests fall back to LocalDB
+    public const string ServerVariable = "LOADWATCH_TEST_SQL";
+
+    private const string LocalDb =
+        @"Server=(localdb)\MSSQLLocalDB;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True";
 
     private static readonly RsaSecurityKey SigningKey = new(RSA.Create(2048)) { KeyId = "test-signing-key" };
 
+    // Each fixture gets its own database, so test classes can run in parallel
+    public string ConnectionString { get; } = new SqlConnectionStringBuilder(
+        Environment.GetEnvironmentVariable(ServerVariable) is { Length: > 0 } server ? server : LocalDb)
+    {
+        InitialCatalog = $"LoadWatchDb_ApiTests_{Guid.NewGuid():N}",
+    }.ConnectionString;
+
     public ApiFactory()
     {
-        // The API seeds the database on startup, so the schema has to exist before the host is built
+        // Start empty: the API applies its migrations and seeds when the host starts, as it does on Azure
         using var db = CreateDbContext();
         db.Database.EnsureDeleted();
-        db.Database.Migrate();
     }
 
-    public static LoadWatchDbContext CreateDbContext() =>
+    public LoadWatchDbContext CreateDbContext() =>
         new(new DbContextOptionsBuilder<LoadWatchDbContext>().UseSqlServer(ConnectionString).Options);
 
     public HttpClient CreateClient(string? token)

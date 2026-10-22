@@ -54,7 +54,7 @@ public class AuthenticationTests(ApiFactory factory) : IClassFixture<ApiFactory>
         var client = factory.CreateClient(ApiFactory.CreateToken("user-profile", "Thandi Mokoena", "thandi@example.com"));
 
         Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/api/users/user-profile/settings")).StatusCode);
-        await using var db = ApiFactory.CreateDbContext();
+        await using var db = factory.CreateDbContext();
         var created = await db.UserProfiles.AsNoTracking().SingleAsync(u => u.UserId == "user-profile");
         Assert.Equal("Thandi Mokoena", created.DisplayName);
         Assert.Equal("thandi@example.com", created.Email);
