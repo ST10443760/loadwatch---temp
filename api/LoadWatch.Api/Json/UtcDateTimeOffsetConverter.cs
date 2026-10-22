@@ -11,7 +11,9 @@ public class UtcDateTimeOffsetConverter : JsonConverter<DateTimeOffset>
     private const string Format = "yyyy-MM-dd'T'HH:mm:ss.FFF'Z'";
 
     public override DateTimeOffset Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
-        reader.GetDateTimeOffset();
+        reader.TokenType == JsonTokenType.String && reader.TryGetDateTimeOffset(out var value)
+            ? value
+            : throw new JsonException($"{ValidationResponses.FieldMessagePrefix}an ISO-8601 date and time");
 
     public override void Write(Utf8JsonWriter writer, DateTimeOffset value, JsonSerializerOptions options) =>
         writer.WriteStringValue(value.UtcDateTime.ToString(Format, CultureInfo.InvariantCulture));
