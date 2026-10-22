@@ -132,9 +132,13 @@
     <string name="schedule_cached_error">Could not refresh. Showing the schedule saved on this phone, updated %1$s.</string>
 
     <!-- S06 Schedule -->
-    <string name="schedule_screen_id">S06</string>
     <string name="schedule_title">Schedule</string>
-    <string name="schedule_purpose">Upcoming outages for your area grouped by day, each with its stage and times, and when the schedule was last updated.</string>
+    <string name="schedule_no_outage">No scheduled outage</string>
+    <string name="schedule_not_loaded">Not loaded yet. Pull down to refresh.</string>
+    <plurals name="schedule_range_days">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
 
     <!-- S07 Community Confirmation -->
     <string name="report_screen_id">S07</string>
