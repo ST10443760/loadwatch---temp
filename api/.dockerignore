@@ -1,0 +1,9 @@
+# Only LoadWatch.Api is copied into the image; keep build output, tests and editor files out of the context
+**/bin/
+**/obj/
+**/*.user
+**/.vs/
+**/.vscode/
+LoadWatch.Api.Tests/
+Dockerfile
+.dockerignore
