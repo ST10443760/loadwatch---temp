@@ -1,0 +1,64 @@
+# Publishes the API to Azure App Service when API code reaches main, but only once its tests pass.
+# The connection string and Firebase project id live in the web app's settings on Azure, not here.
+name: Deploy API
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "api/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Never run two deployments at once, and never cancel one halfway
+concurrency:
+  group: deploy-api
+  cancel-in-progress: false
+
+jobs:
+  test:
+    name: API
+    uses: ./.github/workflows/api-tests.yml
+
+  deploy:
+    name: Deploy to Azure App Service
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Publish
+        run: dotnet publish api/LoadWatch.Api/LoadWatch.Api.csproj --configuration Release --output "${{ runner.temp }}/loadwatch-api"
+
+      - name: Deploy
+        id: deploy
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ${{ runner.temp }}/loadwatch-api
+
+      # The API migrates its database on startup, so give it a few minutes to come up before failing
+      - name: Check /health
+        env:
+          WEBAPP_URL: ${{ steps.deploy.outputs.webapp-url }}
+          WEBAPP_NAME: ${{ vars.AZURE_WEBAPP_NAME }}
+        run: |
+          HEALTH_URL="${WEBAPP_URL:-https://$WEBAPP_NAME.azurewebsites.net}/health"
+          for attempt in $(seq 1 20); do
+            if body=$(curl --silent --show-error --fail --max-time 30 "$HEALTH_URL"); then
+              echo "$body"
+              exit 0
+            fi
+            echo "Not healthy yet (attempt $attempt), retrying in 15 seconds"
+            sleep 15
+          done
+          echo "The API did not report healthy after deployment"
+          exit 1
