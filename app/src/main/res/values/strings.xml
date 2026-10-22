@@ -99,6 +99,23 @@
     <string name="area_selector_current">Current area: %1$s</string>
     <string name="area_selector_recent">Recent</string>
     <string name="area_selector_no_recents">Areas you switch to will appear here. Search above to find another area.</string>
+    <string name="area_selector_favourites">Favourites</string>
+    <string name="area_selector_add_title">Add a favourite</string>
+    <string name="area_selector_add_hint">Search for the area you want to save, then give it an optional label.</string>
+
+    <!-- Favourites, shared by S05 and S08 -->
+    <!-- %1$s is an area name -->
+    <string name="favourite_add_title">Save %1$s as a favourite</string>
+    <string name="favourite_save">Save</string>
+    <string name="favourite_added">%1$s added to your favourites.</string>
+    <string name="favourite_already">Already in your favourites.</string>
+    <string name="favourite_removed">%1$s removed from your favourites. The area and its schedule are still available.</string>
+    <string name="favourite_failed_offline">You\'re offline, so favourites can\'t be changed right now. Try again when you\'re connected.</string>
+    <string name="favourite_failed">LoadWatch could not update your favourites. Try again.</string>
+    <!-- %1$s is a label such as "Home", %2$s an area name -->
+    <string name="favourite_chip">%1$s · %2$s</string>
+    <string name="favourite_add_description">Add %1$s to favourites</string>
+    <string name="favourite_remove_description">Remove %1$s from favourites</string>
 
     <!-- S04 Home Dashboard -->
     <string name="home_change_area">Change area</string>
