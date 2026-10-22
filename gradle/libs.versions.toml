@@ -8,6 +8,7 @@
 #   navigationCompose 2.9.8    (2.10.x pulls in lifecycle 2.11 and needs AGP 9.1)
 #   hiltLifecycleViewModelCompose 1.3.0 (1.4.0 needs AGP 9.1)
 #   firebaseBom 34.19.0        (35.x brings firebase-auth 25, compiled with Kotlin 2.4, which Kotlin 2.2.10 cannot read)
+#   googleId 1.2.0             (1.2.1 is compiled with Kotlin 2.4)
 # kotlin must match the Kotlin built into AGP 9.0.1 (2.2.10), because the Compose and serialization
 # compiler plugins are tied to it. composeBom 2025.09.01 is the BOM whose Compose UI version (1.9.2)
 # matches what the libraries above pull in, so every Compose artifact resolves to one release.
@@ -33,6 +34,8 @@ hiltLifecycleViewModelCompose = "1.3.0"
 coroutines = "1.10.2"
 googleServices = "4.5.0"
 firebaseBom = "34.19.0"
+credentials = "1.6.0"
+googleId = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -68,6 +71,9 @@ kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 androidx-compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
+androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
+androidx-credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentials" }
+googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleId" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
