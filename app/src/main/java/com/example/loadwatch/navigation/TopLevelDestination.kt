@@ -8,9 +8,10 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavDestination
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.toRoute
 import com.example.loadwatch.R
 
 // The five bottom navigation destinations, in the order the mockups show them
@@ -26,11 +27,13 @@ enum class TopLevelDestination(
     SETTINGS(SettingsRoute, Icons.Filled.Settings, R.string.nav_settings),
 }
 
-// Which tab a destination belongs to, or null outside the hub (S01 to S03 have no bottom bar).
-// S05 Area Selector is opened from Home, so Home stays selected while it is showing.
-fun NavDestination.topLevelDestination(): TopLevelDestination? {
-    if (hasRoute(AreaSelectorRoute::class)) return TopLevelDestination.HOME
-    return TopLevelDestination.entries.firstOrNull { destination ->
-        hierarchy.any { it.hasRoute(destination.route::class) }
+// Which tab a back stack entry belongs to, or null outside the hub (S01 to S03 have no bottom bar).
+// S05 Area Selector keeps the tab it was opened from selected: Compare when adding a favourite, otherwise Home.
+fun NavBackStackEntry.topLevelDestination(): TopLevelDestination? {
+    if (destination.hasRoute(AreaSelectorRoute::class)) {
+        return if (toRoute<AreaSelectorRoute>().addFavourite) TopLevelDestination.COMPARE else TopLevelDestination.HOME
+    }
+    return TopLevelDestination.entries.firstOrNull { tab ->
+        destination.hierarchy.any { it.hasRoute(tab.route::class) }
     }
 }

@@ -16,7 +16,8 @@ import kotlinx.serialization.Serializable
 // Hub and its children
 @Serializable data object HomeRoute
 
-@Serializable data object AreaSelectorRoute
+// addFavourite opens S05 from S08 to save an area as a favourite instead of switching the active area
+@Serializable data class AreaSelectorRoute(val addFavourite: Boolean = false)
 
 @Serializable data object ScheduleRoute
 

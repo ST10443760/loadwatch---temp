@@ -34,7 +34,7 @@ fun LoadWatchApp(appViewModel: AppViewModel = hiltViewModel()) {
     }
 
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val selectedDestination = backStackEntry?.destination?.topLevelDestination()
+    val selectedDestination = backStackEntry?.topLevelDestination()
 
     Scaffold(
         bottomBar = {

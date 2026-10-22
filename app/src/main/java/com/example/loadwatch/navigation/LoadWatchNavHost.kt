@@ -53,7 +53,7 @@ fun LoadWatchNavHost(
         // Hub
         composable<HomeRoute> {
             HomeScreen(
-                onChangeArea = { navController.navigate(AreaSelectorRoute) },
+                onChangeArea = { navController.navigate(AreaSelectorRoute()) },
                 onConfirmOutage = { navController.navigateToTopLevel(ReportRoute) },
             )
         }
@@ -62,7 +62,7 @@ fun LoadWatchNavHost(
         }
         composable<ScheduleRoute> { ScheduleScreen() }
         composable<ReportRoute> {
-            CommunityConfirmationScreen(onChooseArea = { navController.navigate(AreaSelectorRoute) })
+            CommunityConfirmationScreen(onChooseArea = { navController.navigate(AreaSelectorRoute()) })
         }
         composable<CompareRoute> { FavouritesCompareScreen() }
         composable<SettingsRoute> {
