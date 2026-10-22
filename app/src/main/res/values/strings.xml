@@ -61,10 +61,11 @@
     <string name="area_save_rejected_message">LoadWatch did not accept this setting. Try again, or choose a different area.</string>
 
     <!-- S03 Area Onboarding -->
-    <string name="onboarding_screen_id">S03</string>
     <string name="onboarding_title">Search your suburb</string>
-    <string name="onboarding_purpose">Type three or more letters to find your area. Each result shows its municipality and supplier so similar names cannot be confused.</string>
+    <string name="onboarding_purpose">Find the area you want LoadWatch to watch. Each result shows its municipality and supplier so similar names cannot be confused.</string>
+    <string name="onboarding_selected">Selected: %1$s</string>
     <string name="onboarding_confirm_area">Confirm area</string>
+    <string name="onboarding_saving">Saving…</string>
 
     <!-- S05 Area Selector -->
     <string name="area_selector_screen_id">S05</string>
