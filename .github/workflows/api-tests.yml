@@ -1,0 +1,48 @@
+# Builds the API and runs its integration tests against a throwaway SQL Server container.
+# Called by ci.yml on every push and pull request, and by deploy-api.yml before it deploys.
+name: API tests
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Build and test the API
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      # LocalDB only exists on Windows, so the tests use SQL Server in Docker instead. The sa password is
+      # generated for this run and masked in the logs; it is never stored anywhere.
+      - name: Start SQL Server
+        run: |
+          password="Ci$(openssl rand -hex 16)!"
+          echo "::add-mask::$password"
+          docker run --detach --name sql \
+            --env ACCEPT_EULA=Y --env MSSQL_SA_PASSWORD="$password" \
+            --publish 1433:1433 mcr.microsoft.com/mssql/server:2022-latest
+          for attempt in $(seq 1 60); do
+            if docker exec sql /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P "$password" -Q "SELECT 1" > /dev/null 2>&1; then
+              echo "SQL Server is ready"
+              echo "LOADWATCH_TEST_SQL=Server=localhost,1433;User Id=sa;Password=$password;TrustServerCertificate=True;MultipleActiveResultSets=true" >> "$GITHUB_ENV"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "SQL Server did not start in time"
+          docker logs sql
+          exit 1
+
+      - name: Build
+        run: dotnet build api/LoadWatch.Api.Tests --configuration Release
+
+      - name: Test
+        run: dotnet test api/LoadWatch.Api.Tests --configuration Release --no-build --logger "console;verbosity=normal"
