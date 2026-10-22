@@ -9,8 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddDbContext<LoadWatchDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("LoadWatchDb")));
+// Read from ConnectionStrings:LoadWatchDb. appsettings.Development.json points at LocalDB; on Azure the portal's
+// connection string named LoadWatchDb arrives as an environment variable and overrides it. No secret is committed.
+var connectionString = builder.Configuration.GetConnectionString("LoadWatchDb");
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException("The connection string 'LoadWatchDb' must be configured.");
+}
+builder.Services.AddDbContext<LoadWatchDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<UserProfileService>();
 builder.Services.AddScoped<AccuracyService>();
