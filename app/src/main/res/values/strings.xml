@@ -38,4 +38,9 @@
     <string name="schedule_screen_id">S06</string>
     <string name="schedule_title">Schedule</string>
     <string name="schedule_purpose">Upcoming outages for your area grouped by day, each with its stage and times, and when the schedule was last updated.</string>
+
+    <!-- S07 Community Confirmation -->
+    <string name="report_screen_id">S07</string>
+    <string name="report_title">Is the outage happening?</string>
+    <string name="report_purpose">Tell LoadWatch whether the power is off or back on. You will see whether your report was queued or accepted, and how it moved your area\'s accuracy score.</string>
 </resources>
