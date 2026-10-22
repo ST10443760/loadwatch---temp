@@ -54,4 +54,6 @@ object DatabaseModule {
     @Provides fun providePendingSyncDao(db: LoadWatchDatabase): PendingSyncDao = db.pendingSyncDao()
 
     @Provides fun provideRecentAreaDao(db: LoadWatchDatabase): RecentAreaDao = db.recentAreaDao()
+
+    @Provides fun provideTransactionRunner(db: LoadWatchDatabase): TransactionRunner = RoomTransactionRunner(db)
 }
