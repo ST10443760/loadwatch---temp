@@ -3,4 +3,15 @@
 
     <!-- Placeholder screens: %1$s is the screen id from the screen catalogue, e.g. S04 -->
     <string name="placeholder_screen_label">%1$s · Placeholder</string>
+
+    <!-- S01 Splash -->
+    <string name="splash_screen_id">S01</string>
+    <string name="splash_title">LoadWatch</string>
+    <string name="splash_purpose">Checking your session and restoring saved settings.</string>
+
+    <!-- S02 SSO Login -->
+    <string name="login_screen_id">S02</string>
+    <string name="login_title">Welcome to LoadWatch</string>
+    <string name="login_purpose">Sign in with Google to save areas, confirm outages and keep your settings in sync across devices. You can read the public schedule without an account.</string>
+    <string name="login_continue_with_google">Continue with Google</string>
 </resources>
