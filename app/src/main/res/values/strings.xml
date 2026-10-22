@@ -42,6 +42,24 @@
     <string name="login_privacy_dialog_title">Privacy policy</string>
     <string name="login_privacy_dialog_body">The full privacy policy will be published here before release. LoadWatch stores your name, email, chosen areas and outage reports to run the service, and never sells your data.</string>
 
+    <!-- Area search, shared by S03 and S05 -->
+    <string name="area_search_label">Suburb or municipality</string>
+    <string name="area_search_hint">Type at least %1$d letters</string>
+    <string name="area_search_clear">Clear search</string>
+    <string name="area_search_invalid">Use letters, numbers, spaces, hyphens or apostrophes.</string>
+    <string name="area_search_no_matches">No areas match “%1$s”. Check the spelling or try the municipality name.</string>
+    <string name="area_search_cached_notice">You\'re offline, so these are areas saved on this device.</string>
+    <!-- %1$s is the municipality, %2$s the supplier, e.g. "eThekwini Metropolitan Municipality · Supplied by Eskom" -->
+    <string name="area_row_details">%1$s · %2$s</string>
+    <string name="area_supplier_eskom">Supplied by Eskom</string>
+    <string name="area_supplier_municipal">Supplied by the municipality</string>
+    <string name="area_supplier_unknown">Supplier unknown</string>
+    <string name="area_save_device_only_title">Saved on this phone only</string>
+    <string name="area_save_device_only_message">Your area is saved here but could not be synced to your account yet.</string>
+    <string name="area_save_continue">Continue on this phone</string>
+    <string name="area_save_rejected_title">That area could not be saved</string>
+    <string name="area_save_rejected_message">LoadWatch did not accept this setting. Try again, or choose a different area.</string>
+
     <!-- S03 Area Onboarding -->
     <string name="onboarding_screen_id">S03</string>
     <string name="onboarding_title">Search your suburb</string>
