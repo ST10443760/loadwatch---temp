@@ -33,4 +33,9 @@
     <string name="home_purpose">Your area, whether power is on or off, a live countdown to the next change, the next outage and how accurate the schedule has been.</string>
     <string name="home_change_area">Change area</string>
     <string name="home_confirm_outage">Confirm what is happening</string>
+
+    <!-- S06 Schedule -->
+    <string name="schedule_screen_id">S06</string>
+    <string name="schedule_title">Schedule</string>
+    <string name="schedule_purpose">Upcoming outages for your area grouped by day, each with its stage and times, and when the schedule was last updated.</string>
 </resources>
