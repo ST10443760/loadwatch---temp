@@ -94,11 +94,42 @@
     <string name="area_selector_no_recents">Areas you switch to will appear here. Search above to find another area.</string>
 
     <!-- S04 Home Dashboard -->
-    <string name="home_screen_id">S04</string>
-    <string name="home_title">Home</string>
-    <string name="home_purpose">Your area, whether power is on or off, a live countdown to the next change, the next outage and how accurate the schedule has been.</string>
     <string name="home_change_area">Change area</string>
-    <string name="home_confirm_outage">Confirm what is happening</string>
+    <string name="home_report">Report what\'s happening</string>
+    <string name="home_state_on">Power is on</string>
+    <string name="home_state_off">Power is off</string>
+    <string name="home_label_power_off_in">Power off in</string>
+    <string name="home_label_power_returns_in">Power returns in</string>
+    <!-- Read by screen readers instead of the ticking digits, e.g. "Power off in 1 hour 42 minutes" -->
+    <string name="home_countdown_description">%1$s %2$s</string>
+    <!-- %1$s is a day such as "Today", %2$s a local time -->
+    <string name="home_target_at">%1$s at %2$s</string>
+    <string name="home_no_upcoming_outage">No outage is scheduled for your area.</string>
+    <string name="home_current_outage">Current outage</string>
+    <string name="home_next_outage">Next outage</string>
+    <string name="home_no_further_outage">No further outage scheduled</string>
+    <!-- %1$s is a day such as "Tomorrow", %2$s a time range -->
+    <string name="home_event_when">%1$s, %2$s</string>
+    <string name="home_current_stage">Current stage</string>
+    <string name="home_stage_none">No load shedding</string>
+    <string name="home_stage_unknown">Not known yet</string>
+    <string name="home_accuracy_title">Schedule accuracy</string>
+    <string name="home_accuracy_no_reports">No reports yet</string>
+    <string name="home_accuracy_unknown">Not known yet</string>
+    <!-- %1$d is a percentage, %2$d the number of community reports -->
+    <plurals name="home_accuracy_match">
+        <item quantity="one">%1$d%% schedule match from %2$d report</item>
+        <item quantity="other">%1$d%% schedule match from %2$d reports</item>
+    </plurals>
+    <string name="home_no_area_title">No area chosen</string>
+    <string name="home_no_area_message">Choose the area you want LoadWatch to watch.</string>
+    <string name="home_choose_area">Choose an area</string>
+
+    <!-- Schedule freshness, shared by S04 and S06. %1$s is a relative time such as "4 minutes ago" -->
+    <string name="schedule_updated">Updated %1$s</string>
+    <string name="schedule_stale">This schedule may be out of date. Last updated %1$s.</string>
+    <string name="schedule_cached_offline">You\'re offline. Showing the schedule saved on this phone, updated %1$s.</string>
+    <string name="schedule_cached_error">Could not refresh. Showing the schedule saved on this phone, updated %1$s.</string>
 
     <!-- S06 Schedule -->
     <string name="schedule_screen_id">S06</string>
