@@ -2,6 +2,7 @@ package com.example.loadwatch.core.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Upsert
 import com.example.loadwatch.core.database.entity.ScheduleEventEntity
 import kotlinx.coroutines.flow.Flow
@@ -39,4 +40,19 @@ interface ScheduleEventDao {
 
     @Query("DELETE FROM schedule_events WHERE endAt < :cutoff")
     suspend fun deleteEndedBefore(cutoff: Instant): Int
+
+    @Query("DELETE FROM schedule_events WHERE areaId = :areaId")
+    suspend fun deleteForArea(areaId: String)
+
+    // Swaps an area's cached schedule for a freshly fetched window, atomically, so a reader never sees
+    // a half-replaced schedule
+    @Transaction
+    suspend fun replaceForArea(areaId: String, events: List<ScheduleEventEntity>) {
+        deleteForArea(areaId)
+        upsertAll(events)
+    }
+
+    // Windows that have not finished before `from`, for the countdown, which needs the current and next window
+    @Query("SELECT * FROM schedule_events WHERE areaId = :areaId AND endAt > :from ORDER BY startAt")
+    fun observeEndingAfter(areaId: String, from: Instant): Flow<List<ScheduleEventEntity>>
 }
