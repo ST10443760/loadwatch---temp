@@ -14,4 +14,16 @@
     <string name="login_title">Welcome to LoadWatch</string>
     <string name="login_purpose">Sign in with Google to save areas, confirm outages and keep your settings in sync across devices. You can read the public schedule without an account.</string>
     <string name="login_continue_with_google">Continue with Google</string>
+
+    <!-- S03 Area Onboarding -->
+    <string name="onboarding_screen_id">S03</string>
+    <string name="onboarding_title">Search your suburb</string>
+    <string name="onboarding_purpose">Type three or more letters to find your area. Each result shows its municipality and supplier so similar names cannot be confused.</string>
+    <string name="onboarding_confirm_area">Confirm area</string>
+
+    <!-- S05 Area Selector -->
+    <string name="area_selector_screen_id">S05</string>
+    <string name="area_selector_title">Select an area</string>
+    <string name="area_selector_purpose">Switch the area you are viewing, or pick one from search, recents or favourites.</string>
+    <string name="area_selector_use_area">Use this area</string>
 </resources>
