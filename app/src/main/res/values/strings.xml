@@ -22,9 +22,10 @@
     <string name="placeholder_screen_label">%1$s · Placeholder</string>
 
     <!-- S01 Splash -->
-    <string name="splash_screen_id">S01</string>
     <string name="splash_title">LoadWatch</string>
-    <string name="splash_purpose">Checking your session and restoring saved settings.</string>
+    <string name="splash_checking">Checking your session…</string>
+    <string name="splash_error_title">LoadWatch could not start</string>
+    <string name="splash_error_message">Your saved session could not be read. Try again.</string>
 
     <!-- S02 SSO Login -->
     <string name="login_title">Welcome to LoadWatch</string>
