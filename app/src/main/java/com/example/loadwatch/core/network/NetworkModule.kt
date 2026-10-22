@@ -30,7 +30,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
+    fun provideOkHttpClient(authInterceptor: AuthInterceptor, tokenAuthenticator: TokenAuthenticator): OkHttpClient {
         // Bodies are logged in debug builds only, and never the bearer token
         val logging = HttpLoggingInterceptor { message -> Log.d(LogTags.API, message) }.apply {
             level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
@@ -42,6 +42,7 @@ object NetworkModule {
             // The auth interceptor runs first so the logger sees the Authorization header, which it redacts
             .addInterceptor(authInterceptor)
             .addInterceptor(logging)
+            .authenticator(tokenAuthenticator)
             .build()
     }
 
