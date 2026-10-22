@@ -1,5 +1,7 @@
 # LoadWatch
 
+[![CI](https://github.com/ST10443760/loadwatch---temp/actions/workflows/ci.yml/badge.svg)](https://github.com/ST10443760/loadwatch---temp/actions/workflows/ci.yml)
+
 LoadWatch is a load-shedding companion app for Android. It answers one question for a South African
 household: is my power on, when does it go off, and when does it come back?
 
