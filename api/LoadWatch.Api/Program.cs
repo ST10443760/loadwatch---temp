@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using LoadWatch.Api.Auth;
 using LoadWatch.Api.Data;
 using LoadWatch.Api.Json;
 using LoadWatch.Api.Services;
@@ -15,6 +16,7 @@ builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<UserProfileService>();
 builder.Services.AddScoped<AccuracyService>();
 builder.Services.Configure<OutageReportOptions>(builder.Configuration.GetSection(OutageReportOptions.SectionName));
+builder.Services.AddFirebaseAuthentication(builder.Configuration);
 
 builder.Services.AddControllers(options =>
     {
@@ -54,6 +56,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
