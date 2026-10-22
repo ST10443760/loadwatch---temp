@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.database.dao.AreaDao
+import com.example.loadwatch.core.database.dao.AreaStatusDao
 import com.example.loadwatch.core.database.dao.FavouriteAreaDao
 import com.example.loadwatch.core.database.dao.OutageReportDao
 import com.example.loadwatch.core.database.dao.PendingSyncDao
@@ -54,6 +55,8 @@ object DatabaseModule {
     @Provides fun providePendingSyncDao(db: LoadWatchDatabase): PendingSyncDao = db.pendingSyncDao()
 
     @Provides fun provideRecentAreaDao(db: LoadWatchDatabase): RecentAreaDao = db.recentAreaDao()
+
+    @Provides fun provideAreaStatusDao(db: LoadWatchDatabase): AreaStatusDao = db.areaStatusDao()
 
     @Provides fun provideTransactionRunner(db: LoadWatchDatabase): TransactionRunner = RoomTransactionRunner(db)
 }

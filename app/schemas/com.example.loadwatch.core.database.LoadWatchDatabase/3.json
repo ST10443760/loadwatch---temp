@@ -1,0 +1,699 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "05371ee924b649b4c4a16b8958c47364",
+    "entities": [
+      {
+        "tableName": "areas",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`areaId` TEXT NOT NULL, `name` TEXT NOT NULL, `municipality` TEXT NOT NULL, `province` TEXT NOT NULL, `supplyType` TEXT NOT NULL, `latitude` REAL, `longitude` REAL, `isActive` INTEGER NOT NULL, PRIMARY KEY(`areaId`))",
+        "fields": [
+          {
+            "fieldPath": "areaId",
+            "columnName": "areaId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "municipality",
+            "columnName": "municipality",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "province",
+            "columnName": "province",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "supplyType",
+            "columnName": "supplyType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "isActive",
+            "columnName": "isActive",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "areaId"
+          ]
+        }
+      },
+      {
+        "tableName": "schedule_events",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`scheduleId` TEXT NOT NULL, `areaId` TEXT NOT NULL, `stage` INTEGER NOT NULL, `startAt` TEXT NOT NULL, `endAt` TEXT NOT NULL, `source` TEXT NOT NULL, `updatedAt` TEXT NOT NULL, PRIMARY KEY(`scheduleId`), FOREIGN KEY(`areaId`) REFERENCES `areas`(`areaId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "scheduleId",
+            "columnName": "scheduleId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "areaId",
+            "columnName": "areaId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "stage",
+            "columnName": "stage",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startAt",
+            "columnName": "startAt",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endAt",
+            "columnName": "endAt",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "scheduleId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_schedule_events_areaId_startAt",
+            "unique": false,
+            "columnNames": [
+              "areaId",
+              "startAt"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_schedule_events_areaId_startAt` ON `${TABLE_NAME}` (`areaId`, `startAt`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "areas",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "areaId"
+            ],
+            "referencedColumns": [
+              "areaId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "user_settings",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` TEXT NOT NULL, `defaultAreaId` TEXT, `notificationLeadMinutes` INTEGER NOT NULL, `notificationsEnabled` INTEGER NOT NULL, `enabledAlertTypes` TEXT NOT NULL, `languageCode` TEXT NOT NULL, `themePreference` TEXT NOT NULL, `biometricEnabled` INTEGER NOT NULL, `updatedAt` TEXT NOT NULL, PRIMARY KEY(`userId`), FOREIGN KEY(`defaultAreaId`) REFERENCES `areas`(`areaId`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultAreaId",
+            "columnName": "defaultAreaId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "notificationLeadMinutes",
+            "columnName": "notificationLeadMinutes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notificationsEnabled",
+            "columnName": "notificationsEnabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "enabledAlertTypes",
+            "columnName": "enabledAlertTypes",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "languageCode",
+            "columnName": "languageCode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "themePreference",
+            "columnName": "themePreference",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "biometricEnabled",
+            "columnName": "biometricEnabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "userId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_user_settings_defaultAreaId",
+            "unique": false,
+            "columnNames": [
+              "defaultAreaId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_user_settings_defaultAreaId` ON `${TABLE_NAME}` (`defaultAreaId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "areas",
+            "onDelete": "SET NULL",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "defaultAreaId"
+            ],
+            "referencedColumns": [
+              "areaId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "favourite_areas",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`favouriteId` TEXT NOT NULL, `userId` TEXT NOT NULL, `areaId` TEXT NOT NULL, `label` TEXT NOT NULL, `sortOrder` INTEGER NOT NULL, `createdAt` TEXT NOT NULL, PRIMARY KEY(`favouriteId`), FOREIGN KEY(`areaId`) REFERENCES `areas`(`areaId`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "favouriteId",
+            "columnName": "favouriteId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "areaId",
+            "columnName": "areaId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sortOrder",
+            "columnName": "sortOrder",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "favouriteId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_favourite_areas_userId_areaId",
+            "unique": true,
+            "columnNames": [
+              "userId",
+              "areaId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_favourite_areas_userId_areaId` ON `${TABLE_NAME}` (`userId`, `areaId`)"
+          },
+          {
+            "name": "index_favourite_areas_areaId",
+            "unique": false,
+            "columnNames": [
+              "areaId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_favourite_areas_areaId` ON `${TABLE_NAME}` (`areaId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "areas",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "areaId"
+            ],
+            "referencedColumns": [
+              "areaId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "outage_reports",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`reportId` TEXT NOT NULL, `clientReportId` TEXT NOT NULL, `userId` TEXT NOT NULL, `areaId` TEXT NOT NULL, `eventType` TEXT NOT NULL, `reportedAt` TEXT NOT NULL, `clientCreatedAt` TEXT NOT NULL, `syncStatus` TEXT NOT NULL, PRIMARY KEY(`reportId`), FOREIGN KEY(`areaId`) REFERENCES `areas`(`areaId`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "reportId",
+            "columnName": "reportId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clientReportId",
+            "columnName": "clientReportId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "areaId",
+            "columnName": "areaId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "eventType",
+            "columnName": "eventType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "reportedAt",
+            "columnName": "reportedAt",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clientCreatedAt",
+            "columnName": "clientCreatedAt",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "syncStatus",
+            "columnName": "syncStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "reportId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_outage_reports_userId_clientReportId",
+            "unique": true,
+            "columnNames": [
+              "userId",
+              "clientReportId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_outage_reports_userId_clientReportId` ON `${TABLE_NAME}` (`userId`, `clientReportId`)"
+          },
+          {
+            "name": "index_outage_reports_areaId_reportedAt",
+            "unique": false,
+            "columnNames": [
+              "areaId",
+              "reportedAt"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_outage_reports_areaId_reportedAt` ON `${TABLE_NAME}` (`areaId`, `reportedAt`)"
+          },
+          {
+            "name": "index_outage_reports_syncStatus",
+            "unique": false,
+            "columnNames": [
+              "syncStatus"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_outage_reports_syncStatus` ON `${TABLE_NAME}` (`syncStatus`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "areas",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "areaId"
+            ],
+            "referencedColumns": [
+              "areaId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "pending_sync",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`syncId` TEXT NOT NULL, `entityType` TEXT NOT NULL, `entityId` TEXT NOT NULL, `payloadJson` TEXT NOT NULL, `retryCount` INTEGER NOT NULL, `nextAttemptAt` TEXT NOT NULL, `status` TEXT NOT NULL, `lastError` TEXT, PRIMARY KEY(`syncId`))",
+        "fields": [
+          {
+            "fieldPath": "syncId",
+            "columnName": "syncId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entityType",
+            "columnName": "entityType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entityId",
+            "columnName": "entityId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "payloadJson",
+            "columnName": "payloadJson",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "retryCount",
+            "columnName": "retryCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nextAttemptAt",
+            "columnName": "nextAttemptAt",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastError",
+            "columnName": "lastError",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "syncId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_pending_sync_status_nextAttemptAt",
+            "unique": false,
+            "columnNames": [
+              "status",
+              "nextAttemptAt"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_pending_sync_status_nextAttemptAt` ON `${TABLE_NAME}` (`status`, `nextAttemptAt`)"
+          }
+        ]
+      },
+      {
+        "tableName": "recent_areas",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`areaId` TEXT NOT NULL, `selectedAt` TEXT NOT NULL, PRIMARY KEY(`areaId`), FOREIGN KEY(`areaId`) REFERENCES `areas`(`areaId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "areaId",
+            "columnName": "areaId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "selectedAt",
+            "columnName": "selectedAt",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "areaId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_recent_areas_selectedAt",
+            "unique": false,
+            "columnNames": [
+              "selectedAt"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_recent_areas_selectedAt` ON `${TABLE_NAME}` (`selectedAt`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "areas",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "areaId"
+            ],
+            "referencedColumns": [
+              "areaId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "accuracy_summaries",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`areaId` TEXT NOT NULL, `accuracyScore` REAL NOT NULL, `sampleSize` INTEGER NOT NULL, `windowHours` INTEGER NOT NULL, `calculatedAt` TEXT NOT NULL, PRIMARY KEY(`areaId`), FOREIGN KEY(`areaId`) REFERENCES `areas`(`areaId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "areaId",
+            "columnName": "areaId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accuracyScore",
+            "columnName": "accuracyScore",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sampleSize",
+            "columnName": "sampleSize",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "windowHours",
+            "columnName": "windowHours",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "calculatedAt",
+            "columnName": "calculatedAt",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "areaId"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "areas",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "areaId"
+            ],
+            "referencedColumns": [
+              "areaId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "area_refresh",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`areaId` TEXT NOT NULL, `lastRefreshedAt` TEXT NOT NULL, `windowStart` TEXT NOT NULL, `windowEnd` TEXT NOT NULL, `clockOffsetMillis` INTEGER NOT NULL, `nextStage` INTEGER, `nextStartAt` TEXT, `nextEndAt` TEXT, PRIMARY KEY(`areaId`), FOREIGN KEY(`areaId`) REFERENCES `areas`(`areaId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "areaId",
+            "columnName": "areaId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastRefreshedAt",
+            "columnName": "lastRefreshedAt",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "windowStart",
+            "columnName": "windowStart",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "windowEnd",
+            "columnName": "windowEnd",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clockOffsetMillis",
+            "columnName": "clockOffsetMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nextStage",
+            "columnName": "nextStage",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "nextStartAt",
+            "columnName": "nextStartAt",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "nextEndAt",
+            "columnName": "nextEndAt",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "areaId"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "areas",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "areaId"
+            ],
+            "referencedColumns": [
+              "areaId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "current_stage",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `stage` INTEGER NOT NULL, `updatedAt` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "stage",
+            "columnName": "stage",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '05371ee924b649b4c4a16b8958c47364')"
+    ]
+  }
+}

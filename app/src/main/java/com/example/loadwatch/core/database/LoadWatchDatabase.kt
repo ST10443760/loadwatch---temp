@@ -6,13 +6,17 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.loadwatch.core.database.converter.InstantConverter
 import com.example.loadwatch.core.database.dao.AreaDao
+import com.example.loadwatch.core.database.dao.AreaStatusDao
 import com.example.loadwatch.core.database.dao.FavouriteAreaDao
 import com.example.loadwatch.core.database.dao.OutageReportDao
 import com.example.loadwatch.core.database.dao.PendingSyncDao
 import com.example.loadwatch.core.database.dao.RecentAreaDao
 import com.example.loadwatch.core.database.dao.ScheduleEventDao
 import com.example.loadwatch.core.database.dao.UserSettingsDao
+import com.example.loadwatch.core.database.entity.AccuracySummaryEntity
 import com.example.loadwatch.core.database.entity.AreaEntity
+import com.example.loadwatch.core.database.entity.AreaRefreshEntity
+import com.example.loadwatch.core.database.entity.CurrentStageEntity
 import com.example.loadwatch.core.database.entity.FavouriteAreaEntity
 import com.example.loadwatch.core.database.entity.OutageReportEntity
 import com.example.loadwatch.core.database.entity.PendingSyncEntity
@@ -29,12 +33,17 @@ import com.example.loadwatch.core.database.entity.UserSettingsEntity
         OutageReportEntity::class,
         PendingSyncEntity::class,
         RecentAreaEntity::class,
+        AccuracySummaryEntity::class,
+        AreaRefreshEntity::class,
+        CurrentStageEntity::class,
     ],
-    version = 2,
+    version = 3,
     exportSchema = true,
     autoMigrations = [
         // 2: adds recent_areas for the area selector
         AutoMigration(from = 1, to = 2),
+        // 3: adds accuracy summaries, per-area refresh state and the current stage for Home and Schedule
+        AutoMigration(from = 2, to = 3),
     ],
 )
 @TypeConverters(InstantConverter::class)
@@ -46,6 +55,7 @@ abstract class LoadWatchDatabase : RoomDatabase() {
     abstract fun outageReportDao(): OutageReportDao
     abstract fun pendingSyncDao(): PendingSyncDao
     abstract fun recentAreaDao(): RecentAreaDao
+    abstract fun areaStatusDao(): AreaStatusDao
 
     companion object {
         const val NAME = "loadwatch.db"
