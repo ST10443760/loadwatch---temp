@@ -1,5 +1,6 @@
 using LoadWatch.Api.Auth;
 using LoadWatch.Api.Data;
+using LoadWatch.Api.Health;
 using LoadWatch.Api.Json;
 using LoadWatch.Api.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
@@ -22,6 +23,7 @@ builder.Services.AddScoped<UserProfileService>();
 builder.Services.AddScoped<AccuracyService>();
 builder.Services.Configure<OutageReportOptions>(builder.Configuration.GetSection(OutageReportOptions.SectionName));
 builder.Services.AddFirebaseAuthentication(builder.Configuration);
+builder.Services.AddLoadWatchHealthChecks();
 
 builder.Services.AddControllers(options =>
     {
@@ -70,6 +72,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapLoadWatchHealth();
 
 app.Run();
 
