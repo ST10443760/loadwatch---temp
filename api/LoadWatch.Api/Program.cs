@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using LoadWatch.Api.Auth;
 using LoadWatch.Api.Data;
 using LoadWatch.Api.Json;
@@ -28,9 +27,11 @@ builder.Services.AddControllers(options =>
     })
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.JsonSerializerOptions.Converters.Add(new StrictEnumConverterFactory());
         options.JsonSerializerOptions.Converters.Add(new UtcDateTimeOffsetConverter());
-    });
+    })
+    .ConfigureApiBehaviorOptions(options =>
+        options.InvalidModelStateResponseFactory = ValidationResponses.Create);
 
 // Every error, including unhandled exceptions and unmatched routes, is returned as ProblemDetails JSON
 builder.Services.AddProblemDetails();
