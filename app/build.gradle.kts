@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -6,6 +8,16 @@ plugins {
     alias(libs.plugins.androidx.room)
     alias(libs.plugins.kotlin.serialization)
 }
+
+// The API base URL comes from local.properties (key api.base.url) so each developer and device can point
+// at their own hosted API. A physical phone cannot reach localhost, so there is no localhost default.
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) file.inputStream().use { load(it) }
+}
+val apiBaseUrl = (localProperties.getProperty("api.base.url") ?: "https://loadwatch-api.invalid/")
+    .trim()
+    .let { if (it.endsWith("/")) it else "$it/" }
 
 android {
     namespace = "com.example.loadwatch"
@@ -23,6 +35,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_BASE_URL", "\"$apiBaseUrl\"")
     }
 
     buildTypes {
@@ -42,6 +56,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
