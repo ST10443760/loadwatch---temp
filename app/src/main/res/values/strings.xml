@@ -148,9 +148,31 @@
     </plurals>
 
     <!-- S07 Community Confirmation -->
-    <string name="report_screen_id">S07</string>
     <string name="report_title">Is the outage happening?</string>
-    <string name="report_purpose">Tell LoadWatch whether the power is off or back on. You will see whether your report was queued or accepted, and how it moved your area\'s accuracy score.</string>
+    <string name="report_area">Reporting for %1$s</string>
+    <string name="report_power_off">Power is off</string>
+    <string name="report_power_back">Power is back</string>
+    <string name="report_event_power_off">Power off</string>
+    <string name="report_event_power_back">Power back on</string>
+    <string name="report_status_sending">Sending your report…</string>
+    <!-- %1$s is "Power off" or "Power back on" -->
+    <string name="report_status_accepted">Report accepted: %1$s. Thanks, it now counts towards this area\'s accuracy score.</string>
+    <string name="report_status_already_reported">Already reported. You reported this a few minutes ago, so it is only counted once.</string>
+    <string name="report_status_saved_offline">Saved on this phone, will send when you\'re back online.</string>
+    <string name="report_status_rejected">LoadWatch could not accept this report. Try again.</string>
+    <string name="report_status_rejected_clock">LoadWatch could not accept this report. Check that your phone\'s date and time are correct, then try again.</string>
+    <string name="report_status_not_signed_in">Your session has ended, so the report was kept on this phone. Sign in again to send it.</string>
+    <string name="report_status_failed">The LoadWatch server could not take the report right now. It is kept on this phone; try again in a moment.</string>
+    <string name="report_retry_sending">Retry sending</string>
+    <!-- %1$d is how many reports are waiting on the phone -->
+    <string name="report_retry_sending_count">Retry sending (%1$d waiting)</string>
+    <string name="report_accuracy_cached">Could not refresh the score.</string>
+    <string name="report_recent_title">Your recent reports</string>
+    <string name="report_recent_empty">You haven\'t reported anything for this area yet.</string>
+    <string name="report_sync_pending">Waiting to send</string>
+    <string name="report_sync_retrying">Sending again</string>
+    <string name="report_sync_synced">Accepted</string>
+    <string name="report_sync_rejected">Not accepted</string>
 
     <!-- S08 Favourites and Compare -->
     <string name="favourites_screen_id">S08</string>
