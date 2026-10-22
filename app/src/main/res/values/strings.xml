@@ -68,10 +68,10 @@
     <string name="onboarding_saving">Saving…</string>
 
     <!-- S05 Area Selector -->
-    <string name="area_selector_screen_id">S05</string>
-    <string name="area_selector_title">Select an area</string>
-    <string name="area_selector_purpose">Switch the area you are viewing, or pick one from search, recents or favourites.</string>
-    <string name="area_selector_use_area">Use this area</string>
+    <string name="area_selector_title">Change area</string>
+    <string name="area_selector_current">Current area: %1$s</string>
+    <string name="area_selector_recent">Recent</string>
+    <string name="area_selector_no_recents">Areas you switch to will appear here. Search above to find another area.</string>
 
     <!-- S04 Home Dashboard -->
     <string name="home_screen_id">S04</string>
