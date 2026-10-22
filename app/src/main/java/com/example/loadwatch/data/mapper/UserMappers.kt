@@ -1,10 +1,12 @@
 package com.example.loadwatch.data.mapper
 
 import com.example.loadwatch.core.database.entity.FavouriteAreaEntity
+import com.example.loadwatch.core.database.entity.FavouriteWithArea
 import com.example.loadwatch.core.database.entity.UserSettingsEntity
 import com.example.loadwatch.core.network.dto.FavouriteAreaDto
 import com.example.loadwatch.core.network.dto.UserSettingsDto
 import com.example.loadwatch.core.network.dto.UserSettingsUpdateDto
+import com.example.loadwatch.data.model.Favourite
 
 fun UserSettingsDto.toEntity() = UserSettingsEntity(
     userId = userId,
@@ -35,4 +37,11 @@ fun FavouriteAreaDto.toEntity() = FavouriteAreaEntity(
     label = label,
     sortOrder = sortOrder,
     createdAt = createdAt,
+)
+
+fun FavouriteWithArea.toModel() = Favourite(
+    favouriteId = favourite.favouriteId,
+    area = area.toModel(),
+    label = favourite.label,
+    sortOrder = favourite.sortOrder,
 )
