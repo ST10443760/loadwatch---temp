@@ -10,4 +10,7 @@ enum class DataFailure {
 
     // The API refused the request because nobody is signed in
     NOT_SIGNED_IN,
+
+    // The API does not know the requested area
+    NOT_FOUND,
 }

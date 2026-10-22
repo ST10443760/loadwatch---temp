@@ -17,6 +17,8 @@
     <string name="error_server_message">The LoadWatch server could not complete the request. Try again in a moment.</string>
     <string name="error_not_signed_in_title">You\'re signed out</string>
     <string name="error_not_signed_in_message">Sign in again to save your settings.</string>
+    <string name="error_not_found_title">This area is not available</string>
+    <string name="error_not_found_message">LoadWatch no longer has this area. Try again, or choose a different area.</string>
 
     <!-- Placeholder screens: %1$s is the screen id from the screen catalogue, e.g. S04 -->
     <string name="placeholder_screen_label">%1$s · Placeholder</string>

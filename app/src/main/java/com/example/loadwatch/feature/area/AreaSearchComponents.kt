@@ -200,10 +200,12 @@ private fun DataFailure.titleRes(): Int = when (this) {
     DataFailure.OFFLINE -> R.string.error_offline_title
     DataFailure.SERVER -> R.string.error_server_title
     DataFailure.NOT_SIGNED_IN -> R.string.error_not_signed_in_title
+    DataFailure.NOT_FOUND -> R.string.error_not_found_title
 }
 
 private fun DataFailure.messageRes(): Int = when (this) {
     DataFailure.OFFLINE -> R.string.error_offline_message
     DataFailure.SERVER -> R.string.error_server_message
     DataFailure.NOT_SIGNED_IN -> R.string.error_not_signed_in_message
+    DataFailure.NOT_FOUND -> R.string.error_not_found_message
 }
