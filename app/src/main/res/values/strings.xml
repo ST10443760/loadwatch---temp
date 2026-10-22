@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">LoadWatch</string>
 
+    <!-- Bottom navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_schedule">Schedule</string>
+    <string name="nav_report">Report</string>
+    <string name="nav_compare">Compare</string>
+    <string name="nav_settings">Settings</string>
+
     <!-- Placeholder screens: %1$s is the screen id from the screen catalogue, e.g. S04 -->
     <string name="placeholder_screen_label">%1$s · Placeholder</string>
 
