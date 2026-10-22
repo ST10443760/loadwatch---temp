@@ -22,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -40,6 +39,7 @@ import com.example.loadwatch.core.designsystem.InlineMessage
 import com.example.loadwatch.core.designsystem.LoadWatchTheme
 import com.example.loadwatch.core.designsystem.RecoveryState
 import com.example.loadwatch.core.designsystem.StageBadge
+import com.example.loadwatch.core.designsystem.accuracyText
 import com.example.loadwatch.core.designsystem.describeDuration
 import com.example.loadwatch.core.designsystem.formatCountdown
 import com.example.loadwatch.core.designsystem.formatDayLabel
@@ -51,7 +51,6 @@ import com.example.loadwatch.data.model.ScheduleEvent
 import com.example.loadwatch.data.repository.AccuracyScore
 import java.time.LocalDate
 import java.time.ZoneId
-import kotlin.math.roundToInt
 
 // S04 Home Dashboard, the hub: area, supply state in words, the live countdown as the largest element, the next
 // event, the current stage, the area's accuracy badge and when the data was last updated, all on one screen
@@ -274,17 +273,8 @@ private fun StageCard(stage: Int?, modifier: Modifier = Modifier) {
 @Composable
 private fun AccuracyCard(accuracy: AccuracyScore?, modifier: Modifier = Modifier) {
     SmallInfoCard(
-        title = stringResource(R.string.home_accuracy_title),
-        value = when {
-            accuracy == null -> stringResource(R.string.home_accuracy_unknown)
-            accuracy.sampleSize == 0 -> stringResource(R.string.home_accuracy_no_reports)
-            else -> pluralStringResource(
-                R.plurals.home_accuracy_match,
-                accuracy.sampleSize,
-                (accuracy.score * 100).roundToInt(),
-                accuracy.sampleSize,
-            )
-        },
+        title = stringResource(R.string.accuracy_title),
+        value = accuracyText(accuracy?.score, accuracy?.sampleSize),
         modifier = modifier,
     )
 }

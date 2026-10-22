@@ -11,6 +11,13 @@
     <!-- Shared actions and recovery states -->
     <string name="action_retry">Retry</string>
     <string name="action_close">Close</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="label_dialog_field">Label (optional)</string>
+    <!-- %1$d characters used of %2$d -->
+    <string name="label_dialog_count">%1$d / %2$d</string>
+    <string name="label_dialog_too_long">Use %1$d characters or fewer.</string>
+    <string name="label_suggestion_home">Home</string>
+    <string name="label_suggestion_work">Work</string>
     <string name="error_offline_title">You\'re offline</string>
     <string name="error_offline_message">LoadWatch could not reach the server. Check your connection and try again.</string>
     <string name="error_server_title">Something went wrong</string>
@@ -113,11 +120,11 @@
     <string name="home_current_stage">Current stage</string>
     <string name="home_stage_none">No load shedding</string>
     <string name="home_stage_unknown">Not known yet</string>
-    <string name="home_accuracy_title">Schedule accuracy</string>
-    <string name="home_accuracy_no_reports">No reports yet</string>
-    <string name="home_accuracy_unknown">Not known yet</string>
+    <string name="accuracy_title">Schedule accuracy</string>
+    <string name="accuracy_no_reports">No reports yet</string>
+    <string name="accuracy_unknown">Not known yet</string>
     <!-- %1$d is a percentage, %2$d the number of community reports -->
-    <plurals name="home_accuracy_match">
+    <plurals name="accuracy_match">
         <item quantity="one">%1$d%% schedule match from %2$d report</item>
         <item quantity="other">%1$d%% schedule match from %2$d reports</item>
     </plurals>
