@@ -1,7 +1,6 @@
 using LoadWatch.Api.Data;
 using LoadWatch.Api.Dtos;
 using LoadWatch.Api.Models;
-using LoadWatch.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +10,7 @@ namespace LoadWatch.Api.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/users/{userId}/settings")]
-public class UserSettingsController(LoadWatchDbContext db, UserProfileService profiles, TimeProvider time)
+public class UserSettingsController(LoadWatchDbContext db, TimeProvider time)
     : ControllerBase
 {
     private const int MinLeadMinutes = 5;
@@ -25,12 +24,6 @@ public class UserSettingsController(LoadWatchDbContext db, UserProfileService pr
     [HttpGet]
     public async Task<ActionResult<UserSettings>> GetSettings(string userId, CancellationToken ct)
     {
-        if (!UserProfileService.IsValidUserId(userId))
-        {
-            return this.InvalidUserId();
-        }
-
-        await profiles.EnsureProfileAsync(userId, ct);
         var settings = await db.UserSettings.AsNoTracking().FirstOrDefaultAsync(s => s.UserId == userId, ct);
         if (settings is null)
         {
@@ -47,11 +40,6 @@ public class UserSettingsController(LoadWatchDbContext db, UserProfileService pr
     public async Task<ActionResult<UserSettings>> UpdateSettings(
         string userId, [FromBody] UserSettingsUpdate update, CancellationToken ct)
     {
-        if (!UserProfileService.IsValidUserId(userId))
-        {
-            return this.InvalidUserId();
-        }
-
         if (update.NotificationLeadMinutes is < MinLeadMinutes or > MaxLeadMinutes)
         {
             ModelState.AddModelError("notificationLeadMinutes",
@@ -87,7 +75,6 @@ public class UserSettingsController(LoadWatchDbContext db, UserProfileService pr
             return ValidationProblem(ModelState);
         }
 
-        await profiles.EnsureProfileAsync(userId, ct);
         var settings = await db.UserSettings.FirstOrDefaultAsync(s => s.UserId == userId, ct);
         if (settings is null)
         {

@@ -1,4 +1,3 @@
-using LoadWatch.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LoadWatch.Api.Controllers;
@@ -17,11 +16,4 @@ public static class ProblemResults
             statusCode: StatusCodes.Status501NotImplemented,
             title: "Not implemented",
             detail: "This endpoint is part of the Final POE scope and is not available yet.");
-
-    public static ActionResult InvalidUserId(this ControllerBase controller)
-    {
-        controller.ModelState.AddModelError("userId",
-            $"userId is required and cannot be longer than {UserProfileService.MaxUserIdLength} characters.");
-        return controller.ValidationProblem(controller.ModelState);
-    }
 }

@@ -23,6 +23,7 @@ builder.Services.AddControllers(options =>
         options.ModelBinderProviders.Insert(0, new UtcDateTimeOffsetModelBinderProvider());
         // Report validation errors under the camelCase JSON field names the client sends
         options.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
+        options.Filters.Add<UserProfileFilter>();
     })
     .AddJsonOptions(options =>
     {

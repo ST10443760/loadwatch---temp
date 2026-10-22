@@ -1,7 +1,6 @@
 using LoadWatch.Api.Data;
 using LoadWatch.Api.Dtos;
 using LoadWatch.Api.Models;
-using LoadWatch.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +10,7 @@ namespace LoadWatch.Api.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/users/{userId}/favourites")]
-public class FavouritesController(LoadWatchDbContext db, UserProfileService profiles, TimeProvider time)
+public class FavouritesController(LoadWatchDbContext db, TimeProvider time)
     : ControllerBase
 {
     private const int MaxLabelLength = 40;
@@ -20,12 +19,6 @@ public class FavouritesController(LoadWatchDbContext db, UserProfileService prof
     [HttpGet]
     public async Task<ActionResult<IEnumerable<FavouriteArea>>> GetFavourites(string userId, CancellationToken ct)
     {
-        if (!UserProfileService.IsValidUserId(userId))
-        {
-            return this.InvalidUserId();
-        }
-
-        await profiles.EnsureProfileAsync(userId, ct);
         return await db.FavouriteAreas.AsNoTracking()
             .Where(f => f.UserId == userId)
             .OrderBy(f => f.SortOrder)
@@ -38,11 +31,6 @@ public class FavouritesController(LoadWatchDbContext db, UserProfileService prof
     public async Task<ActionResult<FavouriteArea>> AddFavourite(
         string userId, [FromBody] FavouriteAreaCreate request, CancellationToken ct)
     {
-        if (!UserProfileService.IsValidUserId(userId))
-        {
-            return this.InvalidUserId();
-        }
-
         var label = request.Label?.Trim() ?? string.Empty;
         if (label.Length > MaxLabelLength)
         {
@@ -57,7 +45,6 @@ public class FavouritesController(LoadWatchDbContext db, UserProfileService prof
             return ValidationProblem(ModelState);
         }
 
-        await profiles.EnsureProfileAsync(userId, ct);
         if (await db.FavouriteAreas.AnyAsync(f => f.UserId == userId && f.AreaId == request.AreaId, ct))
         {
             return FavouriteExists(request.AreaId);
@@ -95,12 +82,6 @@ public class FavouritesController(LoadWatchDbContext db, UserProfileService prof
     [HttpDelete("{areaId}")]
     public async Task<IActionResult> RemoveFavourite(string userId, string areaId, CancellationToken ct)
     {
-        if (!UserProfileService.IsValidUserId(userId))
-        {
-            return this.InvalidUserId();
-        }
-
-        await profiles.EnsureProfileAsync(userId, ct);
         var favourite = await db.FavouriteAreas.FirstOrDefaultAsync(f => f.UserId == userId && f.AreaId == areaId, ct);
         if (favourite is null)
         {

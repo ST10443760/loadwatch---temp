@@ -1,3 +1,4 @@
+using LoadWatch.Api.Auth;
 using LoadWatch.Api.Data;
 using LoadWatch.Api.Dtos;
 using LoadWatch.Api.Models;
@@ -13,15 +14,10 @@ namespace LoadWatch.Api.Controllers;
 [Route("api")]
 public class OutageReportsController(
     LoadWatchDbContext db,
-    UserProfileService profiles,
     AccuracyService accuracy,
     IOptions<OutageReportOptions> options,
     TimeProvider time) : ControllerBase
 {
-    // Temporary stand-in for the Firebase ID token's uid claim until token validation is added.
-    // OutageReportCreate deliberately carries no userId, matching Table 7.
-    public const string UserIdHeader = "X-User-Id";
-
     // Device clocks drift, so allow a report to be slightly ahead of server time
     private static readonly TimeSpan MaxClockSkew = TimeSpan.FromMinutes(5);
 
@@ -31,20 +27,12 @@ public class OutageReportsController(
     // -> 201 OutageReport for a new report
     // -> 200 with the original report when the clientReportId was already submitted by this user (safe retry)
     // -> 409 when the same user reported the same event for the same area inside the duplicate window
+    // The reporter is the signed-in user (the token's sub claim); OutageReportCreate carries no userId (Table 7).
     [Authorize]
     [HttpPost("outage-reports")]
     public async Task<ActionResult<OutageReport>> CreateReport([FromBody] OutageReportCreate request, CancellationToken ct)
     {
-        var userId = Request.Headers[UserIdHeader].ToString();
-        if (string.IsNullOrWhiteSpace(userId))
-        {
-            return Problem(statusCode: StatusCodes.Status401Unauthorized, title: "Not signed in",
-                detail: $"A signed-in user is required. Send the user id in the {UserIdHeader} header.");
-        }
-        if (!UserProfileService.IsValidUserId(userId))
-        {
-            return this.InvalidUserId();
-        }
+        var userId = User.GetUserId();
 
         var original = await FindByClientReportIdAsync(userId, request.ClientReportId, ct);
         if (original is not null)
@@ -71,8 +59,6 @@ public class OutageReportsController(
         {
             return ValidationProblem(ModelState);
         }
-
-        await profiles.EnsureProfileAsync(userId, ct);
 
         var window = TimeSpan.FromMinutes(options.Value.DuplicateWindowMinutes);
         var windowStart = reportedAt - window;
