@@ -9,20 +9,30 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.loadwatch.core.common.LogTags
 
-// App shell: hosts the navigation graph and shows the bottom bar on the hub's destinations.
+// App shell: hosts the navigation graph, shows the bottom bar on the hub's destinations, and returns to S02
+// when the API ends the session.
 @Composable
-fun LoadWatchApp() {
+fun LoadWatchApp(appViewModel: AppViewModel = hiltViewModel()) {
     val navController = rememberNavController()
     LogNavigationTransitions(navController)
+
+    LaunchedEffect(appViewModel) {
+        appViewModel.sessionEnded.collect {
+            navController.navigateClearingBackStack(LoginRoute(sessionExpired = true))
+        }
+    }
+
     val backStackEntry by navController.currentBackStackEntryAsState()
     val selectedDestination = backStackEntry?.destination?.topLevelDestination()
 
