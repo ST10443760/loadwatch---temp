@@ -74,6 +74,7 @@ fun AreaRow(
     modifier: Modifier = Modifier,
     selected: Boolean = false,
     enabled: Boolean = true,
+    trailing: (@Composable () -> Unit)? = null,
 ) {
     val interaction = when (mode) {
         AreaRowMode.SELECT -> Modifier.selectable(selected = selected, enabled = enabled, role = Role.RadioButton, onClick = onClick)
@@ -91,6 +92,7 @@ fun AreaRow(
         } else {
             null
         },
+        trailingContent = trailing,
         colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surface),
     )
 }
@@ -106,6 +108,8 @@ fun AreaSearchResults(
     selectedAreaId: String? = null,
     enabled: Boolean = true,
     idleContent: @Composable () -> Unit = {},
+    // Extra content at the end of each result row, such as a favourite toggle
+    rowTrailing: (@Composable (Area) -> Unit)? = null,
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         when (state) {
@@ -145,6 +149,7 @@ fun AreaSearchResults(
                                 selected = area.areaId == selectedAreaId,
                                 enabled = enabled,
                                 onClick = { onAreaClick(area) },
+                                trailing = rowTrailing?.let { content -> { content(area) } },
                             )
                             HorizontalDivider()
                         }
