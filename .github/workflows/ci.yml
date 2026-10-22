@@ -1,0 +1,60 @@
+# Proves the code builds and its tests pass on a clean machine, not just on a laptop.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+# A newer push to the same branch makes an older run pointless
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  android:
+    name: Build and test the Android app
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      # AGP 9.0.1 needs JDK 17 or newer; the Gradle daemon is pinned to 21 in gradle/gradle-daemon-jvm.properties
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      # The runner's preinstalled SDK may not include the pinned compileSdk 36.1 yet
+      - name: Install Android SDK platform 36.1
+        run: (yes || true) | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "platforms;android-36.1" "build-tools;36.0.0" > /dev/null
+
+      # Caches the Gradle wrapper, dependencies and build outputs between runs
+      - uses: gradle/actions/setup-gradle@v4
+
+      # There is no local.properties here, so BuildConfig.API_BASE_URL gets the placeholder default
+      - name: Build the debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Run unit tests
+        run: ./gradlew testDebugUnitTest
+
+      - name: Upload the debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: loadwatch-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+
+      - name: Upload the unit test report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-unit-test-report
+          path: app/build/reports/tests/testDebugUnitTest
+
+  api:
+    name: API
+    uses: ./.github/workflows/api-tests.yml
