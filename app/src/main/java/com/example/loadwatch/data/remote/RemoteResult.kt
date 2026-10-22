@@ -20,7 +20,7 @@ sealed interface RemoteResult<out T> {
 
 suspend fun <T> safeApiCall(json: Json, name: String, call: suspend () -> T): RemoteResult<T> =
     try {
-        RemoteResult.Success(call())
+        RemoteResult.Success(call()).also { Log.d(LogTags.API, "$name succeeded") }
     } catch (e: HttpException) {
         val problem = e.response()?.errorBody()?.string()?.let { body ->
             runCatching { json.decodeFromString<ProblemDetailsDto>(body) }.getOrNull()
