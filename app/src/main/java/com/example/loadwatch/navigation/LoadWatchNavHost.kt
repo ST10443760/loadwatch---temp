@@ -69,7 +69,10 @@ fun LoadWatchNavHost(
         }
         composable<SettingsRoute> {
             // Sign-out returns to S02 with nothing behind it (FR-AUTH-04)
-            SettingsScreen(onSignedOut = { navController.navigateClearingBackStack(LoginRoute()) })
+            SettingsScreen(
+                onSignedOut = { navController.navigateClearingBackStack(LoginRoute()) },
+                onFindArea = { navController.navigate(AreaSelectorRoute()) },
+            )
         }
     }
 }
