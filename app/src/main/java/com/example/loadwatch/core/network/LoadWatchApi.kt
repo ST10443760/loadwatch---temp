@@ -16,14 +16,14 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.time.Instant
 
-// The Part 2 endpoints from Table 6. The sync batch, notification registration and history endpoints are
+// The Part 2 endpoints from Table 6. Routes marked bearer (settings, favourites, the outage report POST) get the
+// Firebase ID token from AuthInterceptor. The sync batch, notification registration and history endpoints are
 // Final POE scope and are added with those features.
 // Instant query values are sent as ISO-8601 UTC via Instant.toString().
 interface LoadWatchApi {
@@ -74,12 +74,9 @@ interface LoadWatchApi {
 
     // 201 for a new report, 200 when the same clientReportId was already accepted, 409 for a duplicate event
     // inside the window. Response is returned rather than the body so callers can tell those apart.
-    // X-User-Id stands in for the Firebase bearer token until sign-in is wired to the API.
+    // The reporter is the signed-in user; AuthInterceptor adds the Firebase ID token.
     @POST("api/outage-reports")
-    suspend fun createOutageReport(
-        @Header("X-User-Id") userId: String,
-        @Body request: OutageReportCreateDto,
-    ): Response<OutageReportDto>
+    suspend fun createOutageReport(@Body request: OutageReportCreateDto): Response<OutageReportDto>
 
     @GET("api/areas/{areaId}/outage-reports")
     suspend fun getAreaOutageReports(
