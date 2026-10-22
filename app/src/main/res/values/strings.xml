@@ -26,4 +26,11 @@
     <string name="area_selector_title">Select an area</string>
     <string name="area_selector_purpose">Switch the area you are viewing, or pick one from search, recents or favourites.</string>
     <string name="area_selector_use_area">Use this area</string>
+
+    <!-- S04 Home Dashboard -->
+    <string name="home_screen_id">S04</string>
+    <string name="home_title">Home</string>
+    <string name="home_purpose">Your area, whether power is on or off, a live countdown to the next change, the next outage and how accurate the schedule has been.</string>
+    <string name="home_change_area">Change area</string>
+    <string name="home_confirm_outage">Confirm what is happening</string>
 </resources>
