@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.example.loadwatch.feature.area.AreaOnboardingScreen
 import com.example.loadwatch.feature.area.AreaSelectorScreen
 import com.example.loadwatch.feature.auth.LoginScreen
@@ -33,13 +34,17 @@ fun LoadWatchNavHost(
         // Session wrapper: each step replaces the back stack so Back never returns to it
         composable<SplashRoute> {
             SplashScreen(
-                onSignedOut = { navController.navigateClearingBackStack(LoginRoute) },
+                onSignedOut = { navController.navigateClearingBackStack(LoginRoute()) },
                 onNeedsArea = { navController.navigateClearingBackStack(AreaOnboardingRoute) },
                 onReady = { navController.navigateClearingBackStack(HomeRoute) },
             )
         }
-        composable<LoginRoute> {
-            LoginScreen(onSignedIn = { navController.navigateClearingBackStack(AreaOnboardingRoute) })
+        composable<LoginRoute> { entry ->
+            LoginScreen(
+                sessionExpired = entry.toRoute<LoginRoute>().sessionExpired,
+                onNeedsArea = { navController.navigateClearingBackStack(AreaOnboardingRoute) },
+                onReady = { navController.navigateClearingBackStack(HomeRoute) },
+            )
         }
         composable<AreaOnboardingRoute> {
             AreaOnboardingScreen(onAreaConfirmed = { navController.navigateClearingBackStack(HomeRoute) })
@@ -60,7 +65,7 @@ fun LoadWatchNavHost(
         composable<CompareRoute> { FavouritesCompareScreen() }
         composable<SettingsRoute> {
             // Sign-out returns to S02 with nothing behind it (FR-AUTH-04)
-            SettingsScreen(onSignedOut = { navController.navigateClearingBackStack(LoginRoute) })
+            SettingsScreen(onSignedOut = { navController.navigateClearingBackStack(LoginRoute()) })
         }
     }
 }

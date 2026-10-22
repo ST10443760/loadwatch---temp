@@ -8,7 +8,8 @@ import kotlinx.serialization.Serializable
 // Session wrapper
 @Serializable data object SplashRoute
 
-@Serializable data object LoginRoute
+// sessionExpired shows a short explanation when the API ended the session and the app signed out
+@Serializable data class LoginRoute(val sessionExpired: Boolean = false)
 
 @Serializable data object AreaOnboardingRoute
 

@@ -10,6 +10,7 @@
 
     <!-- Shared actions and recovery states -->
     <string name="action_retry">Retry</string>
+    <string name="action_close">Close</string>
     <string name="error_offline_title">You\'re offline</string>
     <string name="error_offline_message">LoadWatch could not reach the server. Check your connection and try again.</string>
     <string name="error_server_title">Something went wrong</string>
@@ -26,10 +27,19 @@
     <string name="splash_purpose">Checking your session and restoring saved settings.</string>
 
     <!-- S02 SSO Login -->
-    <string name="login_screen_id">S02</string>
     <string name="login_title">Welcome to LoadWatch</string>
-    <string name="login_purpose">Sign in with Google to save areas, confirm outages and keep your settings in sync across devices. You can read the public schedule without an account.</string>
+    <string name="login_tagline">Know before the power goes.</string>
+    <string name="login_why_title">Why sign in</string>
+    <string name="login_purpose">Your account keeps your area, alert settings and favourites in sync across devices, and lets you confirm what is actually happening in your area. LoadWatch only uses your name and email to identify your account.</string>
     <string name="login_continue_with_google">Continue with Google</string>
+    <string name="login_signing_in">Signing in…</string>
+    <string name="login_session_expired">Your session ended. Sign in again to carry on.</string>
+    <string name="login_error_no_google_account">There is no Google account on this device. Add one in system settings, then try again.</string>
+    <string name="login_error_google_failed">Google sign-in did not complete. Check your connection and try again.</string>
+    <string name="login_error_firebase_failed">Sign-in failed. Check your connection and try again.</string>
+    <string name="login_privacy_link">Privacy policy</string>
+    <string name="login_privacy_dialog_title">Privacy policy</string>
+    <string name="login_privacy_dialog_body">The full privacy policy will be published here before release. LoadWatch stores your name, email, chosen areas and outage reports to run the service, and never sells your data.</string>
 
     <!-- S03 Area Onboarding -->
     <string name="onboarding_screen_id">S03</string>
