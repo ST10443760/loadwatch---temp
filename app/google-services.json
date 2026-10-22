@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "407413574375",
+    "project_id": "loadwatch-ee062",
+    "storage_bucket": "loadwatch-ee062.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407413574375:android:72eab672b76e31b3887042",
+        "android_client_info": {
+          "package_name": "com.example.loadwatch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "407413574375-do3evkrl1t7i5116puca8s1v4lfi2ia0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.loadwatch",
+            "certificate_hash": "243d50fa9885d6f447d76fbd4103a5665f6757bc"
+          }
+        },
+        {
+          "client_id": "407413574375-k9l5k7spp9jc6t28qnvmn4j1omjet1ge.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnT7qELkKDVqEgWuFzOC0m97hqpBfM7Uk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "407413574375-k9l5k7spp9jc6t28qnvmn4j1omjet1ge.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
