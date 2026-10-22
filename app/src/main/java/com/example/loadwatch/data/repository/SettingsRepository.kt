@@ -8,9 +8,12 @@ import com.example.loadwatch.core.network.dto.UserSettingsDto
 import com.example.loadwatch.data.local.SettingsLocalDataSource
 import com.example.loadwatch.data.local.SettingsRules
 import com.example.loadwatch.data.mapper.toEntity
+import com.example.loadwatch.data.mapper.toModel
 import com.example.loadwatch.data.mapper.toUpdateDto
 import com.example.loadwatch.data.model.Area
 import com.example.loadwatch.data.model.DataFailure
+import com.example.loadwatch.data.model.ThemePreference
+import com.example.loadwatch.data.model.UserSettings
 import com.example.loadwatch.data.remote.RemoteResult
 import com.example.loadwatch.data.remote.SettingsRemoteDataSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -81,6 +84,46 @@ class SettingsRepository @Inject constructor(
 
         local.save(updated)
         return pushToServer(userId, updated)
+    }
+
+    // The signed-in user's settings from Room, so S09 opens instantly and offline
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun observeSettings(): Flow<UserSettings?> =
+        authSession.signedInUserId.flatMapLatest { userId ->
+            if (userId == null) flowOf(null) else local.observe(userId).map { it?.toModel() }
+        }
+
+    // The stored theme for the whole app, or null before any settings exist
+    fun observeThemePreference(): Flow<ThemePreference?> =
+        observeSettings().map { ThemePreference.fromCode(it?.themePreference) }.distinctUntilChanged()
+
+    fun currentUserEmail(): String? = authSession.currentUserEmail()
+
+    // Pulls the API's copy into Room, which observeSettings then emits. Returns the failure, or null on success.
+    suspend fun refreshFromServer(): DataFailure? {
+        val userId = authSession.currentUserId() ?: return DataFailure.NOT_SIGNED_IN
+        return if (restoreFromServer(userId) != null) null else DataFailure.OFFLINE
+    }
+
+    // Validates, then saves on the device and to the API. Nothing is stored or sent if any field breaks the
+    // API's rules (FR-SET-05).
+    suspend fun save(settings: UserSettings): SaveSettingsResult {
+        val userId = authSession.currentUserId() ?: return SaveSettingsResult.Failed(DataFailure.NOT_SIGNED_IN)
+        val entity = settings.copy(updatedAt = Instant.now()).toEntity(userId)
+
+        val invalidFields = SettingsRules.invalidFields(entity)
+        if (invalidFields.isNotEmpty()) {
+            Log.w(LogTags.API, "Settings not saved; invalid fields: $invalidFields")
+            return SaveSettingsResult.Rejected(invalidFields)
+        }
+        val defaultAreaId = entity.defaultAreaId
+        if (defaultAreaId != null && !areaRepository.ensureAreaCached(defaultAreaId)) {
+            return SaveSettingsResult.Failed(DataFailure.OFFLINE)
+        }
+
+        local.save(entity)
+        Log.i(LogTags.API, "Settings saved on the device; sending to the API")
+        return pushToServer(userId, entity)
     }
 
     // Sends the device copy to the API again, after SavedOnDeviceOnly
