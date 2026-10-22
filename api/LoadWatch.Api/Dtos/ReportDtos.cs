@@ -20,3 +20,14 @@ public record OutageReportCreate
 
     public string ClientReportId { get; init; } = null!;
 }
+
+// Returned by the anonymous GET /api/areas/{areaId}/outage-reports. It is the OutageReport without userId,
+// so reporters' Firebase UIDs are never exposed publicly.
+public record PublicOutageReport(
+    string ReportId,
+    string ClientReportId,
+    string AreaId,
+    OutageEventType EventType,
+    DateTimeOffset ReportedAt,
+    DateTimeOffset ClientCreatedAt,
+    SyncStatus SyncStatus);

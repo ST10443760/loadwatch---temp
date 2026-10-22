@@ -111,7 +111,7 @@ public class OutageReportsController(
     // GET /api/areas/{areaId}/outage-reports?since= (anonymous)
     // Newest first. since defaults to the accuracy window, and the result is capped so it cannot grow without bound.
     [HttpGet("areas/{areaId}/outage-reports")]
-    public async Task<ActionResult<IEnumerable<OutageReport>>> GetAreaReports(
+    public async Task<ActionResult<IEnumerable<PublicOutageReport>>> GetAreaReports(
         string areaId, [FromQuery] DateTimeOffset? since, CancellationToken ct)
     {
         if (!await db.Areas.AnyAsync(a => a.AreaId == areaId, ct))
@@ -124,6 +124,8 @@ public class OutageReportsController(
             .Where(r => r.AreaId == areaId && r.ReportedAt >= cutoff)
             .OrderByDescending(r => r.ReportedAt)
             .Take(MaxReportsReturned)
+            .Select(r => new PublicOutageReport(
+                r.ReportId, r.ClientReportId, r.AreaId, r.EventType, r.ReportedAt, r.ClientCreatedAt, r.SyncStatus))
             .ToListAsync(ct);
     }
 
