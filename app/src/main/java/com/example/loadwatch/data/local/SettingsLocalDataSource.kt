@@ -9,6 +9,8 @@ import javax.inject.Inject
 class SettingsLocalDataSource @Inject constructor(
     private val userSettingsDao: UserSettingsDao,
 ) {
+    suspend fun get(userId: String): UserSettingsEntity? = userSettingsDao.get(userId)
+
     suspend fun defaultAreaId(userId: String): String? = userSettingsDao.get(userId)?.defaultAreaId
 
     fun observe(userId: String): Flow<UserSettingsEntity?> = userSettingsDao.observe(userId)
