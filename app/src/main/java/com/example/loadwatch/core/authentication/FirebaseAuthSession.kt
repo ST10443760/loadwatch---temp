@@ -37,6 +37,8 @@ class FirebaseAuthSession @Inject constructor(
         Log.i(LogTags.AUTH, "Restored session: ${if (userId.value == null) "signed out" else "signed in"}")
     }
 
+    override fun currentUserEmail(): String? = firebaseAuth.currentUser?.email
+
     override suspend fun idToken(forceRefresh: Boolean): String? {
         val user = firebaseAuth.currentUser ?: return null
         return user.getIdToken(forceRefresh).await().token

@@ -11,6 +11,9 @@ interface AuthSession {
 
     fun currentUserId(): String? = signedInUserId.value
 
+    // The signed-in account's email, for "Signed in as" on S09. Null when signed out or the provider has none.
+    fun currentUserEmail(): String? = null
+
     // A Firebase ID token for the API's Authorization header, or null when signed out.
     // Firebase returns a cached token and refreshes it once it is close to expiry; forceRefresh always
     // fetches a new one.
