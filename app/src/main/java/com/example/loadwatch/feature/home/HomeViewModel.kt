@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.common.SupplyState
+import com.example.loadwatch.core.common.secondTicks
 import com.example.loadwatch.data.model.Area
 import com.example.loadwatch.data.model.DataFailure
 import com.example.loadwatch.data.repository.AccuracyScore
