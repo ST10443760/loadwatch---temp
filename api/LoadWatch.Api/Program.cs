@@ -17,7 +17,8 @@ if (string.IsNullOrWhiteSpace(connectionString))
 {
     throw new InvalidOperationException("The connection string 'LoadWatchDb' must be configured.");
 }
-builder.Services.AddDbContext<LoadWatchDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<LoadWatchDbContext>(options =>
+    options.UseSqlServer(SqlServerResilience.WithResumeTimeout(connectionString), SqlServerResilience.Configure));
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<UserProfileService>();
 builder.Services.AddScoped<AccuracyService>();
