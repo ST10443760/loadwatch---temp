@@ -85,9 +85,19 @@ dotnet run
 
 The development connection string in `appsettings.Development.json` points at a LocalDB database named
 `LoadWatchDb`. On every start the API applies any pending EF Core migrations, logging which ones it applied,
-and then seeds Durban areas, a 14-day schedule and the current stage if they are missing. If a migration
-fails, the API logs the error and refuses to start. `GET /health` needs no sign-in and returns
-`{"status":"Healthy","database":"Healthy",...}`, or a 503 when the database cannot be reached.
+and then seeds Durban areas, a 14-day schedule and the current stage if they are missing. This runs in the
+background after the API starts listening. A paused serverless Azure SQL database can take about a minute to
+resume, so errors like 40613 and connection resets are retried for up to three minutes, each attempt logged as
+a warning. A permanent error, such as a wrong password, or still failing after three minutes, makes the API
+log the error and exit with code 1.
+
+Three endpoints show how the API is doing. None needs sign-in:
+
+- `GET /` answers `{"status":"Running",...}` at once and never touches the database, so a platform warmup or
+  startup probe gets a quick 200 even while the database is resuming.
+- `GET /health` returns `{"status":"Healthy","database":"Healthy",...}` when the database is reachable. While
+  it is still being prepared or cannot be reached, it returns a 503 with a `detail` explaining why.
+- Every `/api` route answers 503 with a `Retry-After` header until the database is ready.
 
 On Azure the same keys come from the web app's settings instead of `appsettings.json`: the connection string
 named `LoadWatchDb` and the app setting `Firebase__ProjectId`. No connection string or password is committed.
@@ -99,8 +109,10 @@ docker build -t loadwatch-api api
 docker run -p 8080:8080 -e "ConnectionStrings__LoadWatchDb=<your connection string>" loadwatch-api
 ```
 
-This is the same image the deploy workflow publishes. It listens on port 8080, so `/health` is at
-`http://localhost:8080/health`. The container cannot reach LocalDB, so give it a SQL Server it can reach.
+This is the same image the deploy workflow publishes. The image itself sets `ASPNETCORE_URLS=http://+:8080`
+and exposes port 8080, so the port doesn't depend on any host setting. `/` and `/health` are at
+`http://localhost:8080/` and `http://localhost:8080/health`. It runs as a non-root user, which cannot bind
+port 80. The container cannot reach LocalDB, so give it a SQL Server it can reach.
 
 ### Test the API
 
