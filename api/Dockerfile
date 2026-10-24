@@ -16,7 +16,11 @@ RUN dotnet publish LoadWatch.Api/LoadWatch.Api.csproj --configuration Release --
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 
-ENV ASPNETCORE_HTTP_PORTS=8080
+# The image itself declares the port, so it doesn't depend on the host's WEBSITES_PORT setting. The base image's
+# ASPNETCORE_HTTP_PORTS is cleared so it doesn't compete with ASPNETCORE_URLS. Port 8080 rather than 80
+# because the app runs as a non-root user, which cannot bind ports below 1024.
+ENV ASPNETCORE_URLS=http://+:8080 \
+    ASPNETCORE_HTTP_PORTS=
 EXPOSE 8080
 
 COPY --from=build /app/publish .
