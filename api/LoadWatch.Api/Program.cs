@@ -20,6 +20,9 @@ if (string.IsNullOrWhiteSpace(connectionString))
 builder.Services.AddDbContext<LoadWatchDbContext>(options =>
     options.UseSqlServer(SqlServerResilience.WithResumeTimeout(connectionString), SqlServerResilience.Configure));
 builder.Services.AddSingleton(TimeProvider.System);
+// Migrations and seeding run in the background with retries, so a paused Azure SQL database can resume
+builder.Services.AddSingleton<DatabaseReadiness>();
+builder.Services.AddHostedService<DatabaseStartupService>();
 builder.Services.AddScoped<UserProfileService>();
 builder.Services.AddScoped<AccuracyService>();
 builder.Services.Configure<OutageReportOptions>(builder.Configuration.GetSection(OutageReportOptions.SectionName));
@@ -50,16 +53,10 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<LoadWatchDbContext>();
-    await DatabaseMigrator.MigrateAsync(db, app.Logger);
-    await DbSeeder.SeedAsync(db, scope.ServiceProvider.GetRequiredService<TimeProvider>());
-}
-
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
 app.UseStatusCodePages();
+app.UseDatabaseReadinessGate();
 
 if (app.Environment.IsDevelopment())
 {
