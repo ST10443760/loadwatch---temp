@@ -8,6 +8,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -31,9 +32,12 @@ public class ApiFactory : WebApplicationFactory<Program>
 
     private static readonly RsaSecurityKey SigningKey = new(RSA.Create(2048)) { KeyId = "test-signing-key" };
 
+    // The test SQL Server without a database name
+    public static string ServerConnectionString =>
+        Environment.GetEnvironmentVariable(ServerVariable) is { Length: > 0 } server ? server : LocalDb;
+
     // Each fixture gets its own database, so test classes can run in parallel
-    public string ConnectionString { get; } = new SqlConnectionStringBuilder(
-        Environment.GetEnvironmentVariable(ServerVariable) is { Length: > 0 } server ? server : LocalDb)
+    public string ConnectionString { get; } = new SqlConnectionStringBuilder(ServerConnectionString)
     {
         InitialCatalog = $"LoadWatchDb_ApiTests_{Guid.NewGuid():N}",
     }.ConnectionString;
@@ -94,7 +98,8 @@ public class ApiFactory : WebApplicationFactory<Program>
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll<DbContextOptions<LoadWatchDbContext>>();
-            services.AddDbContext<LoadWatchDbContext>(options => options.UseSqlServer(ConnectionString));
+            // The same retry settings as production, so the tests run through them too
+            services.AddDbContext<LoadWatchDbContext>(options => options.UseSqlServer(ConnectionString, SqlServerResilience.Configure));
 
             services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
             {
@@ -104,6 +109,15 @@ public class ApiFactory : WebApplicationFactory<Program>
                 options.ConfigurationManager = new StaticConfigurationManager<OpenIdConnectConfiguration>(configuration);
             });
         });
+    }
+
+    // The API prepares its database in the background after starting; wait for that so every test sees a seeded
+    // database instead of the 503 the API gives while it is still getting ready
+    protected override IHost CreateHost(IHostBuilder builder)
+    {
+        var host = base.CreateHost(builder);
+        host.Services.GetRequiredService<DatabaseReadiness>().WhenReady.WaitAsync(TimeSpan.FromMinutes(2)).GetAwaiter().GetResult();
+        return host;
     }
 
     protected override void Dispose(bool disposing)
