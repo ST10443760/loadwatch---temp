@@ -71,6 +71,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapLoadWatchHealth();
+app.MapLoadWatchRoot();
 
 app.Run();
 
