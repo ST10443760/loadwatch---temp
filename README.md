@@ -158,8 +158,10 @@ secret is involved.
 The workflow does not touch Azure itself. The Azure web app is set to run the
 `ghcr.io/st10443760/loadwatch-api:latest` image, and it pulls the newest `latest` image whenever it is
 restarted. So after a green run, restarting the web app puts the new API live. The container listens on port
-8080. The API applies its migrations on startup, and `/health` shows whether it came up and can reach the
-database. The connection string and Firebase project id are set on the web app in the Azure portal and never
+8080 only, so the web app must probe and route to 8080. Set `WEBSITES_PORT=8080`. If the web app uses the
+newer sidecar container setup, also set the port on the main container under Deployment Center, because that
+setup ignores `WEBSITES_PORT`. `/` answers within about a second of the container starting, so the startup
+probe passes even while the database is resuming. `/health` then shows when the API can reach the database. The connection string and Firebase project id are set on the web app in the Azure portal and never
 pass through GitHub.
 
 ## Demo Video
