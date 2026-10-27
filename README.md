@@ -166,4 +166,4 @@ pass through GitHub.
 
 ## Demo Video
 
-_To be added._
+Watch the demo on YouTube: https://youtu.be/Tpmgyyzz67U
