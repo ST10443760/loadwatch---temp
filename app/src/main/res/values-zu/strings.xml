@@ -1,0 +1,256 @@
+<resources>
+    <!-- Bottom navigation -->
+    <string name="nav_home">Ekhaya</string>
+    <string name="nav_schedule">Uhlelo</string>
+    <string name="nav_report">Bika</string>
+    <string name="nav_compare">Qhathanisa</string>
+    <string name="nav_settings">Izilungiselelo</string>
+
+    <!-- Shared actions and recovery states -->
+    <string name="action_retry">Zama futhi</string>
+    <string name="action_close">Vala</string>
+    <string name="action_cancel">Khansela</string>
+    <string name="label_dialog_field">Ilebula (akuphoqelekile)</string>
+    <string name="label_dialog_too_long">Sebenzisa izinhlamvu ezingu-%1$d noma ngaphansi.</string>
+    <string name="label_suggestion_home">Ekhaya</string>
+    <string name="label_suggestion_work">Emsebenzini</string>
+    <string name="error_offline_title">Awuxhunyiwe ku-inthanethi</string>
+    <string name="error_offline_message">I-LoadWatch ayikwazanga ukufinyelela iseva. Hlola ukuxhumana kwakho bese uzama futhi.</string>
+    <string name="error_server_title">Kukhona okungahambanga kahle</string>
+    <string name="error_server_message">Iseva ye-LoadWatch ayikwazanga ukuqedela isicelo. Zama futhi emva kwesikhashana.</string>
+    <string name="error_not_signed_in_title">Uphumile ku-akhawunti</string>
+    <string name="error_not_signed_in_message">Ngena futhi ukuze ulondoloze izilungiselelo zakho.</string>
+    <string name="error_not_found_title">Le ndawo ayitholakali</string>
+    <string name="error_not_found_message">I-LoadWatch ayisenayo le ndawo. Zama futhi, noma ukhethe enye indawo.</string>
+
+    <!-- Schedule times and durations -->
+    <string name="day_today">Namuhla</string>
+    <string name="day_tomorrow">Kusasa</string>
+    <string name="stage_badge">Isigaba %1$d</string>
+    <string name="duration_under_a_minute">ngaphansi komzuzu</string>
+    <string name="countdown_with_days">%1$dd %2$s</string>
+    <plurals name="duration_hours">
+        <item quantity="one">ihora elingu-%1$d</item>
+        <item quantity="other">amahora angu-%1$d</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">umzuzu ongu-%1$d</item>
+        <item quantity="other">imizuzu engu-%1$d</item>
+    </plurals>
+
+    <!-- S01 Splash -->
+    <string name="splash_checking">Ihlola iseshini yakho…</string>
+    <string name="splash_error_title">I-LoadWatch ayikwazanga ukuqala</string>
+    <string name="splash_error_message">Iseshini yakho elondoloziwe ayikwazanga ukufundwa. Zama futhi.</string>
+
+    <!-- Biometric lock -->
+    <string name="lock_title">I-LoadWatch ikhiyiwe</string>
+    <string name="lock_message">Sebenzisa isigxivizo somunwe, ubuso noma ukhiye wesikrini ukuze uvule i-LoadWatch.</string>
+    <string name="lock_unlock">Vula</string>
+    <string name="lock_sign_out">Phuma kunalokho</string>
+    <string name="lock_prompt_title">Vula i-LoadWatch</string>
+    <string name="lock_prompt_subtitle">Qinisekisa ukuthi nguwe ukuze ubone izindawo nezilungiselelo zakho.</string>
+    <string name="lock_cancelled">Ukuvula kukhanseliwe. Thepha u-Vula ukuze uzame futhi.</string>
+    <string name="lock_locked_out">Imizamo miningi kakhulu. Linda isikhashana, bese uvula nge-PIN, iphethini noma iphasiwedi yakho.</string>
+    <string name="lock_prompt_unavailable">Ukuvula nge-biometric akutholakali manje. Zama futhi, noma uphume bese ungena nge-Google.</string>
+    <string name="lock_no_screen_lock">Ukuvula nge-biometric kuvuliwe, kodwa le foni ayisenaso isigxivizo somunwe, ubuso noma ukhiye wesikrini osethiwe. Setha okukodwa kuzilungiselelo zefoni yakho ukuze uvikele i-LoadWatch.</string>
+    <string name="lock_continue">Qhubeka</string>
+    <string name="biometric_offer_title">Vula ngesigxivizo somunwe noma ubuso?</string>
+    <string name="biometric_offer_message">Vula ukuvula nge-biometric ku-Izilungiselelo, futhi i-LoadWatch izocela isigxivizo somunwe, ubuso noma ukhiye wesikrini njalo uma ivuleka.</string>
+    <string name="biometric_offer_open_settings">Vula Izilungiselelo</string>
+    <string name="biometric_offer_not_now">Hhayi manje</string>
+
+    <!-- S02 SSO Login -->
+    <string name="login_title">Siyakwamukela ku-LoadWatch</string>
+    <string name="login_tagline">Yazi ngaphambi kokuthi kucime ugesi.</string>
+    <string name="login_why_title">Kungani kufanele ungene</string>
+    <string name="login_purpose">I-akhawunti yakho igcina indawo yakho, izilungiselelo zezexwayiso nezintandokazi zivumelaniswa kuwo wonke amadivayisi akho, futhi ikuvumela uqinisekise okwenzeka ngempela endaweni yakho. I-LoadWatch isebenzisa igama lakho ne-imeyili kuphela ukuze ihlonze i-akhawunti yakho.</string>
+    <string name="login_continue_with_google">Qhubeka nge-Google</string>
+    <string name="login_signing_in">Iyangena…</string>
+    <string name="login_session_expired">Iseshini yakho iphelile. Ngena futhi ukuze uqhubeke.</string>
+    <string name="login_error_no_google_account">Ayikho i-akhawunti ye-Google kule divayisi. Engeza eyodwa kuzilungiselelo zesistimu, bese uzama futhi.</string>
+    <string name="login_error_google_failed">Ukungena nge-Google akuphelelanga. Hlola ukuxhumana kwakho bese uzama futhi.</string>
+    <string name="login_error_firebase_failed">Ukungena kuhlulekile. Hlola ukuxhumana kwakho bese uzama futhi.</string>
+    <string name="login_privacy_link">Inqubomgomo yobumfihlo</string>
+    <string name="login_privacy_dialog_title">Inqubomgomo yobumfihlo</string>
+    <string name="login_privacy_dialog_body">Inqubomgomo ephelele yobumfihlo izoshicilelwa lapha ngaphambi kokukhishwa. I-LoadWatch igcina igama lakho, i-imeyili, izindawo ozikhethile nemibiko yokucima kukagesi ukuze isebenzise isevisi, futhi ayilokothi idayise idatha yakho.</string>
+
+    <!-- Area search, shared by S03 and S05 -->
+    <string name="area_search_label">Indawo noma umasipala</string>
+    <string name="area_search_hint">Thayipha okungenani izinhlamvu ezingu-%1$d</string>
+    <string name="area_search_clear">Sula usesho</string>
+    <string name="area_search_invalid">Sebenzisa izinhlamvu, izinombolo, izikhala, izihlukanisi noma ama-apostrophe.</string>
+    <string name="area_search_no_matches">Azikho izindawo ezifana no-“%1$s”. Hlola isipelingi noma uzame igama likamasipala.</string>
+    <string name="area_search_cached_notice">Awuxhunyiwe, ngakho lezi yizindawo ezilondolozwe kule divayisi.</string>
+    <string name="area_supplier_eskom">Ihlinzekwa yi-Eskom</string>
+    <string name="area_supplier_municipal">Ihlinzekwa ngumasipala</string>
+    <string name="area_supplier_unknown">Umhlinzeki akaziwa</string>
+    <string name="area_save_device_only_title">Ilondolozwe kule foni kuphela</string>
+    <string name="area_save_device_only_message">Indawo yakho ilondolozwe lapha kodwa ayikakwazi ukuvumelaniswa ne-akhawunti yakho.</string>
+    <string name="area_save_continue">Qhubeka kule foni</string>
+    <string name="area_save_rejected_title">Leyo ndawo ayikwazanga ukulondolozwa</string>
+    <string name="area_save_rejected_message">I-LoadWatch ayisamukelanga lesi silungiselelo. Zama futhi, noma ukhethe enye indawo.</string>
+
+    <!-- S03 Area Onboarding -->
+    <string name="onboarding_title">Sesha indawo yakho</string>
+    <string name="onboarding_purpose">Thola indawo ofuna i-LoadWatch iyiqaphe. Umphumela ngamunye ubonisa umasipala nomhlinzeki wawo ukuze amagama afanayo angadidaniswa.</string>
+    <string name="onboarding_selected">Okukhethiwe: %1$s</string>
+    <string name="onboarding_confirm_area">Qinisekisa indawo</string>
+    <string name="onboarding_saving">Iyalondoloza…</string>
+
+    <!-- S05 Area Selector -->
+    <string name="area_selector_title">Shintsha indawo</string>
+    <string name="area_selector_current">Indawo yamanje: %1$s</string>
+    <string name="area_selector_recent">Okwakamuva</string>
+    <string name="area_selector_no_recents">Izindawo oshintshela kuzo zizovela lapha. Sesha ngenhla ukuze uthole enye indawo.</string>
+    <string name="area_selector_favourites">Izintandokazi</string>
+    <string name="area_selector_add_title">Engeza intandokazi</string>
+    <string name="area_selector_add_hint">Sesha indawo ofuna ukuyilondoloza, bese uyinika ilebula uma uthanda.</string>
+
+    <!-- Favourites, shared by S05 and S08 -->
+    <string name="favourite_add_title">Londoloza i-%1$s njengentandokazi</string>
+    <string name="favourite_save">Londoloza</string>
+    <string name="favourite_added">I-%1$s yengezwe ezintandokazini zakho.</string>
+    <string name="favourite_already">Isivele isezintandokazini zakho.</string>
+    <string name="favourite_removed">I-%1$s isusiwe ezintandokazini zakho. Indawo nohlelo lwayo kusatholakala.</string>
+    <string name="favourite_failed_offline">Awuxhunyiwe, ngakho izintandokazi azikwazi ukushintshwa manje. Zama futhi uma usuxhunyiwe.</string>
+    <string name="favourite_failed">I-LoadWatch ayikwazanga ukubuyekeza izintandokazi zakho. Zama futhi.</string>
+    <string name="favourite_add_description">Engeza i-%1$s ezintandokazini</string>
+    <string name="favourite_remove_description">Susa i-%1$s ezintandokazini</string>
+
+    <!-- S04 Home Dashboard -->
+    <string name="home_change_area">Shintsha indawo</string>
+    <string name="home_report">Bika okwenzekayo</string>
+    <string name="home_state_on">Ugesi ukhona</string>
+    <string name="home_state_off">Ugesi ucimile</string>
+    <string name="home_label_power_off_in">Kuze kucime ugesi</string>
+    <string name="home_label_power_returns_in">Kuze kubuye ugesi</string>
+    <string name="home_target_at">%1$s ngo-%2$s</string>
+    <string name="home_no_upcoming_outage">Akukho ukucima kukagesi okuhlelelwe indawo yakho.</string>
+    <string name="home_current_outage">Ukucima kwamanje</string>
+    <string name="home_next_outage">Ukucima okulandelayo</string>
+    <string name="home_no_further_outage">Akukho okunye ukucima okuhleliwe</string>
+    <string name="home_current_stage">Isigaba samanje</string>
+    <string name="home_stage_none">Akukho ukucishwa kukagesi</string>
+    <string name="home_stage_unknown">Akukaziwa okwamanje</string>
+    <string name="accuracy_title">Ukunemba kohlelo</string>
+    <string name="accuracy_no_reports">Ayikho imibiko okwamanje</string>
+    <string name="accuracy_unknown">Akukaziwa okwamanje</string>
+    <plurals name="accuracy_match">
+        <item quantity="one">%1$d%% ukufana nohlelo kusuka embikweni ongu-%2$d</item>
+        <item quantity="other">%1$d%% ukufana nohlelo kusuka emibikweni engu-%2$d</item>
+    </plurals>
+    <string name="home_no_area_title">Ayikho indawo ekhethiwe</string>
+    <string name="home_no_area_message">Khetha indawo ofuna i-LoadWatch iyiqaphe.</string>
+    <string name="home_choose_area">Khetha indawo</string>
+
+    <!-- Schedule freshness, shared by S04 and S06 -->
+    <string name="schedule_updated">Kubuyekezwe %1$s</string>
+    <string name="schedule_stale">Lolu hlelo kungenzeka aluhambisani nesikhathi. Lubuyekezwe okokugcina %1$s.</string>
+    <string name="schedule_cached_offline">Awuxhunyiwe. Kuboniswa uhlelo olulondolozwe kule foni, olubuyekezwe %1$s.</string>
+    <string name="schedule_cached_error">Akukwazekanga ukuvuselela. Kuboniswa uhlelo olulondolozwe kule foni, olubuyekezwe %1$s.</string>
+
+    <!-- S06 Schedule -->
+    <string name="schedule_title">Uhlelo</string>
+    <string name="schedule_no_outage">Akukho ukucima okuhleliwe</string>
+    <string name="schedule_not_loaded">Akukalayishwa. Donsela phansi ukuze uvuselele.</string>
+    <plurals name="schedule_range_days">
+        <item quantity="one">usuku olu-%1$d</item>
+        <item quantity="other">izinsuku ezingu-%1$d</item>
+    </plurals>
+
+    <!-- S07 Community Confirmation -->
+    <string name="report_title">Ingabe ukucima kuyenzeka?</string>
+    <string name="report_area">Ubikela i-%1$s</string>
+    <string name="report_power_off">Ugesi ucimile</string>
+    <string name="report_power_back">Ugesi ubuyile</string>
+    <string name="report_event_power_off">Ugesi ucimile</string>
+    <string name="report_event_power_back">Ugesi ubuyile</string>
+    <string name="report_status_sending">Kuthunyelwa umbiko wakho…</string>
+    <string name="report_status_accepted">Umbiko wamukelwe: %1$s. Siyabonga, manje usubalwa emaphuzwini okunemba wale ndawo.</string>
+    <string name="report_status_already_reported">Sewubikile. Ubike lokhu emizuzwini embalwa edlule, ngakho kubalwa kanye kuphela.</string>
+    <string name="report_status_saved_offline">Kulondolozwe kule foni, kuzothunyelwa uma usubuyele ku-inthanethi.</string>
+    <string name="report_status_rejected">I-LoadWatch ayikwazanga ukwamukela lo mbiko. Zama futhi.</string>
+    <string name="report_status_rejected_clock">I-LoadWatch ayikwazanga ukwamukela lo mbiko. Hlola ukuthi usuku nesikhathi sefoni yakho kulungile, bese uzama futhi.</string>
+    <string name="report_status_not_signed_in">Iseshini yakho iphelile, ngakho umbiko ugcinwe kule foni. Ngena futhi ukuze uwuthumele.</string>
+    <string name="report_status_failed">Iseva ye-LoadWatch ayikwazanga ukuthatha umbiko manje. Ugcinwe kule foni; zama futhi emva kwesikhashana.</string>
+    <string name="report_retry_sending">Zama ukuthumela futhi</string>
+    <string name="report_retry_sending_count">Zama ukuthumela futhi (%1$d alindile)</string>
+    <string name="report_accuracy_cached">Akukwazekanga ukuvuselela amaphuzu.</string>
+    <string name="report_recent_title">Imibiko yakho yakamuva</string>
+    <string name="report_recent_empty">Awukabiki lutho ngale ndawo okwamanje.</string>
+    <string name="report_sync_pending">Ilinde ukuthunyelwa</string>
+    <string name="report_sync_retrying">Iyathunyelwa futhi</string>
+    <string name="report_sync_synced">Yamukelwe</string>
+    <string name="report_sync_rejected">Ayamukelwanga</string>
+
+    <!-- S08 Favourites and Compare -->
+    <string name="favourites_title">Izindawo zakho ezilondoloziwe</string>
+    <string name="favourites_add_another">Engeza enye indawo</string>
+    <string name="favourites_add_area">Engeza indawo</string>
+    <string name="favourites_empty_title">Azikho izindawo ezilondoloziwe okwamanje</string>
+    <string name="favourites_empty_message">Londoloza izindawo ozinakekelayo, njengasekhaya nasemsebenzini, ukuze uqhathanise ukucima kwazo okulandelayo eceleni.</string>
+    <string name="favourites_schedule_not_loaded">Uhlelo alukalayishwa. Donsela phansi ukuze uvuselele.</string>
+    <string name="favourites_state_stage">%1$s · Isigaba %2$d</string>
+    <string name="favourites_next">Okulandelayo: %1$s</string>
+    <string name="favourites_more_options">Ezinye izinketho ze-%1$s</string>
+    <string name="favourites_edit_label">Hlela ilebula</string>
+    <string name="favourites_remove">Susa</string>
+    <string name="favourites_remove_title">Susa i-%1$s?</string>
+    <string name="favourites_remove_message">Isuka ezintandokazini zakho kuphela. Indawo nohlelo lwayo kuhlala kutholakala, futhi ungayengeza futhi noma nini.</string>
+    <string name="favourites_label_title">Ilebula ye-%1$s</string>
+    <string name="favourites_relabelled">Ilebula ye-%1$s ibuyekeziwe.</string>
+    <string name="favourites_cached_offline">Awuxhunyiwe. Kuboniswa izinhlelo ezilondolozwe kule foni.</string>
+    <string name="favourites_cached_error">Akukwazekanga ukuvuselela zonke izindawo. Kuboniswa izinhlelo ezilondolozwe kule foni.</string>
+
+    <!-- S09 Settings -->
+    <string name="settings_title">Izilungiselelo</string>
+    <string name="settings_sign_out">Phuma</string>
+    <string name="settings_signed_in_as">Ungene njengo-%1$s</string>
+    <string name="settings_cached_notice">Akukwazekanga ukulayisha izilungiselelo zakho ku-LoadWatch. Kuboniswa ezilondolozwe kule foni.</string>
+    <string name="settings_load_failed_title">Izilungiselelo azikwazanga ukulayishwa</string>
+    <string name="settings_load_failed_message">I-LoadWatch ayikwazanga ukufinyelela iseva futhi ayikabi nazo izilungiselelo ezilondolozwe kule foni. Hlola ukuxhumana kwakho bese uzama futhi.</string>
+    <string name="settings_default_area">Indawo eyinhloko</string>
+    <string name="settings_default_area_none">Khetha indawo</string>
+    <string name="settings_area_choice">%1$s, %2$s</string>
+    <string name="settings_find_area">Sesha enye indawo</string>
+    <string name="settings_notifications">Izaziso</string>
+    <string name="settings_notifications_enabled">Izexwayiso zokucima kukagesi</string>
+    <string name="settings_notifications_off_note">Izexwayiso zivaliwe. Isikhathi sakho sokuxwayiswa siyagcinwa uma uphinde uzivula.</string>
+    <string name="settings_lead_time">Ngixwayise le mizuzu ngaphambi kokucima kukagesi</string>
+    <string name="settings_minutes_suffix">imiz.</string>
+    <string name="settings_lead_decrease">Imizuzu emihlanu ngaphansi</string>
+    <string name="settings_lead_increase">Imizuzu emihlanu ngaphezulu</string>
+    <string name="settings_lead_hint">Phakathi kwemizuzu engu-%1$d no-%2$d.</string>
+    <string name="settings_lead_out_of_range">Khetha inani eliphelele lemizuzu phakathi kuka-%1$d no-%2$d.</string>
+    <string name="settings_lead_empty">Faka ukuthi mingaki imizuzu ngaphambi kokucima kukagesi ofuna ukuxwayiswa ngayo.</string>
+    <string name="settings_alert_types">Ngixwayise nge</string>
+    <string name="settings_alert_power_off">Ugesi uyacima</string>
+    <string name="settings_alert_power_back">Ugesi uyabuya</string>
+    <string name="settings_alert_stage_change">Ukushintsha kwezigaba</string>
+    <string name="settings_language">Ulimi</string>
+    <string name="settings_language_note">Ishintsha ulimi lwe-LoadWatch ngokushesha futhi ilondolozwa ne-akhawunti yakho.</string>
+    <string name="settings_theme">Itimu</string>
+    <string name="settings_theme_system">Landela isistimu</string>
+    <string name="settings_theme_light">Okukhanyayo</string>
+    <string name="settings_theme_dark">Okumnyama</string>
+    <string name="settings_theme_note">Kusebenza ngokushesha.</string>
+    <string name="settings_security">Ukuphepha</string>
+    <string name="settings_biometric">Ukuvula nge-biometric</string>
+    <string name="settings_biometric_note">I-LoadWatch icela isigxivizo somunwe, ubuso noma ukhiye wesikrini njalo uma ivuleka.</string>
+    <string name="settings_biometric_confirm_title">Vula ukuvula nge-biometric</string>
+    <string name="settings_biometric_confirm_subtitle">Qinisekisa ukuthi nguwe ukuze uvikele i-LoadWatch.</string>
+    <string name="settings_biometric_not_enrolled">Qala ngokusetha isigxivizo somunwe, ubuso noma ukhiye wesikrini kuzilungiselelo zefoni yakho.</string>
+    <string name="settings_biometric_no_hardware">Le foni ayinayo inzwa yesigxivizo somunwe noma yobuso futhi ayinawo ukhiye wesikrini, ngakho ukuvula nge-biometric akukwazi ukusetshenziswa.</string>
+    <string name="settings_biometric_unavailable">Ukuvula nge-biometric akutholakali manje. Zama futhi emuva kwesikhathi.</string>
+    <string name="settings_biometric_cancelled">Ukuvula nge-biometric akuvulwanga.</string>
+    <string name="settings_biometric_locked_out">Imizamo miningi kakhulu. Zama futhi emva kwesikhashana.</string>
+    <string name="settings_save">Londoloza izinguquko</string>
+    <string name="settings_saving">Iyalondoloza…</string>
+    <string name="settings_saved">Izilungiselelo zilondoloziwe.</string>
+    <string name="settings_saved_on_device">Kulondolozwe kule foni, kodwa akukavumelaniswa ne-akhawunti yakho.</string>
+    <string name="settings_rejected">Ezinye izilungiselelo azamukelwanga (%1$s). Zihlole bese uzama futhi.</string>
+    <string name="settings_failed_offline">Awuxhunyiwe. Xhuma bese uzama futhi.</string>
+    <string name="settings_failed">I-LoadWatch ayikwazanga ukulondoloza izilungiselelo zakho. Zama futhi.</string>
+    <string name="settings_signing_out">Iyaphuma…</string>
+</resources>
