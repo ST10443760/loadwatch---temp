@@ -7,9 +7,11 @@ import com.example.loadwatch.core.network.dto.UserSettingsDto
 import com.example.loadwatch.data.local.SettingsLocalDataSource
 import com.example.loadwatch.data.local.SettingsRules
 import com.example.loadwatch.data.local.UserDataLocalDataSource
+import com.example.loadwatch.data.model.AppLanguage
 import com.example.loadwatch.data.model.DataFailure
 import com.example.loadwatch.data.remote.SettingsRemoteDataSource
 import com.example.loadwatch.data.repository.AuthRepository
+import com.example.loadwatch.data.repository.SaveSettingsResult
 import com.example.loadwatch.data.repository.SettingsRepository
 import com.example.loadwatch.fakes.FakeAreaDao
 import com.example.loadwatch.fakes.FakeAreaRepository
@@ -170,6 +172,33 @@ class SettingsViewModelTest {
 
         assertEquals("60", viewModel.uiState.value.form?.leadMinutesText)
         assertEquals("The lead time was not saved with it", 30, settingsDao.get(USER)!!.notificationLeadMinutes)
+    }
+
+    @Test
+    fun `choosing a language saves it to Room and the API straight away`() = runTest {
+        api.getSettingsHandler = { userId -> serverSettings(userId, leadMinutes = 30) }
+        api.updateSettingsHandler = { userId, update -> serverSettings(userId, leadMinutes = 30).copy(languageCode = update.languageCode) }
+        val viewModel = newViewModel()
+        runCurrent()
+
+        viewModel.setLanguage(AppLanguage.ISIZULU)
+        runCurrent()
+
+        assertEquals(1, api.callCount("updateSettings"))
+        assertEquals("zu", settingsDao.get(USER)!!.languageCode)
+        assertEquals("zu", viewModel.uiState.value.form?.languageCode)
+    }
+
+    @Test
+    fun `a language chosen offline is kept on the phone so the app still switches`() = runTest {
+        val viewModel = newViewModel()
+        runCurrent()
+
+        viewModel.setLanguage(AppLanguage.AFRIKAANS)
+        runCurrent()
+
+        assertEquals("af", settingsDao.get(USER)!!.languageCode)
+        assertTrue(viewModel.uiState.value.saveResult is SaveSettingsResult.SavedOnDeviceOnly)
     }
 
     @Test
