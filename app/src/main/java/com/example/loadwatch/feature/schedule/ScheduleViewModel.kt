@@ -2,9 +2,9 @@ package com.example.loadwatch.feature.schedule
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.loadwatch.core.common.LogTags
+import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.data.model.Area
 import com.example.loadwatch.data.model.DataFailure
 import com.example.loadwatch.data.repository.AreaSchedule
@@ -75,7 +75,7 @@ class ScheduleViewModel @Inject constructor(
     settingsRepository: SettingsRepository,
     private val scheduleRepository: ScheduleRepository,
     private val clock: Clock,
-) : ViewModel() {
+) : LoggedViewModel() {
 
     val range: StateFlow<ScheduleRange> = savedStateHandle.getStateFlow(RANGE_KEY, ScheduleRange.SEVEN_DAYS)
 
