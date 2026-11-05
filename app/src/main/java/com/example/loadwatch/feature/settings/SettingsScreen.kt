@@ -155,7 +155,7 @@ fun SettingsScreen(
                     RadioRow(
                         label = stringResource(language.labelRes()),
                         selected = form.languageCode == language.code,
-                        onClick = { viewModel.setLanguage(language.code) },
+                        onClick = { viewModel.setLanguage(language) },
                     )
                 }
                 Note(stringResource(R.string.settings_language_note))

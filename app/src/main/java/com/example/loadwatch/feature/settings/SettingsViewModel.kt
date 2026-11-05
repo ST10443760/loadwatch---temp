@@ -8,6 +8,7 @@ import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.data.local.SettingsRules
 import com.example.loadwatch.data.model.AlertType
+import com.example.loadwatch.data.model.AppLanguage
 import com.example.loadwatch.data.model.Area
 import com.example.loadwatch.data.model.DataFailure
 import com.example.loadwatch.data.model.ThemePreference
@@ -161,8 +162,12 @@ class SettingsViewModel @Inject constructor(
     fun setAlertType(type: AlertType, enabled: Boolean) =
         updateForm { it.copy(alertTypes = if (enabled) it.alertTypes + type else it.alertTypes - type) }
 
-    // Stored and synced now; switching the app's strings is Final POE scope
-    fun setLanguage(code: String) = updateForm { it.copy(languageCode = code) }
+    // The app switches language as soon as the new code reaches Room, so it is saved on its own like the theme
+    fun setLanguage(language: AppLanguage) = saveImmediately(
+        description = "Language ${language.code}",
+        change = { it.copy(languageCode = language.code) },
+        formChange = { it.copy(languageCode = language.code) },
+    )
 
     // The user can add or remove a fingerprint or screen lock while away from the app, so this runs on every resume
     fun refreshBiometricAvailability() {
