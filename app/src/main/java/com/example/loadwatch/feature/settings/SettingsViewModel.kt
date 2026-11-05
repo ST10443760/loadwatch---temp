@@ -160,15 +160,27 @@ class SettingsViewModel @Inject constructor(
     fun setBiometricEnabled(enabled: Boolean) = updateForm { it.copy(biometricEnabled = enabled) }
 
     // The theme applies to the app straight away, so it is saved on its own rather than waiting for Save
-    fun setTheme(theme: ThemePreference) {
+    fun setTheme(theme: ThemePreference) = saveImmediately(
+        description = "Theme ${theme.code}",
+        change = { it.copy(themePreference = theme.code) },
+        formChange = { it.copy(themePreference = theme.code) },
+    )
+
+    // Saves one setting that takes effect at once, without the rest of the form's unsaved edits
+    private fun saveImmediately(
+        description: String,
+        change: (UserSettings) -> UserSettings,
+        formChange: (SettingsForm) -> SettingsForm,
+    ) {
         val saved = uiState.value.saved ?: return
-        updateForm { it.copy(themePreference = theme.code) }
+        val updated = change(saved)
+        updateForm(formChange)
         viewModelScope.launch {
-            val result = settingsRepository.save(saved.copy(themePreference = theme.code))
-            Log.i(LogTags.API, "Theme saved as ${theme.code}: ${result.javaClass.simpleName}")
+            val result = settingsRepository.save(updated)
+            Log.i(LogTags.API, "$description saved: ${result.javaClass.simpleName}")
             edit.update { state ->
-                // The rest of the form keeps any unsaved edits; the theme now matches what was stored
-                state.copy(saveResult = result, form = state.form?.takeIf { it != SettingsForm.from(saved.copy(themePreference = theme.code)) })
+                // The rest of the form keeps any unsaved edits; this setting now matches what was stored
+                state.copy(saveResult = result, form = state.form?.takeIf { it != SettingsForm.from(updated) })
             }
         }
     }
