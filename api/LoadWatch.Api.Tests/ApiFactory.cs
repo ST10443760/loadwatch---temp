@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using LoadWatch.Api.Data;
+using LoadWatch.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -92,11 +93,22 @@ public class ApiFactory : WebApplicationFactory<Program>
         });
     }
 
+    public const string StageTestKey = "test-stage-key";
+
+    // Every stage-change alert the API sends during the tests
+    public RecordingStageAlertSender StageAlerts { get; } = new();
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Development");
+        builder.UseSetting("StageAlerts:TestKey", StageTestKey);
+        // Only the first pass at startup runs on its own; tests trigger the rest through the demo endpoint
+        builder.UseSetting("StageAlerts:PollSeconds", "3600");
         builder.ConfigureTestServices(services =>
         {
+            services.RemoveAll<IStageAlertSender>();
+            services.AddSingleton<IStageAlertSender>(StageAlerts);
+
             services.RemoveAll<DbContextOptions<LoadWatchDbContext>>();
             // The same retry settings as production, so the tests run through them too
             services.AddDbContext<LoadWatchDbContext>(options => options.UseSqlServer(ConnectionString, SqlServerResilience.Configure));
