@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.core.common.SupplyState
+import com.example.loadwatch.core.common.logKindChanges
 import com.example.loadwatch.core.common.secondTicks
 import com.example.loadwatch.data.model.Area
 import com.example.loadwatch.data.model.DataFailure
@@ -99,6 +100,7 @@ class HomeViewModel @Inject constructor(
             toUiState(area, cached, status, now)
         }
             .onEach(::logRollover)
+            .logKindChanges("Home")
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), HomeUiState.Loading)
 
     init {
