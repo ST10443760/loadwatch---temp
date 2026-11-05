@@ -252,7 +252,7 @@ private fun LeadTimeStepper(text: String, input: LeadTimeInput?, onTextChange: (
             onClick = { onStep(-LEAD_STEP) },
             enabled = minutes == null || minutes > SettingsRules.MIN_LEAD_MINUTES,
             modifier = Modifier.semantics { contentDescription = decreaseDescription },
-        ) { Text("−") }
+        ) { Text(stringResource(R.string.settings_lead_decrease_symbol)) }
         OutlinedTextField(
             value = text,
             onValueChange = onTextChange,
@@ -266,7 +266,7 @@ private fun LeadTimeStepper(text: String, input: LeadTimeInput?, onTextChange: (
             onClick = { onStep(LEAD_STEP) },
             enabled = minutes == null || minutes < SettingsRules.MAX_LEAD_MINUTES,
             modifier = Modifier.semantics { contentDescription = increaseDescription },
-        ) { Text("+") }
+        ) { Text(stringResource(R.string.settings_lead_increase_symbol)) }
     }
     val error = when (input) {
         LeadTimeInput.Empty -> stringResource(R.string.settings_lead_empty)

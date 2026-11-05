@@ -249,6 +249,9 @@
     <string name="settings_minutes_suffix">min</string>
     <string name="settings_lead_decrease">Five minutes less</string>
     <string name="settings_lead_increase">Five minutes more</string>
+    <!-- The stepper buttons' visible symbols; screen readers use the descriptions above -->
+    <string name="settings_lead_decrease_symbol" translatable="false">−</string>
+    <string name="settings_lead_increase_symbol" translatable="false">+</string>
     <!-- %1$d and %2$d are the lowest and highest allowed lead times -->
     <string name="settings_lead_hint">Between %1$d and %2$d minutes.</string>
     <string name="settings_lead_out_of_range">Choose a whole number of minutes between %1$d and %2$d.</string>
