@@ -11,4 +11,5 @@ object LogTags {
     const val SYNC = "LW.Sync"
     const val COUNTDOWN = "LW.Countdown"
     const val STATE = "LW.State"
+    const val BIOMETRIC = "LW.Biometric"
 }
