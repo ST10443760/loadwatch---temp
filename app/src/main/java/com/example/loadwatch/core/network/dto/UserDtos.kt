@@ -47,3 +47,19 @@ data class FavouriteAreaCreateDto(
     val areaId: String,
     val label: String? = null,
 )
+
+// POST /api/notifications/registrations body: the phone's FCM token
+@Serializable
+data class NotificationRegistrationDto(
+    val fcmToken: String,
+    val platform: String = "android",
+)
+
+// POST /api/notifications/registrations returns the stored DeviceToken (201 new, 200 already registered)
+@Serializable
+data class DeviceRegistrationDto(
+    val token: String,
+    val userId: String,
+    val platform: String,
+    @Serializable(with = InstantSerializer::class) val updatedAt: Instant,
+)

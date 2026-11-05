@@ -4,9 +4,11 @@ import com.example.loadwatch.core.network.dto.AccuracySummaryDto
 import com.example.loadwatch.core.network.dto.AreaDto
 import com.example.loadwatch.core.network.dto.AreaSummaryDto
 import com.example.loadwatch.core.network.dto.CurrentStageDto
+import com.example.loadwatch.core.network.dto.DeviceRegistrationDto
 import com.example.loadwatch.core.network.dto.FavouriteAreaCreateDto
 import com.example.loadwatch.core.network.dto.FavouriteAreaDto
 import com.example.loadwatch.core.network.dto.NextEventDto
+import com.example.loadwatch.core.network.dto.NotificationRegistrationDto
 import com.example.loadwatch.core.network.dto.OutageReportCreateDto
 import com.example.loadwatch.core.network.dto.OutageReportDto
 import com.example.loadwatch.core.network.dto.ScheduleEventDto
@@ -22,9 +24,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import java.time.Instant
 
-// The Part 2 endpoints from Table 6. Routes marked bearer (settings, favourites, the outage report POST) get the
-// Firebase ID token from AuthInterceptor. The sync batch, notification registration and history endpoints are
-// Final POE scope and are added with those features.
+// The endpoints from Table 6. Routes marked bearer (settings, favourites, the outage report POST, device
+// registration) get the Firebase ID token from AuthInterceptor. The sync batch and history endpoints are added
+// with those features.
 // Instant query values are sent as ISO-8601 UTC via Instant.toString().
 interface LoadWatchApi {
 
@@ -86,4 +88,10 @@ interface LoadWatchApi {
 
     @GET("api/areas/{areaId}/accuracy")
     suspend fun getAreaAccuracy(@Path("areaId") areaId: String): AccuracySummaryDto
+
+    // Push notifications (bearer)
+
+    // 201 for a new token, 200 when this phone's token was already registered
+    @POST("api/notifications/registrations")
+    suspend fun registerDevice(@Body request: NotificationRegistrationDto): DeviceRegistrationDto
 }

@@ -5,9 +5,11 @@ import com.example.loadwatch.core.network.dto.AccuracySummaryDto
 import com.example.loadwatch.core.network.dto.AreaDto
 import com.example.loadwatch.core.network.dto.AreaSummaryDto
 import com.example.loadwatch.core.network.dto.CurrentStageDto
+import com.example.loadwatch.core.network.dto.DeviceRegistrationDto
 import com.example.loadwatch.core.network.dto.FavouriteAreaCreateDto
 import com.example.loadwatch.core.network.dto.FavouriteAreaDto
 import com.example.loadwatch.core.network.dto.NextEventDto
+import com.example.loadwatch.core.network.dto.NotificationRegistrationDto
 import com.example.loadwatch.core.network.dto.OutageReportCreateDto
 import com.example.loadwatch.core.network.dto.OutageReportDto
 import com.example.loadwatch.core.network.dto.ScheduleEventDto
@@ -38,6 +40,7 @@ class FakeLoadWatchApi : LoadWatchApi {
     var getFavouritesHandler: suspend (String) -> List<FavouriteAreaDto> = { offline() }
     var addFavouriteHandler: suspend (String, FavouriteAreaCreateDto) -> FavouriteAreaDto = { _, _ -> offline() }
     var removeFavouriteHandler: suspend (String, String) -> Response<Unit> = { _, _ -> offline() }
+    var registerDeviceHandler: suspend (NotificationRegistrationDto) -> DeviceRegistrationDto = { offline() }
     var createReportHandler: suspend (OutageReportCreateDto) -> Response<OutageReportDto> = { offline() }
 
     fun callCount(name: String) = calls.count { it == name }
@@ -108,6 +111,11 @@ class FakeLoadWatchApi : LoadWatchApi {
     override suspend fun getAreaAccuracy(areaId: String): AccuracySummaryDto {
         calls += "getAreaAccuracy"
         return accuracyHandler(areaId)
+    }
+
+    override suspend fun registerDevice(request: NotificationRegistrationDto): DeviceRegistrationDto {
+        calls += "registerDevice"
+        return registerDeviceHandler(request)
     }
 }
 
