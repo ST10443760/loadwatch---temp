@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph
+import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.loadwatch.R
@@ -94,15 +94,16 @@ private fun UnlockedApp(appViewModel: AppViewModel) {
     }
 }
 
-// Logs every navigation transition as "from -> to" with the back stack depth (NFR-08)
+// Logs every navigation transition as "from -> to" with where Back now leads (NFR-08). Uses only NavController's
+// public API; the back stack itself is restricted to the navigation library.
 @Composable
 private fun LogNavigationTransitions(navController: NavController) {
     DisposableEffect(navController) {
         var previousRoute: String? = null
         val listener = NavController.OnDestinationChangedListener { controller, destination, _ ->
-            val route = destination.route?.substringAfterLast('.') ?: destination.id.toString()
-            val depth = controller.currentBackStack.value.count { it.destination !is NavGraph }
-            Log.i(LogTags.NAVIGATION, "${previousRoute ?: "start"} -> $route (back stack depth $depth)")
+            val route = destination.routeName()
+            val back = controller.previousBackStackEntry?.destination?.routeName() ?: "leaves the app"
+            Log.i(LogTags.NAVIGATION, "${previousRoute ?: "start"} -> $route (Back: $back)")
             previousRoute = route
         }
         navController.addOnDestinationChangedListener(listener)
@@ -145,3 +146,6 @@ private fun LoadWatchBottomBar(
         }
     }
 }
+
+// The route's class name, e.g. "HomeRoute", without its package
+private fun NavDestination.routeName(): String = route?.substringBefore('?')?.substringBefore('/')?.substringAfterLast('.') ?: id.toString()
