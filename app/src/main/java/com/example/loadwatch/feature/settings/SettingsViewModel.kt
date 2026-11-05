@@ -209,6 +209,7 @@ class SettingsViewModel @Inject constructor(
             edit.update { it.copy(isSaving = true) }
             viewModelScope.launch {
                 val result = settingsRepository.retrySync()
+                Log.i(LogTags.SYNC, "Settings retry finished: ${result.javaClass.simpleName}")
                 edit.update { it.copy(isSaving = false, saveResult = result) }
             }
         } else {
@@ -221,6 +222,7 @@ class SettingsViewModel @Inject constructor(
     fun signOut() {
         if (edit.value.isSigningOut) return
         edit.update { it.copy(isSigningOut = true) }
+        Log.i(LogTags.AUTH, "Sign-out requested from Settings")
         viewModelScope.launch {
             authRepository.signOut()
             _signedOut.send(Unit)
