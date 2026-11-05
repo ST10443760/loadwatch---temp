@@ -52,6 +52,23 @@
     <string name="splash_error_title">LoadWatch could not start</string>
     <string name="splash_error_message">Your saved session could not be read. Try again.</string>
 
+    <!-- Biometric lock, shown when the app opens with biometric unlock on -->
+    <string name="lock_title">LoadWatch is locked</string>
+    <string name="lock_message">Use your fingerprint, face or screen lock to open LoadWatch.</string>
+    <string name="lock_unlock">Unlock</string>
+    <string name="lock_sign_out">Sign out instead</string>
+    <string name="lock_prompt_title">Unlock LoadWatch</string>
+    <string name="lock_prompt_subtitle">Confirm it\'s you to see your areas and settings.</string>
+    <string name="lock_cancelled">Unlock was cancelled. Tap Unlock to try again.</string>
+    <string name="lock_locked_out">Too many attempts. Wait a moment, then unlock with your PIN, pattern or password.</string>
+    <string name="lock_prompt_unavailable">Biometric unlock is not available right now. Try again, or sign out and sign in with Google.</string>
+    <string name="lock_no_screen_lock">Biometric unlock is on, but this phone has no fingerprint, face or screen lock set up any more. Set one up in your phone\'s settings to protect LoadWatch.</string>
+    <string name="lock_continue">Continue</string>
+    <string name="biometric_offer_title">Unlock with your fingerprint or face?</string>
+    <string name="biometric_offer_message">Turn on biometric unlock in Settings and LoadWatch will ask for your fingerprint, face or screen lock each time it opens.</string>
+    <string name="biometric_offer_open_settings">Open Settings</string>
+    <string name="biometric_offer_not_now">Not now</string>
+
     <!-- S02 SSO Login -->
     <string name="login_title">Welcome to LoadWatch</string>
     <string name="login_tagline">Know before the power goes.</string>
