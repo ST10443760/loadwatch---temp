@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.loadwatch.core.authentication.GoogleSignInRequester
 import com.example.loadwatch.core.authentication.GoogleSignInResult
+import com.example.loadwatch.core.biometric.BiometricOffer
 import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.data.repository.AuthRepository
@@ -38,6 +39,7 @@ class LoginViewModel @Inject constructor(
     private val googleSignInRequester: GoogleSignInRequester,
     private val authRepository: AuthRepository,
     private val sessionRepository: SessionRepository,
+    private val biometricOffer: BiometricOffer,
 ) : LoggedViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
@@ -78,6 +80,7 @@ class LoginViewModel @Inject constructor(
             return LoginError.FIREBASE_SIGN_IN_FAILED
         }
         Log.i(LogTags.AUTH, "Sign-in complete; going to ${if (status == SessionStatus.NeedsArea) "area onboarding" else "home"}")
+        biometricOffer.offerAfterSignIn()
         _signedIn.send(status)
         return null
     }
