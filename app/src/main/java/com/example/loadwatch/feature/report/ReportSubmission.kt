@@ -76,6 +76,7 @@ class ReportSubmission(
         scope.launch {
             val result = repository.retryUnsent(areaId)
             _status.value = result?.toStatus(eventType) ?: SubmissionStatus.Idle
+            Log.i(LogTags.SYNC, "Retry sending finished: ${_status.value.javaClass.simpleName}")
         }
     }
 
