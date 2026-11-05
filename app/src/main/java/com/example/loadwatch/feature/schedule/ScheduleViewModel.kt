@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.common.LoggedViewModel
+import com.example.loadwatch.core.common.logKindChanges
 import com.example.loadwatch.data.model.Area
 import com.example.loadwatch.data.model.DataFailure
 import com.example.loadwatch.data.repository.AreaSchedule
@@ -103,7 +104,8 @@ class ScheduleViewModel @Inject constructor(
     val uiState: StateFlow<ScheduleUiState> =
         combine(activeArea, schedule, range, refreshStatus, minuteTicks) { area, cached, range, status, now ->
             toUiState(area, cached, range, status, now)
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ScheduleUiState.Loading)
+        }.logKindChanges("Schedule")
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ScheduleUiState.Loading)
 
     init {
         // Refresh on open, when the area changes and when a different range is chosen
@@ -115,6 +117,7 @@ class ScheduleViewModel @Inject constructor(
     }
 
     fun selectRange(newRange: ScheduleRange) {
+        Log.d(LogTags.STATE, "Schedule range changed to ${newRange.days} days")
         savedStateHandle[RANGE_KEY] = newRange
     }
 
