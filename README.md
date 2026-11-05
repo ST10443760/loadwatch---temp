@@ -112,6 +112,40 @@ LoadWatch:
 | `LW.Room` | The database opening and settings being written |
 | `LW.Sync` | Reports and settings waiting on the phone, retries and rejections |
 | `LW.Countdown` | The home countdown rolling over to the next window |
+| `LW.Push` | FCM token registration, area topic changes, incoming stage alerts and whether each was shown |
+
+### Stage change alerts
+
+Stage changes reach the phone through Firebase Cloud Messaging:
+
+1. After signing in, and whenever Firebase rotates it, the app sends its FCM token to
+   `POST /api/notifications/registrations`. The API keeps one row per token in `DeviceTokens`.
+2. The app subscribes to one topic per phone, `area-<areaId>`, for the selected area. It leaves the old topic
+   when the area changes and leaves it on sign-out.
+3. A background service in the API checks every 30 seconds (`StageAlerts:PollSeconds`) for an area whose stage
+   moved. An area's stage is its own entry in `AreaStages` if it has one, otherwise the national stage. Each
+   change is sent once to the area's topic as a data-only message.
+4. The app decides whether to show it. Alerts must be on, Stage changes ticked, and the alert must be for the
+   selected area. The text is in the user's chosen language, and it adds the next outage when that starts
+   within the alert lead time.
+
+On Android 13 and later the app explains alerts once before Android asks for the notification permission.
+Saying no is fine: alerts are then skipped, and Settings shows a button to allow them later.
+
+The API sends nothing unless `FIREBASE_SERVICE_ACCOUNT_JSON` holds the full JSON of a Firebase service account
+key. Without it, the API logs a warning at startup and logs each change as skipped. Never commit the key; key
+files are in `.gitignore`.
+
+To demo an alert, call the test endpoint with the key set in `StageAlerts__TestKey`. It sets the area's own
+stage and sends the alert at once. A null stage puts the area back on the national stage:
+
+```bash
+curl -X POST https://your-loadwatch-api.azurewebsites.net/api/stages/areas/eth-berea/test-change \
+  -H "Content-Type: application/json" -H "X-Stage-Test-Key: <your key>" -d '{"stage": 6}'
+```
+
+The response says whether the alert was `Sent`, `Skipped` (Firebase not configured), `Failed` or `NoChange`.
+Without a configured key the endpoint answers 404, and with the wrong key 403.
 
 ### Run the API locally
 
@@ -137,7 +171,9 @@ Three endpoints show how the API is doing. None needs sign-in:
 - Every `/api` route answers 503 with a `Retry-After` header until the database is ready.
 
 On Azure the same keys come from the web app's settings instead of `appsettings.json`: the connection string
-named `LoadWatchDb` and the app setting `Firebase__ProjectId`. No connection string or password is committed.
+named `LoadWatchDb` and the app setting `Firebase__ProjectId`. Stage change alerts also need the app settings
+`FIREBASE_SERVICE_ACCOUNT_JSON` and, for the demo endpoint, `StageAlerts__TestKey`. No connection string,
+password or key is committed.
 
 ### Run the API in a container
 
