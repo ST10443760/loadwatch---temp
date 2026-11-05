@@ -1,7 +1,7 @@
 package com.example.loadwatch.navigation
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.data.model.ThemePreference
 import com.example.loadwatch.data.repository.AuthRepository
 import com.example.loadwatch.data.repository.SettingsRepository
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class AppViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     settingsRepository: SettingsRepository,
-) : ViewModel() {
+) : LoggedViewModel() {
 
     // The S09 theme choice for the whole app; null until settings exist, when the dark-first default applies
     val themePreference: StateFlow<ThemePreference?> = settingsRepository.observeThemePreference()
