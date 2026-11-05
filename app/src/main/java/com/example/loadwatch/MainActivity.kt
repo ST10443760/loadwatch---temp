@@ -3,10 +3,10 @@ package com.example.loadwatch
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,8 +19,10 @@ import com.example.loadwatch.navigation.AppViewModel
 import com.example.loadwatch.navigation.LoadWatchApp
 import dagger.hilt.android.AndroidEntryPoint
 
+// An AppCompatActivity (a FragmentActivity) so it can host BiometricPrompt and apply the per-app language on
+// Android versions before 13
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.i(LogTags.LIFECYCLE, "MainActivity onCreate (restored: ${savedInstanceState != null})")
