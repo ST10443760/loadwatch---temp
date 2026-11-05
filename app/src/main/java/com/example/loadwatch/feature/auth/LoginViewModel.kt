@@ -1,9 +1,11 @@
 package com.example.loadwatch.feature.auth
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.loadwatch.core.authentication.GoogleSignInRequester
 import com.example.loadwatch.core.authentication.GoogleSignInResult
+import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.data.repository.AuthRepository
 import com.example.loadwatch.data.repository.SessionRepository
@@ -48,8 +50,12 @@ class LoginViewModel @Inject constructor(
 
     // activityContext hosts Credential Manager's account picker; it is only used for the duration of the call
     fun signIn(activityContext: Context) {
-        if (_uiState.value.isSigningIn) return
+        if (_uiState.value.isSigningIn) {
+            Log.d(LogTags.AUTH, "Ignored a sign-in tap while one is in progress")
+            return
+        }
         _uiState.value = LoginUiState(isSigningIn = true)
+        Log.i(LogTags.AUTH, "Sign-in started")
 
         viewModelScope.launch {
             val error = when (val google = googleSignInRequester.requestGoogleIdToken(activityContext)) {
@@ -58,6 +64,7 @@ class LoginViewModel @Inject constructor(
                 GoogleSignInResult.NoGoogleAccount -> LoginError.NO_GOOGLE_ACCOUNT
                 GoogleSignInResult.Failed -> LoginError.GOOGLE_SIGN_IN_FAILED
             }
+            if (error != null) Log.e(LogTags.AUTH, "Sign-in failed: $error")
             _uiState.update { it.copy(isSigningIn = false, error = error) }
         }
     }
@@ -70,6 +77,7 @@ class LoginViewModel @Inject constructor(
         if (status == SessionStatus.SignedOut) {
             return LoginError.FIREBASE_SIGN_IN_FAILED
         }
+        Log.i(LogTags.AUTH, "Sign-in complete; going to ${if (status == SessionStatus.NeedsArea) "area onboarding" else "home"}")
         _signedIn.send(status)
         return null
     }
