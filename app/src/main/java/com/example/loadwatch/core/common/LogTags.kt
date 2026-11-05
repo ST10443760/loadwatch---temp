@@ -10,4 +10,5 @@ object LogTags {
     const val ROOM = "LW.Room"
     const val SYNC = "LW.Sync"
     const val COUNTDOWN = "LW.Countdown"
+    const val STATE = "LW.State"
 }
