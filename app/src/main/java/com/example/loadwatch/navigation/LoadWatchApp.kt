@@ -1,6 +1,12 @@
 package com.example.loadwatch.navigation
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -15,7 +21,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.core.content.ContextCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -77,6 +85,23 @@ private fun UnlockedApp(appViewModel: AppViewModel) {
         )
     }
 
+    // Android 13+ asks before an app may post notifications. A short explanation comes first, after the biometric
+    // offer, and only once; a denial just means stage alerts are not shown, and Settings explains how to allow them.
+    val context = LocalContext.current
+    val wantsNotificationPermission by appViewModel.wantsNotificationPermission.collectAsStateWithLifecycle()
+    val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        appViewModel.onNotificationPermissionResult(granted)
+    }
+    if (wantsNotificationPermission && !showBiometricOffer && selectedDestination != null && needsNotificationPermission(context)) {
+        NotificationPermissionDialog(
+            onContinue = {
+                appViewModel.onNotificationPromptShown()
+                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            },
+            onDismiss = appViewModel::onNotificationPromptShown,
+        )
+    }
+
     Scaffold(
         bottomBar = {
             if (selectedDestination != null) {
@@ -128,6 +153,29 @@ private fun BiometricOfferDialog(
         },
     )
 }
+
+@Composable
+private fun NotificationPermissionDialog(
+    onContinue: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.notification_permission_title)) },
+        text = { Text(stringResource(R.string.notification_permission_message)) },
+        confirmButton = {
+            TextButton(onClick = onContinue) { Text(stringResource(R.string.notification_permission_continue)) }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.notification_permission_not_now)) }
+        },
+    )
+}
+
+// Only Android 13 and later ask; earlier versions allow notifications unless the user turns them off
+private fun needsNotificationPermission(context: Context): Boolean =
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+        ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
 
 @Composable
 private fun LoadWatchBottomBar(
