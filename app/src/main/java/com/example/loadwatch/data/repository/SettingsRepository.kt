@@ -10,6 +10,7 @@ import com.example.loadwatch.data.local.SettingsRules
 import com.example.loadwatch.data.mapper.toEntity
 import com.example.loadwatch.data.mapper.toModel
 import com.example.loadwatch.data.mapper.toUpdateDto
+import com.example.loadwatch.data.model.AppLanguage
 import com.example.loadwatch.data.model.Area
 import com.example.loadwatch.data.model.DataFailure
 import com.example.loadwatch.data.model.ThemePreference
@@ -96,6 +97,10 @@ class SettingsRepository @Inject constructor(
     // The stored theme for the whole app, or null before any settings exist
     fun observeThemePreference(): Flow<ThemePreference?> =
         observeSettings().map { ThemePreference.fromCode(it?.themePreference) }.distinctUntilChanged()
+
+    // The stored app language, or null before any settings exist, when the phone's language is left alone
+    fun observeLanguage(): Flow<AppLanguage?> =
+        observeSettings().map { AppLanguage.fromCode(it?.languageCode) }.distinctUntilChanged()
 
     fun currentUserEmail(): String? = authSession.currentUserEmail()
 
