@@ -2,28 +2,51 @@ package com.example.loadwatch.navigation
 
 import android.util.Log
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.loadwatch.R
 import com.example.loadwatch.core.common.LogTags
+import com.example.loadwatch.feature.lock.AppLockScreen
 
-// App shell: hosts the navigation graph, shows the bottom bar on the hub's destinations, and returns to S02
-// when the API ends the session.
+// App shell: on launch, asks for biometrics before anything else when biometric unlock is on. The screens are not
+// composed at all while locked, so nothing behind the lock is visible or reachable with a screen reader.
 @Composable
 fun LoadWatchApp(appViewModel: AppViewModel = hiltViewModel()) {
+    val lockState by appViewModel.lockState.collectAsStateWithLifecycle()
+    when (lockState) {
+        // Only as long as reading the settings from Room takes; the window background shows meanwhile
+        AppLockState.CHECKING -> Unit
+        AppLockState.LOCKED -> AppLockScreen(
+            availability = remember { appViewModel.biometricAvailability() },
+            onUnlocked = appViewModel::onUnlocked,
+            onSignOut = appViewModel::signOutFromLock,
+        )
+        AppLockState.UNLOCKED -> UnlockedApp(appViewModel)
+    }
+}
+
+// Hosts the navigation graph, shows the bottom bar on the hub's destinations, returns to S02 when the session
+// ends, and offers biometric unlock once after signing in.
+@Composable
+private fun UnlockedApp(appViewModel: AppViewModel) {
     val navController = rememberNavController()
     LogNavigationTransitions(navController)
 
@@ -33,8 +56,26 @@ fun LoadWatchApp(appViewModel: AppViewModel = hiltViewModel()) {
         }
     }
 
+    LaunchedEffect(appViewModel) {
+        appViewModel.signedOutFromLock.collect {
+            navController.navigateClearingBackStack(LoginRoute())
+        }
+    }
+
     val backStackEntry by navController.currentBackStackEntryAsState()
     val selectedDestination = backStackEntry?.topLevelDestination()
+
+    // Shown on the hub only, so it never interrupts onboarding
+    val showBiometricOffer by appViewModel.showBiometricOffer.collectAsStateWithLifecycle()
+    if (showBiometricOffer && selectedDestination != null) {
+        BiometricOfferDialog(
+            onOpenSettings = {
+                appViewModel.dismissBiometricOffer()
+                navController.navigateToTopLevel(SettingsRoute)
+            },
+            onDismiss = appViewModel::dismissBiometricOffer,
+        )
+    }
 
     Scaffold(
         bottomBar = {
@@ -67,6 +108,24 @@ private fun LogNavigationTransitions(navController: NavController) {
         navController.addOnDestinationChangedListener(listener)
         onDispose { navController.removeOnDestinationChangedListener(listener) }
     }
+}
+
+@Composable
+private fun BiometricOfferDialog(
+    onOpenSettings: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.biometric_offer_title)) },
+        text = { Text(stringResource(R.string.biometric_offer_message)) },
+        confirmButton = {
+            TextButton(onClick = onOpenSettings) { Text(stringResource(R.string.biometric_offer_open_settings)) }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.biometric_offer_not_now)) }
+        },
+    )
 }
 
 @Composable
