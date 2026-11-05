@@ -13,6 +13,7 @@ import com.example.loadwatch.data.repository.SettingsRepository
 import com.example.loadwatch.fakes.FakeAreaDao
 import com.example.loadwatch.fakes.FakeAreaRepository
 import com.example.loadwatch.fakes.FakeAuthSession
+import com.example.loadwatch.fakes.FakeBiometricChecker
 import com.example.loadwatch.fakes.FakeFavouriteAreaDao
 import com.example.loadwatch.fakes.FakeFavouritesRepository
 import com.example.loadwatch.fakes.FakeLoadWatchApi
@@ -51,6 +52,7 @@ class SettingsViewModelTest {
     private val settingsDao = FakeUserSettingsDao(listOf(cached))
     private val api = FakeLoadWatchApi()
     private val authSession = FakeAuthSession(USER)
+    private val biometricChecker = FakeBiometricChecker()
 
     private fun TestScope.newViewModel(): SettingsViewModel {
         val areaRepository = FakeAreaRepository(areaDao)
@@ -72,7 +74,7 @@ class SettingsViewModelTest {
             ),
             sessionExpiryNotifier = SessionExpiryNotifier(),
         )
-        val viewModel = SettingsViewModel(settingsRepository, authRepository, areaRepository, FakeFavouritesRepository())
+        val viewModel = SettingsViewModel(settingsRepository, authRepository, areaRepository, FakeFavouritesRepository(), biometricChecker)
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.uiState.collect {} }
         return viewModel
     }
