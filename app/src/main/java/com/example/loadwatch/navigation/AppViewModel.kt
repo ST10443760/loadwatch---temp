@@ -7,6 +7,7 @@ import com.example.loadwatch.core.biometric.BiometricChecker
 import com.example.loadwatch.core.biometric.BiometricOffer
 import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.common.LoggedViewModel
+import com.example.loadwatch.data.model.AppLanguage
 import com.example.loadwatch.data.model.ThemePreference
 import com.example.loadwatch.data.repository.AuthRepository
 import com.example.loadwatch.data.repository.SettingsRepository
@@ -43,6 +44,10 @@ class AppViewModel @Inject constructor(
 
     // The S09 theme choice for the whole app; null until settings exist, when the dark-first default applies
     val themePreference: StateFlow<ThemePreference?> = settingsRepository.observeThemePreference()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+
+    // The S09 language for the whole app; null until settings exist, when the phone's language is used
+    val language: StateFlow<AppLanguage?> = settingsRepository.observeLanguage()
         .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     private val _sessionEnded = Channel<Unit>(Channel.CONFLATED)
