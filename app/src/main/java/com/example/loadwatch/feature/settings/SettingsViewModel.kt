@@ -1,9 +1,9 @@
 package com.example.loadwatch.feature.settings
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.loadwatch.core.common.LogTags
+import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.data.local.SettingsRules
 import com.example.loadwatch.data.model.AlertType
 import com.example.loadwatch.data.model.Area
@@ -88,7 +88,7 @@ class SettingsViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     areaRepository: AreaRepository,
     favouritesRepository: FavouritesRepository,
-) : ViewModel() {
+) : LoggedViewModel() {
 
     private val edit = MutableStateFlow(EditState())
 
