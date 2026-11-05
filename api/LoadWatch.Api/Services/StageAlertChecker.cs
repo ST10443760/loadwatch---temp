@@ -21,11 +21,16 @@ public class StageAlertChecker(
     TimeProvider time,
     ILogger<StageAlertChecker> logger)
 {
-    public async Task<IReadOnlyList<StageAlertOutcome>> CheckAsync(CancellationToken ct)
+    public Task<IReadOnlyList<StageAlertOutcome>> CheckAsync(CancellationToken ct) => ChangeThenCheckAsync(_ => Task.CompletedTask, ct);
+
+    // Makes a stage change and checks for alerts as one step, so the background service cannot announce the change
+    // in between and leave the caller thinking nothing changed
+    public async Task<IReadOnlyList<StageAlertOutcome>> ChangeThenCheckAsync(Func<CancellationToken, Task> change, CancellationToken ct)
     {
         await gate.Lock.WaitAsync(ct);
         try
         {
+            await change(ct);
             return await CheckLockedAsync(ct);
         }
         finally
