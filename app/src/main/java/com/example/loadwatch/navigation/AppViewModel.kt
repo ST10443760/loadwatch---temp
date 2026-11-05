@@ -1,6 +1,8 @@
 package com.example.loadwatch.navigation
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.data.model.ThemePreference
 import com.example.loadwatch.data.repository.AuthRepository
@@ -33,6 +35,7 @@ class AppViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             authRepository.sessionExpired.collect {
+                Log.i(LogTags.AUTH, "Session expired; signing out and returning to sign-in")
                 authRepository.signOut()
                 _sessionEnded.send(Unit)
             }
