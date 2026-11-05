@@ -87,6 +87,61 @@ namespace LoadWatch.Api.Migrations
                         });
                 });
 
+            modelBuilder.Entity("LoadWatch.Api.Models.AreaStage", b =>
+                {
+                    b.Property<string>("AreaId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("LastAlertedStage")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Stage")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("AreaId");
+
+                    b.ToTable("AreaStages", t =>
+                        {
+                            t.HasCheckConstraint("CK_AreaStages_LastAlertedStage", "[LastAlertedStage] IS NULL OR [LastAlertedStage] BETWEEN 0 AND 8");
+
+                            t.HasCheckConstraint("CK_AreaStages_Stage", "[Stage] IS NULL OR [Stage] BETWEEN 0 AND 8");
+                        });
+                });
+
+            modelBuilder.Entity("LoadWatch.Api.Models.DeviceToken", b =>
+                {
+                    b.Property<string>("Token")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Platform")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Token");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("DeviceTokens", t =>
+                        {
+                            t.HasCheckConstraint("CK_DeviceTokens_Platform", "[Platform] IN ('android')");
+                        });
+                });
+
             modelBuilder.Entity("LoadWatch.Api.Models.FavouriteArea", b =>
                 {
                     b.Property<string>("FavouriteId")
@@ -297,6 +352,24 @@ namespace LoadWatch.Api.Migrations
                     b.HasOne("LoadWatch.Api.Models.Area", null)
                         .WithOne()
                         .HasForeignKey("LoadWatch.Api.Models.AccuracySummary", "AreaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LoadWatch.Api.Models.AreaStage", b =>
+                {
+                    b.HasOne("LoadWatch.Api.Models.Area", null)
+                        .WithOne()
+                        .HasForeignKey("LoadWatch.Api.Models.AreaStage", "AreaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LoadWatch.Api.Models.DeviceToken", b =>
+                {
+                    b.HasOne("LoadWatch.Api.Models.UserProfile", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
