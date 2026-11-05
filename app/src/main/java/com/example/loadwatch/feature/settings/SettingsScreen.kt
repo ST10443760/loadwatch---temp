@@ -34,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -42,8 +43,13 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.loadwatch.R
+import com.example.loadwatch.core.biometric.BiometricAvailability
+import com.example.loadwatch.core.biometric.BiometricOutcome
+import com.example.loadwatch.core.biometric.findFragmentActivity
+import com.example.loadwatch.core.biometric.showBiometricPrompt
 import com.example.loadwatch.core.common.LogScreenLifecycle
 import com.example.loadwatch.core.designsystem.InlineMessage
 import com.example.loadwatch.core.designsystem.RecoveryState
@@ -69,6 +75,10 @@ fun SettingsScreen(
 
     LaunchedEffect(viewModel) {
         viewModel.signedOut.collect { onSignedOut() }
+    }
+    LifecycleResumeEffect(viewModel) {
+        viewModel.refreshBiometricAvailability()
+        onPauseOrDispose { }
     }
 
     val form = state.form
@@ -163,12 +173,11 @@ fun SettingsScreen(
             }
 
             Section(title = stringResource(R.string.settings_security)) {
-                SwitchRow(
-                    label = stringResource(R.string.settings_biometric),
-                    checked = form.biometricEnabled,
-                    onCheckedChange = viewModel::setBiometricEnabled,
+                BiometricSetting(
+                    enabled = form.biometricEnabled,
+                    availability = state.biometricAvailability,
+                    onChange = viewModel::setBiometricEnabled,
                 )
-                Note(stringResource(R.string.settings_biometric_note))
             }
 
             SaveArea(state = state, onSave = viewModel::save, onRetry = viewModel::retrySave, onDismiss = viewModel::dismissSaveResult)
@@ -272,14 +281,56 @@ private fun LeadTimeStepper(text: String, input: LeadTimeInput?, onTextChange: (
     )
 }
 
+// Turning biometric unlock on first asks for a fingerprint, face or the screen lock, so it is only stored once the
+// phone has shown it can unlock. Turning it off is always allowed, even after the sensor or screen lock has gone.
 @Composable
-private fun SwitchRow(label: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+private fun BiometricSetting(enabled: Boolean, availability: BiometricAvailability, onChange: (Boolean) -> Unit) {
+    val context = LocalContext.current
+    val promptTitle = stringResource(R.string.settings_biometric_confirm_title)
+    val promptSubtitle = stringResource(R.string.settings_biometric_confirm_subtitle)
+    var problem by remember { mutableStateOf<BiometricOutcome?>(null) }
+
+    SwitchRow(
+        label = stringResource(R.string.settings_biometric),
+        checked = enabled,
+        enabled = enabled || availability == BiometricAvailability.AVAILABLE,
+        onCheckedChange = { turnOn ->
+            problem = null
+            val activity = context.findFragmentActivity()
+            when {
+                !turnOn -> onChange(false)
+                activity == null -> problem = BiometricOutcome.Unavailable
+                else -> activity.showBiometricPrompt(promptTitle, promptSubtitle) { outcome ->
+                    if (outcome == BiometricOutcome.Succeeded) onChange(true) else problem = outcome
+                }
+            }
+        },
+    )
+    val currentProblem = problem
+    val note = when {
+        currentProblem == BiometricOutcome.Cancelled -> stringResource(R.string.settings_biometric_cancelled)
+        currentProblem == BiometricOutcome.LockedOut -> stringResource(R.string.settings_biometric_locked_out)
+        currentProblem == BiometricOutcome.Unavailable -> stringResource(R.string.settings_biometric_unavailable)
+        currentProblem is BiometricOutcome.Failed -> currentProblem.message
+        enabled -> stringResource(R.string.settings_biometric_note)
+        availability == BiometricAvailability.NONE_ENROLLED -> stringResource(R.string.settings_biometric_not_enrolled)
+        availability == BiometricAvailability.NO_HARDWARE -> stringResource(R.string.settings_biometric_no_hardware)
+        availability == BiometricAvailability.UNAVAILABLE -> stringResource(R.string.settings_biometric_unavailable)
+        else -> stringResource(R.string.settings_biometric_note)
+    }
+    Note(note)
+}
+
+@Composable
+private fun SwitchRow(label: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit, enabled: Boolean = true) {
     Row(
-        modifier = Modifier.fillMaxWidth().toggleable(value = checked, role = Role.Switch, onValueChange = onCheckedChange),
+        modifier = Modifier
+            .fillMaxWidth()
+            .toggleable(value = checked, enabled = enabled, role = Role.Switch, onValueChange = onCheckedChange),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(text = label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
-        Switch(checked = checked, onCheckedChange = null)
+        Switch(checked = checked, onCheckedChange = null, enabled = enabled)
     }
 }
 
