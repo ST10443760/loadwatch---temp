@@ -234,6 +234,8 @@
     <string name="settings_notifications">Izaziso</string>
     <string name="settings_notifications_enabled">Izexwayiso zokucima kukagesi</string>
     <string name="settings_notifications_off_note">Izexwayiso zivaliwe. Isikhathi sakho sokuxwayiswa siyagcinwa uma uphinde uzivula.</string>
+    <string name="settings_notifications_blocked">Izaziso zivinjelwe ku-LoadWatch kule foni, ngakho izexwayiso azikwazi ukuboniswa.</string>
+    <string name="settings_notifications_allow">Vumela kuzilungiselelo zefoni</string>
     <string name="settings_lead_time">Ngixwayise le mizuzu ngaphambi kokucima kukagesi</string>
     <string name="settings_minutes_suffix">imiz.</string>
     <string name="settings_lead_decrease">Imizuzu emihlanu ngaphansi</string>

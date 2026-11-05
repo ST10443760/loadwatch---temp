@@ -264,6 +264,8 @@
     <string name="settings_notifications">Notifications</string>
     <string name="settings_notifications_enabled">Outage alerts</string>
     <string name="settings_notifications_off_note">Alerts are off. Your lead time is kept for when you turn them back on.</string>
+    <string name="settings_notifications_blocked">Notifications are blocked for LoadWatch on this phone, so alerts cannot be shown.</string>
+    <string name="settings_notifications_allow">Allow in phone settings</string>
     <string name="settings_lead_time">Alert me this many minutes before an outage</string>
     <string name="settings_minutes_suffix">min</string>
     <string name="settings_lead_decrease">Five minutes less</string>

@@ -234,6 +234,8 @@
     <string name="settings_notifications">Kennisgewings</string>
     <string name="settings_notifications_enabled">Onderbrekingswaarskuwings</string>
     <string name="settings_notifications_off_note">Waarskuwings is af. Jou waarskuwingstyd word gehou vir wanneer jy dit weer aanskakel.</string>
+    <string name="settings_notifications_blocked">Kennisgewings is vir LoadWatch op hierdie foon geblokkeer, so waarskuwings kan nie gewys word nie.</string>
+    <string name="settings_notifications_allow">Laat toe in foon se instellings</string>
     <string name="settings_lead_time">Waarsku my soveel minute voor \'n onderbreking</string>
     <string name="settings_minutes_suffix">min</string>
     <string name="settings_lead_decrease">Vyf minute minder</string>
