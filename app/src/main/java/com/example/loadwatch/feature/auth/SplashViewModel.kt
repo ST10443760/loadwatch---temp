@@ -42,7 +42,7 @@ class SplashViewModel @Inject constructor(
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                Log.e(LogTags.AUTH, "Could not resolve the session: ${e.javaClass.simpleName}")
+                Log.e(LogTags.AUTH, "Could not resolve the session: ${e.javaClass.simpleName}", e)
                 SplashUiState.Failed
             }
         }
