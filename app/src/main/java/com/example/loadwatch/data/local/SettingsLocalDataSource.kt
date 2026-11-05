@@ -1,5 +1,7 @@
 package com.example.loadwatch.data.local
 
+import android.util.Log
+import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.database.dao.UserSettingsDao
 import com.example.loadwatch.core.database.entity.UserSettingsEntity
 import kotlinx.coroutines.flow.Flow
@@ -15,5 +17,8 @@ class SettingsLocalDataSource @Inject constructor(
 
     fun observe(userId: String): Flow<UserSettingsEntity?> = userSettingsDao.observe(userId)
 
-    suspend fun save(settings: UserSettingsEntity) = userSettingsDao.upsert(settings)
+    suspend fun save(settings: UserSettingsEntity) {
+        userSettingsDao.upsert(settings)
+        Log.d(LogTags.ROOM, "Saved settings in Room (updated ${settings.updatedAt})")
+    }
 }
