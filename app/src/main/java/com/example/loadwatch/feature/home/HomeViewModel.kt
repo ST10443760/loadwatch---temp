@@ -1,9 +1,9 @@
 package com.example.loadwatch.feature.home
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.loadwatch.core.common.LogTags
+import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.core.common.SupplyState
 import com.example.loadwatch.core.common.secondTicks
 import com.example.loadwatch.data.model.Area
@@ -74,7 +74,7 @@ class HomeViewModel @Inject constructor(
     settingsRepository: SettingsRepository,
     private val scheduleRepository: ScheduleRepository,
     private val clock: Clock,
-) : ViewModel() {
+) : LoggedViewModel() {
 
     private val calculator = CountdownCalculator()
     private val refreshStatus = MutableStateFlow(RefreshStatus())
