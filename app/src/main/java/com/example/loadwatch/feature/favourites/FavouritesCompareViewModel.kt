@@ -1,9 +1,9 @@
 package com.example.loadwatch.feature.favourites
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.loadwatch.core.common.LogTags
+import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.core.common.secondTicks
 import com.example.loadwatch.data.model.DataFailure
 import com.example.loadwatch.data.model.Favourite
@@ -76,7 +76,7 @@ class FavouritesCompareViewModel @Inject constructor(
     private val favouritesRepository: FavouritesRepository,
     private val scheduleRepository: ScheduleRepository,
     private val clock: Clock,
-) : ViewModel() {
+) : LoggedViewModel() {
 
     private val calculator = CountdownCalculator()
     private val startOfToday: Instant = LocalDate.now(clock).atStartOfDay(clock.zone).toInstant()
