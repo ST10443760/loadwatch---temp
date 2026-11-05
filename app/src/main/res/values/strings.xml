@@ -71,6 +71,25 @@
     <string name="biometric_offer_open_settings">Open Settings</string>
     <string name="biometric_offer_not_now">Not now</string>
 
+    <!-- Stage-change push notifications -->
+    <string name="notification_channel_stage_alerts">Stage change alerts</string>
+    <string name="notification_channel_stage_alerts_description">Tells you when the load-shedding stage changes in your selected area.</string>
+    <!-- %1$d is the new stage, %2$s the area name -->
+    <string name="stage_alert_title">Stage %1$d in %2$s</string>
+    <string name="stage_alert_ended_title">Load shedding has ended in %1$s</string>
+    <string name="stage_alert_body_changed">Load shedding moved from stage %1$d to stage %2$d.</string>
+    <string name="stage_alert_body_started">Load shedding has started at stage %1$d.</string>
+    <string name="stage_alert_body_ended">No outages are scheduled while load shedding is off.</string>
+    <!-- Added when the next cached outage starts within the user's alert lead time -->
+    <plurals name="stage_alert_next_outage">
+        <item quantity="one">Your next outage starts in %1$d minute.</item>
+        <item quantity="other">Your next outage starts in %1$d minutes.</item>
+    </plurals>
+    <string name="notification_permission_title">Get stage change alerts?</string>
+    <string name="notification_permission_message">LoadWatch can tell you as soon as the load-shedding stage changes in your area. Android will then ask whether LoadWatch may send notifications.</string>
+    <string name="notification_permission_continue">Continue</string>
+    <string name="notification_permission_not_now">Not now</string>
+
     <!-- S02 SSO Login -->
     <string name="login_title">Welcome to LoadWatch</string>
     <string name="login_tagline">Know before the power goes.</string>
