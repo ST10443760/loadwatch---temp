@@ -7,6 +7,7 @@ import com.example.loadwatch.core.biometric.BiometricChecker
 import com.example.loadwatch.core.biometric.BiometricOffer
 import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.common.LoggedViewModel
+import com.example.loadwatch.core.notifications.PushPreferences
 import com.example.loadwatch.data.model.AppLanguage
 import com.example.loadwatch.data.model.ThemePreference
 import com.example.loadwatch.data.repository.AuthRepository
@@ -40,6 +41,7 @@ class AppViewModel @Inject constructor(
     settingsRepository: SettingsRepository,
     private val biometricChecker: BiometricChecker,
     private val biometricOffer: BiometricOffer,
+    private val pushPreferences: PushPreferences,
 ) : LoggedViewModel() {
 
     // The S09 theme choice for the whole app; null until settings exist, when the dark-first default applies
@@ -66,6 +68,15 @@ class AppViewModel @Inject constructor(
         combine(biometricOffer.pending, settingsRepository.observeSettings()) { pending, settings ->
             pending && settings != null && !settings.biometricEnabled &&
                 biometricChecker.availability() == BiometricAvailability.AVAILABLE
+        }.stateIn(viewModelScope, SharingStarted.Eagerly, false)
+
+    private val notificationPromptShown = MutableStateFlow(pushPreferences.permissionPromptShown)
+
+    // Alerts are on in Settings and the explanation before Android's permission dialog has not been shown on this
+    // phone yet. The screen adds whether Android still needs to ask, which only it can check.
+    val wantsNotificationPermission: StateFlow<Boolean> =
+        combine(settingsRepository.observeSettings(), notificationPromptShown) { settings, shown ->
+            settings?.notificationsEnabled == true && !shown
         }.stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     init {
@@ -104,5 +115,19 @@ class AppViewModel @Inject constructor(
     fun dismissBiometricOffer() {
         Log.d(LogTags.BIOMETRIC, "Biometric unlock offer dismissed")
         biometricOffer.dismiss()
+    }
+
+    // Shown once per phone, whatever the answer; after that Settings explains how to allow notifications
+    fun onNotificationPromptShown() {
+        pushPreferences.permissionPromptShown = true
+        notificationPromptShown.value = true
+    }
+
+    fun onNotificationPermissionResult(granted: Boolean) {
+        if (granted) {
+            Log.i(LogTags.PUSH, "Notification permission granted")
+        } else {
+            Log.w(LogTags.PUSH, "Notification permission denied; stage alerts will not be shown")
+        }
     }
 }

@@ -18,6 +18,7 @@ import com.example.loadwatch.fakes.FakeFavouriteAreaDao
 import com.example.loadwatch.fakes.FakeLoadWatchApi
 import com.example.loadwatch.fakes.FakeOutageReportDao
 import com.example.loadwatch.fakes.FakePendingSyncDao
+import com.example.loadwatch.fakes.FakePushPreferences
 import com.example.loadwatch.fakes.FakeRecentAreaDao
 import com.example.loadwatch.fakes.FakeTransactionRunner
 import com.example.loadwatch.fakes.FakeUserSettingsDao
@@ -44,6 +45,7 @@ class AppViewModelTest {
     private val areaDao = FakeAreaDao(listOf(AreaEntity(AREA, "Berea", "eThekwini", "KwaZulu-Natal", "MUNICIPAL", null, null, true)))
     private val biometricChecker = FakeBiometricChecker()
     private val biometricOffer = BiometricOffer()
+    private val pushPreferences = FakePushPreferences()
 
     private fun newViewModel(
         biometricEnabled: Boolean?,
@@ -69,7 +71,7 @@ class AppViewModelTest {
             ),
             sessionExpiryNotifier = SessionExpiryNotifier(),
         )
-        return AppViewModel(authRepository, settingsRepository, biometricChecker, biometricOffer)
+        return AppViewModel(authRepository, settingsRepository, biometricChecker, biometricOffer, pushPreferences)
     }
 
     @Test
@@ -128,6 +130,30 @@ class AppViewModelTest {
         val notEnrolled = newViewModel(biometricEnabled = false)
         runCurrent()
         assertFalse(notEnrolled.showBiometricOffer.value)
+    }
+
+    @Test
+    fun `the notification permission is explained once when alerts are on`() = runTest {
+        val viewModel = newViewModel(biometricEnabled = false)
+        runCurrent()
+        assertTrue("Default settings have alerts on", viewModel.wantsNotificationPermission.value)
+
+        viewModel.onNotificationPromptShown()
+        runCurrent()
+
+        assertFalse(viewModel.wantsNotificationPermission.value)
+        assertTrue("Remembered on the phone", pushPreferences.permissionPromptShown)
+        val nextLaunch = newViewModel(biometricEnabled = false)
+        runCurrent()
+        assertFalse("Not shown again on the next launch", nextLaunch.wantsNotificationPermission.value)
+    }
+
+    @Test
+    fun `the notification permission is not asked for before settings exist`() = runTest {
+        val viewModel = newViewModel(biometricEnabled = null)
+        runCurrent()
+
+        assertFalse(viewModel.wantsNotificationPermission.value)
     }
 
     private companion object {
