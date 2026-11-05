@@ -1,5 +1,12 @@
 package com.example.loadwatch.feature.settings
 
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,6 +49,7 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -51,6 +59,7 @@ import com.example.loadwatch.core.biometric.BiometricOutcome
 import com.example.loadwatch.core.biometric.findFragmentActivity
 import com.example.loadwatch.core.biometric.showBiometricPrompt
 import com.example.loadwatch.core.common.LogScreenLifecycle
+import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.designsystem.InlineMessage
 import com.example.loadwatch.core.designsystem.RecoveryState
 import com.example.loadwatch.data.local.SettingsRules
@@ -76,8 +85,12 @@ fun SettingsScreen(
     LaunchedEffect(viewModel) {
         viewModel.signedOut.collect { onSignedOut() }
     }
+    // Both can change in system settings while LoadWatch is in the background, so they are checked on every resume
+    val context = LocalContext.current
+    var notificationsAllowed by remember { mutableStateOf(true) }
     LifecycleResumeEffect(viewModel) {
         viewModel.refreshBiometricAvailability()
+        notificationsAllowed = NotificationManagerCompat.from(context).areNotificationsEnabled()
         onPauseOrDispose { }
     }
 
@@ -133,6 +146,11 @@ fun SettingsScreen(
                 )
                 if (!form.notificationsEnabled) {
                     Note(stringResource(R.string.settings_notifications_off_note))
+                } else if (!notificationsAllowed) {
+                    Note(stringResource(R.string.settings_notifications_blocked))
+                    TextButton(onClick = { openNotificationSettings(context) }) {
+                        Text(stringResource(R.string.settings_notifications_allow))
+                    }
                 }
                 LeadTimeStepper(
                     text = form.leadMinutesText,
@@ -414,3 +432,17 @@ private fun ThemePreference.labelRes(): Int = when (this) {
 }
 
 private const val LEAD_STEP = 5
+
+// LoadWatch's own notification page in system settings, or its app info page before Android 8
+private fun openNotificationSettings(context: Context) {
+    val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+    } else {
+        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", context.packageName, null))
+    }
+    try {
+        context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+    } catch (e: ActivityNotFoundException) {
+        Log.w(LogTags.PUSH, "No system screen for notification settings: ${e.message}")
+    }
+}
