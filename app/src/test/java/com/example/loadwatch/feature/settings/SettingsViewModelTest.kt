@@ -1,6 +1,7 @@
 package com.example.loadwatch.feature.settings
 
 import com.example.loadwatch.core.authentication.SessionExpiryNotifier
+import com.example.loadwatch.core.biometric.BiometricAvailability
 import com.example.loadwatch.core.database.entity.AreaEntity
 import com.example.loadwatch.core.network.dto.UserSettingsDto
 import com.example.loadwatch.data.local.SettingsLocalDataSource
@@ -35,6 +36,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import java.time.Instant
@@ -137,6 +139,53 @@ class SettingsViewModelTest {
         viewModel.save()
         runCurrent()
         assertEquals(0, api.callCount("updateSettings"))
+    }
+
+    @Test
+    fun `turning biometric unlock on is saved to Room and the API straight away`() = runTest {
+        api.getSettingsHandler = { userId -> serverSettings(userId, leadMinutes = 30) }
+        api.updateSettingsHandler = { userId, update -> serverSettings(userId, leadMinutes = 30).copy(biometricEnabled = update.biometricEnabled) }
+        val viewModel = newViewModel()
+        runCurrent()
+
+        viewModel.setBiometricEnabled(true)
+        runCurrent()
+
+        assertEquals(1, api.callCount("updateSettings"))
+        assertTrue(settingsDao.get(USER)!!.biometricEnabled)
+        assertTrue(viewModel.uiState.value.form!!.biometricEnabled)
+        assertFalse("Nothing is left unsaved", viewModel.uiState.value.isDirty)
+    }
+
+    @Test
+    fun `turning biometric unlock on keeps other unsaved edits in the form`() = runTest {
+        api.getSettingsHandler = { userId -> serverSettings(userId, leadMinutes = 30) }
+        api.updateSettingsHandler = { userId, update -> serverSettings(userId, leadMinutes = 30).copy(biometricEnabled = update.biometricEnabled) }
+        val viewModel = newViewModel()
+        runCurrent()
+
+        viewModel.setLeadMinutesText("60")
+        viewModel.setBiometricEnabled(true)
+        runCurrent()
+
+        assertEquals("60", viewModel.uiState.value.form?.leadMinutesText)
+        assertEquals("The lead time was not saved with it", 30, settingsDao.get(USER)!!.notificationLeadMinutes)
+    }
+
+    @Test
+    fun `biometric availability follows the phone each time it is refreshed`() = runTest {
+        val viewModel = newViewModel()
+        runCurrent()
+
+        biometricChecker.availability = BiometricAvailability.NONE_ENROLLED
+        viewModel.refreshBiometricAvailability()
+        runCurrent()
+        assertEquals(BiometricAvailability.NONE_ENROLLED, viewModel.uiState.value.biometricAvailability)
+
+        biometricChecker.availability = BiometricAvailability.AVAILABLE
+        viewModel.refreshBiometricAvailability()
+        runCurrent()
+        assertEquals(BiometricAvailability.AVAILABLE, viewModel.uiState.value.biometricAvailability)
     }
 
     private fun serverSettings(userId: String, leadMinutes: Int) = UserSettingsDto(
