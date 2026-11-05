@@ -1,9 +1,9 @@
 package com.example.loadwatch.feature.auth
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.loadwatch.core.common.LogTags
+import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.data.repository.SessionRepository
 import com.example.loadwatch.data.repository.SessionStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +23,7 @@ sealed interface SplashUiState {
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val sessionRepository: SessionRepository,
-) : ViewModel() {
+) : LoggedViewModel() {
 
     private val _uiState = MutableStateFlow<SplashUiState>(SplashUiState.Resolving)
     val uiState: StateFlow<SplashUiState> = _uiState.asStateFlow()

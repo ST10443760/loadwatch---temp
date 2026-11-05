@@ -1,10 +1,10 @@
 package com.example.loadwatch.feature.auth
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.loadwatch.core.authentication.GoogleSignInRequester
 import com.example.loadwatch.core.authentication.GoogleSignInResult
+import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.data.repository.AuthRepository
 import com.example.loadwatch.data.repository.SessionRepository
 import com.example.loadwatch.data.repository.SessionStatus
@@ -36,7 +36,7 @@ class LoginViewModel @Inject constructor(
     private val googleSignInRequester: GoogleSignInRequester,
     private val authRepository: AuthRepository,
     private val sessionRepository: SessionRepository,
-) : ViewModel() {
+) : LoggedViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
