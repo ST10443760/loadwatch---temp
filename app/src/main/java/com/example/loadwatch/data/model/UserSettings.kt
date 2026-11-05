@@ -28,6 +28,11 @@ enum class AppLanguage(val code: String) {
     ENGLISH("en"),
     ISIZULU("zu"),
     AFRIKAANS("af"),
+    ;
+
+    companion object {
+        fun fromCode(code: String?): AppLanguage? = entries.firstOrNull { it.code == code }
+    }
 }
 
 enum class ThemePreference(val code: String) {
