@@ -52,11 +52,13 @@ fun formatRelativeTime(instant: Instant, now: Instant): String =
     DateUtils.getRelativeTimeSpanString(instant.toEpochMilli(), now.toEpochMilli(), DateUtils.MINUTE_IN_MILLIS).toString()
 
 // The countdown's visible text, e.g. "01:42:18", or "2d 03:10:05" beyond a day
+@Composable
+@ReadOnlyComposable
 fun formatCountdown(remaining: Duration): String {
     val totalSeconds = remaining.seconds.coerceAtLeast(0)
     val days = totalSeconds / 86_400
     val clock = "%02d:%02d:%02d".format(Locale.ROOT, (totalSeconds % 86_400) / 3_600, (totalSeconds % 3_600) / 60, totalSeconds % 60)
-    return if (days > 0) "${days}d $clock" else clock
+    return if (days > 0) stringResource(R.string.countdown_with_days, days.toInt(), clock) else clock
 }
 
 // What screen readers announce for a countdown. Minute precision, so it is not re-read every second.

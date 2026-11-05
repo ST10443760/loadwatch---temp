@@ -34,6 +34,8 @@
     <string name="day_tomorrow">Tomorrow</string>
     <string name="stage_badge">Stage %1$d</string>
     <string name="duration_under_a_minute">less than a minute</string>
+    <!-- The countdown beyond a day: %1$d is whole days, %2$s the hh:mm:ss clock, e.g. "2d 03:10:05" -->
+    <string name="countdown_with_days">%1$dd %2$s</string>
     <!-- %1$s is hours, %2$s minutes, e.g. "1 hour 42 minutes" -->
     <string name="duration_hours_minutes">%1$s %2$s</string>
     <plurals name="duration_hours">
