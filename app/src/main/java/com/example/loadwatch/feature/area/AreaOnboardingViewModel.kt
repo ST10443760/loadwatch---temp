@@ -1,6 +1,8 @@
 package com.example.loadwatch.feature.area
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.data.model.Area
 import com.example.loadwatch.data.repository.AreaRepository
@@ -27,9 +29,13 @@ class AreaOnboardingViewModel @Inject constructor(
     fun select(area: Area) {
         _selectedArea.value = area
         choice.clearProblem()
+        Log.d(LogTags.NAVIGATION, "Onboarding area selected: ${area.areaId}")
     }
 
     fun confirm() {
-        _selectedArea.value?.let { choice.save(it.areaId) }
+        _selectedArea.value?.let {
+            Log.i(LogTags.NAVIGATION, "Onboarding area confirmed: ${it.areaId}")
+            choice.save(it.areaId)
+        }
     }
 }
