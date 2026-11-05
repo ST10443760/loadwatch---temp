@@ -259,8 +259,12 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    // Builds on the latest edit rather than uiState, which only catches up once the main dispatcher runs, so two
+    // changes in a row (e.g. a lead time, then the biometric switch) do not overwrite each other
     private fun updateForm(change: (SettingsForm) -> SettingsForm) {
-        val current = uiState.value.form ?: return
-        edit.update { it.copy(form = change(current), saveResult = null) }
+        edit.update { state ->
+            val current = state.form ?: uiState.value.saved?.let(SettingsForm::from) ?: return
+            state.copy(form = change(current), saveResult = null)
+        }
     }
 }
