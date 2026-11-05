@@ -267,7 +267,14 @@
     <string name="settings_theme_note">Applies straight away.</string>
     <string name="settings_security">Security</string>
     <string name="settings_biometric">Biometric unlock</string>
-    <string name="settings_biometric_note">Saved with your account. Fingerprint or face unlock arrives in a later update.</string>
+    <string name="settings_biometric_note">LoadWatch asks for your fingerprint, face or screen lock each time it opens.</string>
+    <string name="settings_biometric_confirm_title">Turn on biometric unlock</string>
+    <string name="settings_biometric_confirm_subtitle">Confirm it\'s you to protect LoadWatch.</string>
+    <string name="settings_biometric_not_enrolled">Set up a fingerprint, face or screen lock in your phone\'s settings first.</string>
+    <string name="settings_biometric_no_hardware">This phone has no fingerprint or face sensor and no screen lock, so biometric unlock cannot be used.</string>
+    <string name="settings_biometric_unavailable">Biometric unlock is not available right now. Try again later.</string>
+    <string name="settings_biometric_cancelled">Biometric unlock was not turned on.</string>
+    <string name="settings_biometric_locked_out">Too many attempts. Try again in a moment.</string>
     <string name="settings_save">Save changes</string>
     <string name="settings_saving">Saving…</string>
     <string name="settings_saved">Settings saved.</string>
