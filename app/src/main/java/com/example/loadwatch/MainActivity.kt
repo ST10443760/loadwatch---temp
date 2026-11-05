@@ -14,6 +14,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.designsystem.LoadWatchTheme
+import com.example.loadwatch.core.locale.applyAppLanguage
 import com.example.loadwatch.data.model.ThemePreference
 import com.example.loadwatch.navigation.AppViewModel
 import com.example.loadwatch.navigation.LoadWatchApp
@@ -41,6 +42,12 @@ class MainActivity : AppCompatActivity() {
             LaunchedEffect(darkTheme) {
                 applySystemBars(darkTheme)
                 Log.i(LogTags.LIFECYCLE, "Theme applied: ${if (darkTheme) "dark" else "light"} (preference $themePreference)")
+            }
+
+            // The S09 language applies as soon as it is saved, and again after signing in on a new phone
+            val language by appViewModel.language.collectAsStateWithLifecycle()
+            LaunchedEffect(language) {
+                language?.let { applyAppLanguage(it.code) }
             }
 
             LoadWatchTheme(darkTheme = darkTheme) {
