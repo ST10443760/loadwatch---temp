@@ -117,13 +117,16 @@ class OfflineFirstReportRepository @Inject constructor(
             is ReportPostResult.Rejected ->
                 if (result.status == 401) {
                     outageReportDao.updateSyncStatus(report.reportId, SyncStatus.PENDING)
+                    Log.w(LogTags.SYNC, "Report for ${report.areaId} kept as PENDING: not signed in")
                     ReportResult.NotSignedIn
                 } else {
                     outageReportDao.updateSyncStatus(report.reportId, SyncStatus.REJECTED)
+                    Log.e(LogTags.SYNC, "Report for ${report.areaId} marked REJECTED with HTTP ${result.status}")
                     ReportResult.Rejected(result.problem?.errors?.keys?.toList().orEmpty())
                 }
             is ReportPostResult.ServerError -> {
                 outageReportDao.updateSyncStatus(report.reportId, SyncStatus.PENDING)
+                Log.e(LogTags.SYNC, "Report for ${report.areaId} kept as PENDING after server error ${result.status}")
                 ReportResult.Failed(DataFailure.SERVER)
             }
             is ReportPostResult.NetworkFailure -> {
