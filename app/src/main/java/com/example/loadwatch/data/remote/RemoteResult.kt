@@ -25,7 +25,9 @@ suspend fun <T> safeApiCall(json: Json, name: String, call: suspend () -> T): Re
         val problem = e.response()?.errorBody()?.string()?.let { body ->
             runCatching { json.decodeFromString<ProblemDetailsDto>(body) }.getOrNull()
         }
-        Log.w(LogTags.API, "$name failed with HTTP ${e.code()}: ${problem?.title ?: e.message()}")
+        val message = "$name failed with HTTP ${e.code()}: ${problem?.title ?: e.message()}"
+        // A server fault is an error; a 4xx is the API refusing this request, which callers handle
+        if (e.code() >= 500) Log.e(LogTags.API, message) else Log.w(LogTags.API, message)
         RemoteResult.HttpFailure(e.code(), problem)
     } catch (e: IOException) {
         Log.w(LogTags.API, "$name failed without a response: ${e.message}")
