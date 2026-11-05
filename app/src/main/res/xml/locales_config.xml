@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The languages LoadWatch is translated into, so Android 13+ can offer them in the system's per-app language
+     settings. English is the default in values/. -->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="en" />
+    <locale android:name="zu" />
+    <locale android:name="af" />
+</locale-config>
