@@ -2,6 +2,9 @@ package com.example.loadwatch.navigation
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.example.loadwatch.core.biometric.BiometricAvailability
+import com.example.loadwatch.core.biometric.BiometricChecker
+import com.example.loadwatch.core.biometric.BiometricOffer
 import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.data.model.ThemePreference
@@ -10,19 +13,32 @@ import com.example.loadwatch.data.repository.SettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-// App-wide session and theme handling. When the API rejects the session even after a token refresh, sign out cleanly,
-// clearing user-scoped data but keeping the area catalogue, and send the user back to S02.
+enum class AppLockState {
+    // Reading the saved settings to decide whether to ask for biometrics
+    CHECKING,
+    LOCKED,
+    UNLOCKED,
+}
+
+// App-wide session, theme and biometric lock handling. When the API rejects the session even after a token refresh,
+// sign out cleanly, clearing user-scoped data but keeping the area catalogue, and send the user back to S02.
 @HiltViewModel
 class AppViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     settingsRepository: SettingsRepository,
+    private val biometricChecker: BiometricChecker,
+    private val biometricOffer: BiometricOffer,
 ) : LoggedViewModel() {
 
     // The S09 theme choice for the whole app; null until settings exist, when the dark-first default applies
@@ -32,6 +48,21 @@ class AppViewModel @Inject constructor(
     private val _sessionEnded = Channel<Unit>(Channel.CONFLATED)
     val sessionEnded: Flow<Unit> = _sessionEnded.receiveAsFlow()
 
+    // This ViewModel outlives configuration changes, including the recreation a language change causes, so the
+    // lock is only shown when the app is launched, not after every rotation
+    private val _lockState = MutableStateFlow(AppLockState.CHECKING)
+    val lockState: StateFlow<AppLockState> = _lockState.asStateFlow()
+
+    private val _signedOutFromLock = Channel<Unit>(Channel.CONFLATED)
+    val signedOutFromLock: Flow<Unit> = _signedOutFromLock.receiveAsFlow()
+
+    // Offered once after a Google sign-in, when settings exist, unlock is off and this phone can use it
+    val showBiometricOffer: StateFlow<Boolean> =
+        combine(biometricOffer.pending, settingsRepository.observeSettings()) { pending, settings ->
+            pending && settings != null && !settings.biometricEnabled &&
+                biometricChecker.availability() == BiometricAvailability.AVAILABLE
+        }.stateIn(viewModelScope, SharingStarted.Eagerly, false)
+
     init {
         viewModelScope.launch {
             authRepository.sessionExpired.collect {
@@ -40,5 +71,33 @@ class AppViewModel @Inject constructor(
                 _sessionEnded.send(Unit)
             }
         }
+        viewModelScope.launch {
+            // Decided from the settings saved on this phone, so the lock also works offline
+            val biometricEnabled = settingsRepository.observeSettings().first()?.biometricEnabled == true
+            _lockState.value = if (biometricEnabled) AppLockState.LOCKED else AppLockState.UNLOCKED
+            Log.i(LogTags.BIOMETRIC, "App launch lock: ${_lockState.value}")
+        }
+    }
+
+    fun biometricAvailability(): BiometricAvailability = biometricChecker.availability()
+
+    fun onUnlocked() {
+        Log.i(LogTags.BIOMETRIC, "App unlocked")
+        _lockState.value = AppLockState.UNLOCKED
+    }
+
+    // The way out when biometrics keep failing: sign out and sign in with Google again
+    fun signOutFromLock() {
+        viewModelScope.launch {
+            Log.i(LogTags.BIOMETRIC, "Signing out from the lock screen")
+            authRepository.signOut()
+            _lockState.value = AppLockState.UNLOCKED
+            _signedOutFromLock.send(Unit)
+        }
+    }
+
+    fun dismissBiometricOffer() {
+        Log.d(LogTags.BIOMETRIC, "Biometric unlock offer dismissed")
+        biometricOffer.dismiss()
     }
 }
