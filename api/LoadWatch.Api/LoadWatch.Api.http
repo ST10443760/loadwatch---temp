@@ -1,1 +1,16 @@
 @LoadWatch.Api_HostAddress = http://localhost:5170
+
+### Demo: set Berea to stage 6 and send the stage change alert at once.
+### The key is the value of StageAlerts:TestKey; the endpoint is off without one.
+POST {{LoadWatch.Api_HostAddress}}/api/stages/areas/eth-berea/test-change
+Content-Type: application/json
+X-Stage-Test-Key: your-test-key
+
+{ "stage": 6 }
+
+### Put Berea back on the national stage (sends another alert)
+POST {{LoadWatch.Api_HostAddress}}/api/stages/areas/eth-berea/test-change
+Content-Type: application/json
+X-Stage-Test-Key: your-test-key
+
+{ "stage": null }
