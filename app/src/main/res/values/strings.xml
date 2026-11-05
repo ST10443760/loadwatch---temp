@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LoadWatch</string>
+    <string name="app_name" translatable="false">LoadWatch</string>
 
     <!-- Bottom navigation -->
     <string name="nav_home">Home</string>
@@ -14,7 +14,7 @@
     <string name="action_cancel">Cancel</string>
     <string name="label_dialog_field">Label (optional)</string>
     <!-- %1$d characters used of %2$d -->
-    <string name="label_dialog_count">%1$d / %2$d</string>
+    <string name="label_dialog_count" translatable="false">%1$d / %2$d</string>
     <string name="label_dialog_too_long">Use %1$d characters or fewer.</string>
     <string name="label_suggestion_home">Home</string>
     <string name="label_suggestion_work">Work</string>
@@ -29,7 +29,7 @@
 
     <!-- Schedule times and durations -->
     <!-- %1$s and %2$s are local times, e.g. "20:00 – 22:30" -->
-    <string name="time_range">%1$s – %2$s</string>
+    <string name="time_range" translatable="false">%1$s – %2$s</string>
     <string name="day_today">Today</string>
     <string name="day_tomorrow">Tomorrow</string>
     <string name="stage_badge">Stage %1$d</string>
@@ -37,7 +37,7 @@
     <!-- The countdown beyond a day: %1$d is whole days, %2$s the hh:mm:ss clock, e.g. "2d 03:10:05" -->
     <string name="countdown_with_days">%1$dd %2$s</string>
     <!-- %1$s is hours, %2$s minutes, e.g. "1 hour 42 minutes" -->
-    <string name="duration_hours_minutes">%1$s %2$s</string>
+    <string name="duration_hours_minutes" translatable="false">%1$s %2$s</string>
     <plurals name="duration_hours">
         <item quantity="one">%1$d hour</item>
         <item quantity="other">%1$d hours</item>
@@ -49,7 +49,7 @@
 
 
     <!-- S01 Splash -->
-    <string name="splash_title">LoadWatch</string>
+    <string name="splash_title" translatable="false">LoadWatch</string>
     <string name="splash_checking">Checking your session…</string>
     <string name="splash_error_title">LoadWatch could not start</string>
     <string name="splash_error_message">Your saved session could not be read. Try again.</string>
@@ -94,7 +94,7 @@
     <string name="area_search_no_matches">No areas match “%1$s”. Check the spelling or try the municipality name.</string>
     <string name="area_search_cached_notice">You\'re offline, so these are areas saved on this device.</string>
     <!-- %1$s is the municipality, %2$s the supplier, e.g. "eThekwini Metropolitan Municipality · Supplied by Eskom" -->
-    <string name="area_row_details">%1$s · %2$s</string>
+    <string name="area_row_details" translatable="false">%1$s · %2$s</string>
     <string name="area_supplier_eskom">Supplied by Eskom</string>
     <string name="area_supplier_municipal">Supplied by the municipality</string>
     <string name="area_supplier_unknown">Supplier unknown</string>
@@ -130,7 +130,7 @@
     <string name="favourite_failed_offline">You\'re offline, so favourites can\'t be changed right now. Try again when you\'re connected.</string>
     <string name="favourite_failed">LoadWatch could not update your favourites. Try again.</string>
     <!-- %1$s is a label such as "Home", %2$s an area name -->
-    <string name="favourite_chip">%1$s · %2$s</string>
+    <string name="favourite_chip" translatable="false">%1$s · %2$s</string>
     <string name="favourite_add_description">Add %1$s to favourites</string>
     <string name="favourite_remove_description">Remove %1$s from favourites</string>
 
@@ -142,7 +142,7 @@
     <string name="home_label_power_off_in">Power off in</string>
     <string name="home_label_power_returns_in">Power returns in</string>
     <!-- Read by screen readers instead of the ticking digits, e.g. "Power off in 1 hour 42 minutes" -->
-    <string name="home_countdown_description">%1$s %2$s</string>
+    <string name="home_countdown_description" translatable="false">%1$s %2$s</string>
     <!-- %1$s is a day such as "Today", %2$s a local time -->
     <string name="home_target_at">%1$s at %2$s</string>
     <string name="home_no_upcoming_outage">No outage is scheduled for your area.</string>
@@ -150,7 +150,7 @@
     <string name="home_next_outage">Next outage</string>
     <string name="home_no_further_outage">No further outage scheduled</string>
     <!-- %1$s is a day such as "Tomorrow", %2$s a time range -->
-    <string name="home_event_when">%1$s, %2$s</string>
+    <string name="home_event_when" translatable="false">%1$s, %2$s</string>
     <string name="home_current_stage">Current stage</string>
     <string name="home_stage_none">No load shedding</string>
     <string name="home_stage_unknown">Not known yet</string>
