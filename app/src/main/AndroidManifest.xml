@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Stage-change alerts; asked for at run time on Android 13 and later -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".LoadWatchApplication"
@@ -27,6 +29,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Receives stage-change alerts and FCM token refreshes -->
+        <service
+            android:name=".core.notifications.LoadWatchMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="stage_alerts" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_stage_alert" />
 
         <!-- Lets AppCompat remember the chosen language itself on Android 12 and below, so it applies from the
              first frame on the next launch, before the settings are read -->
