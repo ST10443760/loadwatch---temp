@@ -2,6 +2,8 @@ package com.example.loadwatch.feature.settings
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.example.loadwatch.core.biometric.BiometricAvailability
+import com.example.loadwatch.core.biometric.BiometricChecker
 import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.data.local.SettingsRules
@@ -64,6 +66,8 @@ data class SettingsUiState(
     val isSaving: Boolean = false,
     val saveResult: SaveSettingsResult? = null,
     val isSigningOut: Boolean = false,
+    // Whether this phone can confirm it is the owner, checked again each time Settings is shown
+    val biometricAvailability: BiometricAvailability = BiometricAvailability.UNAVAILABLE,
 ) {
     val leadTime: LeadTimeInput? get() = form?.let { SettingsFormValidation.parseLeadMinutes(it.leadMinutesText) }
     val isDirty: Boolean get() = form != null && saved != null && form != SettingsForm.from(saved)
@@ -78,6 +82,7 @@ private data class EditState(
     val saveResult: SaveSettingsResult? = null,
     val loadFailure: DataFailure? = null,
     val isSigningOut: Boolean = false,
+    val biometricAvailability: BiometricAvailability = BiometricAvailability.UNAVAILABLE,
 )
 
 // S09 Settings (FR-SET-01 to 05): opens from Room, then refreshes from the API; saves to Room and the API after
@@ -88,6 +93,7 @@ class SettingsViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     areaRepository: AreaRepository,
     favouritesRepository: FavouritesRepository,
+    private val biometricChecker: BiometricChecker,
 ) : LoggedViewModel() {
 
     private val edit = MutableStateFlow(EditState())
@@ -118,6 +124,7 @@ class SettingsViewModel @Inject constructor(
                 isSaving = edit.isSaving,
                 saveResult = edit.saveResult,
                 isSigningOut = edit.isSigningOut,
+                biometricAvailability = edit.biometricAvailability,
             )
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), SettingsUiState())
 
@@ -157,7 +164,18 @@ class SettingsViewModel @Inject constructor(
     // Stored and synced now; switching the app's strings is Final POE scope
     fun setLanguage(code: String) = updateForm { it.copy(languageCode = code) }
 
-    fun setBiometricEnabled(enabled: Boolean) = updateForm { it.copy(biometricEnabled = enabled) }
+    // The user can add or remove a fingerprint or screen lock while away from the app, so this runs on every resume
+    fun refreshBiometricAvailability() {
+        edit.update { it.copy(biometricAvailability = biometricChecker.availability()) }
+    }
+
+    // Saved straight away, because the lock applies from the next launch. The screen only turns it on after the
+    // user has passed a biometric prompt, so a phone that cannot unlock is never locked out.
+    fun setBiometricEnabled(enabled: Boolean) = saveImmediately(
+        description = "Biometric unlock ${if (enabled) "on" else "off"}",
+        change = { it.copy(biometricEnabled = enabled) },
+        formChange = { it.copy(biometricEnabled = enabled) },
+    )
 
     // The theme applies to the app straight away, so it is saved on its own rather than waiting for Save
     fun setTheme(theme: ThemePreference) = saveImmediately(
