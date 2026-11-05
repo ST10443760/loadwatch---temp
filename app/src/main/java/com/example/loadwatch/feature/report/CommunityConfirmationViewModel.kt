@@ -1,9 +1,9 @@
 package com.example.loadwatch.feature.report
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.loadwatch.core.common.LogTags
+import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.core.common.OutageEventType
 import com.example.loadwatch.core.common.SyncStatus
 import com.example.loadwatch.data.model.Area
@@ -44,7 +44,7 @@ data class ConfirmationUiState(
 class CommunityConfirmationViewModel @Inject constructor(
     settingsRepository: SettingsRepository,
     private val reportRepository: ReportRepository,
-) : ViewModel() {
+) : LoggedViewModel() {
 
     private val submission = ReportSubmission(reportRepository, viewModelScope)
     private val accuracyRefreshFailed = MutableStateFlow(false)
