@@ -67,20 +67,24 @@ public class StagesController(LoadWatchDbContext db) : ControllerBase
         }
 
         var national = await db.StageStatus.AsNoTracking().FirstAsync(s => s.Id == StageStatus.SingletonId, ct);
-        var row = await db.AreaStages.FirstOrDefaultAsync(s => s.AreaId == areaId, ct);
-        if (row is null)
+        var previousStage = national.Stage;
+        var outcomes = await checker.ChangeThenCheckAsync(async innerCt =>
         {
-            row = new AreaStage { AreaId = areaId };
-            db.AreaStages.Add(row);
-        }
-        var previousStage = StageChangeDetector.EffectiveStage(national.Stage, row.Stage);
-        // An area never checked before has no baseline, and would only be recorded rather than alerted
-        row.LastAlertedStage ??= previousStage;
-        row.Stage = request.Stage;
-        row.UpdatedAt = time.GetUtcNow();
-        await db.SaveChangesAsync(ct);
+            var row = await db.AreaStages.FirstOrDefaultAsync(s => s.AreaId == areaId, innerCt);
+            if (row is null)
+            {
+                row = new AreaStage { AreaId = areaId };
+                db.AreaStages.Add(row);
+            }
+            previousStage = StageChangeDetector.EffectiveStage(national.Stage, row.Stage);
+            // An area never checked before has no baseline, and would only be recorded rather than alerted
+            row.LastAlertedStage ??= previousStage;
+            row.Stage = request.Stage;
+            row.UpdatedAt = time.GetUtcNow();
+            await db.SaveChangesAsync(innerCt);
+        }, ct);
 
-        var outcome = (await checker.CheckAsync(ct)).FirstOrDefault(o => o.Change.AreaId == areaId);
+        var outcome = outcomes.FirstOrDefault(o => o.Change.AreaId == areaId);
         var stage = StageChangeDetector.EffectiveStage(national.Stage, request.Stage);
         return new TestStageChangeResult(areaId, previousStage, stage, outcome?.Result.ToString() ?? "NoChange");
     }
