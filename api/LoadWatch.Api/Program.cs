@@ -27,6 +27,12 @@ builder.Services.AddScoped<UserProfileService>();
 builder.Services.AddScoped<AccuracyService>();
 builder.Services.Configure<OutageReportOptions>(builder.Configuration.GetSection(OutageReportOptions.SectionName));
 builder.Services.AddFirebaseAuthentication(builder.Configuration);
+// Stage-change alerts: a background check every few seconds, sent to each area's FCM topic
+builder.Services.Configure<StageAlertOptions>(builder.Configuration.GetSection(StageAlertOptions.SectionName));
+builder.Services.AddSingleton<IStageAlertSender, FirebaseStageAlertSender>();
+builder.Services.AddSingleton<StageAlertGate>();
+builder.Services.AddScoped<StageAlertChecker>();
+builder.Services.AddHostedService<StageAlertService>();
 builder.Services.AddLoadWatchHealthChecks();
 
 builder.Services.AddControllers(options =>
