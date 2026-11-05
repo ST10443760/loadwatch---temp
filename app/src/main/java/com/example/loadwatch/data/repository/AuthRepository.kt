@@ -36,14 +36,15 @@ class AuthRepository @Inject constructor(
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
-            Log.w(LogTags.AUTH, "Firebase sign-in failed: ${e.javaClass.simpleName}")
+            Log.e(LogTags.AUTH, "Firebase sign-in failed: ${e.javaClass.simpleName}", e)
             SignInResult.Failed
         }
 
     // Signs out of Firebase, then clears everything user-scoped from Room while keeping the public area
     // catalogue (FR-AUTH-04). Runs to completion even if the caller's scope is cancelled mid-way.
-    suspend fun signOut() = withContext(NonCancellable) {
+    suspend fun signOut(): Unit = withContext(NonCancellable) {
         authSession.signOut()
         userData.clearAll()
+        Log.i(LogTags.AUTH, "Sign-out finished and user data cleared")
     }
 }
