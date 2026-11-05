@@ -1,5 +1,6 @@
 package com.example.loadwatch.core.notifications
 
+import com.example.loadwatch.data.alert.StageAlertPresenter
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,4 +15,7 @@ abstract class NotificationsModule {
 
     @Binds
     abstract fun bindPushPreferences(impl: SharedPushPreferences): PushPreferences
+
+    @Binds
+    abstract fun bindStageAlertPresenter(impl: StageAlertNotifier): StageAlertPresenter
 }
