@@ -51,6 +51,8 @@ anything here without upgrading AGP and compileSdk together. The reasons are als
 | OkHttp | 5.4.0 | 5.5.x needs compileSdk 37 |
 | kotlinx serialization | 1.9.0 | |
 | Coroutines | 1.10.2 | |
+| Biometric | 1.1.0 | Newest stable release |
+| AppCompat | 1.7.1 | Hosts the biometric prompt and the per-app language before Android 13 |
 
 ### API base URL
 
@@ -74,7 +76,42 @@ Re-sync Gradle after changing it; the value is compiled into `BuildConfig.API_BA
 ```
 
 The unit tests include a check that no feature package imports another feature package or reaches Room or
-the API directly (NFR-01).
+the API directly (NFR-01), and a check that every string is translated into isiZulu and Afrikaans with the
+same placeholders.
+
+### Biometric unlock
+
+After signing in with Google the app offers biometric unlock once, and it can be turned on under Settings →
+Security. Turning it on first asks for a fingerprint, face or the screen lock, so it is only stored once the
+phone has shown it can unlock. From then on LoadWatch asks for biometrics each time it is launched, with the
+PIN, pattern or password as the fallback. Cancelling leaves the lock screen up with Unlock and Sign out. If
+the phone no longer has any fingerprint, face or screen lock, the lock screen explains why and lets the user
+continue.
+
+### Languages
+
+LoadWatch is translated into English (the default), isiZulu (`values-zu`) and Afrikaans (`values-af`). The
+language picker in Settings saves the choice to Room and the settings API straight away, and the app switches
+language at once through AppCompat's per-app locales. On Android 13 and later the language also appears in
+the system's per-app language settings. New strings go into all three `strings.xml` files, or are marked
+`translatable="false"` if they are only symbols or formats.
+
+### Logcat
+
+Every log line uses a tag from `LogTags`, all starting with `LW.`, so filtering Logcat on `LW.` shows only
+LoadWatch:
+
+| Tag | What it shows |
+|---|---|
+| `LW.Lifecycle` | Activity and screen lifecycle events, view models being created and cleared, language changes |
+| `LW.Navigation` | Every navigation transition and the area chosen during onboarding |
+| `LW.State` | Screen states changing kind (for example Loading to Ready) and the schedule range |
+| `LW.Auth` | Sign-in, sign-out and session expiry |
+| `LW.Biometric` | Availability checks, the launch lock and every prompt outcome |
+| `LW.Api` | HTTP traffic and API results, with server errors logged as errors |
+| `LW.Room` | The database opening and settings being written |
+| `LW.Sync` | Reports and settings waiting on the phone, retries and rejections |
+| `LW.Countdown` | The home countdown rolling over to the next window |
 
 ### Run the API locally
 
