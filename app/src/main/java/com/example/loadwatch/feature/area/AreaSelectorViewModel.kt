@@ -2,9 +2,9 @@ package com.example.loadwatch.feature.area
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.loadwatch.core.common.LogTags
+import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.data.model.Area
 import com.example.loadwatch.data.model.DataFailure
 import com.example.loadwatch.data.model.Favourite
@@ -48,7 +48,7 @@ class AreaSelectorViewModel @Inject constructor(
     areaRepository: AreaRepository,
     settingsRepository: SettingsRepository,
     private val favouritesRepository: FavouritesRepository,
-) : ViewModel() {
+) : LoggedViewModel() {
 
     // Opened from S08 to save a favourite instead of switching the active area. Read from the route's
     // argument by name, so this feature does not depend on the navigation package.

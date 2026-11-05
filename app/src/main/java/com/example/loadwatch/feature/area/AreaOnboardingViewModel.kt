@@ -1,7 +1,7 @@
 package com.example.loadwatch.feature.area
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.loadwatch.core.common.LoggedViewModel
 import com.example.loadwatch.data.model.Area
 import com.example.loadwatch.data.repository.AreaRepository
 import com.example.loadwatch.data.repository.SettingsRepository
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class AreaOnboardingViewModel @Inject constructor(
     areaRepository: AreaRepository,
     settingsRepository: SettingsRepository,
-) : ViewModel() {
+) : LoggedViewModel() {
 
     val search = AreaSearch(areaRepository, viewModelScope)
     val choice = AreaChoice(viewModelScope, settingsRepository, areaRepository)
