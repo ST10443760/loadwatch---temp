@@ -60,6 +60,23 @@
     <string name="biometric_offer_open_settings">Vula Izilungiselelo</string>
     <string name="biometric_offer_not_now">Hhayi manje</string>
 
+    <!-- Stage-change push notifications -->
+    <string name="notification_channel_stage_alerts">Izexwayiso zokushintsha kwesigaba</string>
+    <string name="notification_channel_stage_alerts_description">Ikwazisa uma isigaba sokucishwa kukagesi sishintsha endaweni oyikhethile.</string>
+    <string name="stage_alert_title">%2$s: isigaba %1$d</string>
+    <string name="stage_alert_ended_title">Ukucishwa kukagesi kuphelile: %1$s</string>
+    <string name="stage_alert_body_changed">Ukucishwa kukagesi kushintshile kusuka esigabeni %1$d kuya esigabeni %2$d.</string>
+    <string name="stage_alert_body_started">Ukucishwa kukagesi kuqalile esigabeni %1$d.</string>
+    <string name="stage_alert_body_ended">Akukho ukucima okuhleliwe ngesikhathi ukucishwa kukagesi kumisiwe.</string>
+    <plurals name="stage_alert_next_outage">
+        <item quantity="one">Ukucima kwakho okulandelayo kuqala emzuzwini ongu-%1$d.</item>
+        <item quantity="other">Ukucima kwakho okulandelayo kuqala emizuzwini engu-%1$d.</item>
+    </plurals>
+    <string name="notification_permission_title">Thola izexwayiso zokushintsha kwesigaba?</string>
+    <string name="notification_permission_message">I-LoadWatch ingakwazisa ngokushesha uma isigaba sokucishwa kukagesi sishintsha endaweni yakho. I-Android izobe isikubuza ukuthi i-LoadWatch ingathumela yini izaziso.</string>
+    <string name="notification_permission_continue">Qhubeka</string>
+    <string name="notification_permission_not_now">Hhayi manje</string>
+
     <!-- S02 SSO Login -->
     <string name="login_title">Siyakwamukela ku-LoadWatch</string>
     <string name="login_tagline">Yazi ngaphambi kokuthi kucime ugesi.</string>
