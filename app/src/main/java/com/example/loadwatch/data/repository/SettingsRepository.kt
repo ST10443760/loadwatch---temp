@@ -145,14 +145,18 @@ class SettingsRepository @Inject constructor(
         when (val result = remote.updateSettings(userId, settings.toUpdateDto())) {
             is RemoteResult.Success -> {
                 cacheServerSettings(result.data)
+                Log.i(LogTags.SYNC, "Settings synced to the API")
                 SaveSettingsResult.Saved
             }
-            is RemoteResult.NetworkFailure -> SaveSettingsResult.SavedOnDeviceOnly(DataFailure.OFFLINE)
+            is RemoteResult.NetworkFailure -> {
+                Log.i(LogTags.SYNC, "Settings kept on the device only: offline")
+                SaveSettingsResult.SavedOnDeviceOnly(DataFailure.OFFLINE)
+            }
             is RemoteResult.HttpFailure -> when (result.status) {
                 400 -> SaveSettingsResult.Rejected(result.problem?.errors?.keys?.toList().orEmpty())
                 401 -> SaveSettingsResult.SavedOnDeviceOnly(DataFailure.NOT_SIGNED_IN)
                 else -> SaveSettingsResult.SavedOnDeviceOnly(DataFailure.SERVER)
-            }
+            }.also { Log.w(LogTags.SYNC, "Settings sync answered HTTP ${result.status}: ${it.javaClass.simpleName}") }
         }
 
     private suspend fun cacheServerSettings(dto: UserSettingsDto): UserSettingsEntity {
@@ -160,6 +164,7 @@ class SettingsRepository @Inject constructor(
         val areaAvailable = dto.defaultAreaId?.let { areaRepository.ensureAreaCached(it) } ?: true
         val entity = dto.toEntity().let { if (areaAvailable) it else it.copy(defaultAreaId = null) }
         local.save(entity)
+        Log.d(LogTags.ROOM, "Cached the API's settings (language ${entity.languageCode}, theme ${entity.themePreference})")
         return entity
     }
 }
