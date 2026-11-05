@@ -1,0 +1,256 @@
+<resources>
+    <!-- Bottom navigation -->
+    <string name="nav_home">Tuis</string>
+    <string name="nav_schedule">Skedule</string>
+    <string name="nav_report">Rapporteer</string>
+    <string name="nav_compare">Vergelyk</string>
+    <string name="nav_settings">Instellings</string>
+
+    <!-- Shared actions and recovery states -->
+    <string name="action_retry">Probeer weer</string>
+    <string name="action_close">Maak toe</string>
+    <string name="action_cancel">Kanselleer</string>
+    <string name="label_dialog_field">Etiket (opsioneel)</string>
+    <string name="label_dialog_too_long">Gebruik %1$d karakters of minder.</string>
+    <string name="label_suggestion_home">Tuis</string>
+    <string name="label_suggestion_work">Werk</string>
+    <string name="error_offline_title">Jy is vanlyn</string>
+    <string name="error_offline_message">LoadWatch kon nie die bediener bereik nie. Gaan jou verbinding na en probeer weer.</string>
+    <string name="error_server_title">Iets het verkeerd geloop</string>
+    <string name="error_server_message">Die LoadWatch-bediener kon nie die versoek voltooi nie. Probeer binnekort weer.</string>
+    <string name="error_not_signed_in_title">Jy is afgemeld</string>
+    <string name="error_not_signed_in_message">Meld weer aan om jou instellings te stoor.</string>
+    <string name="error_not_found_title">Hierdie gebied is nie beskikbaar nie</string>
+    <string name="error_not_found_message">LoadWatch het nie meer hierdie gebied nie. Probeer weer, of kies \'n ander gebied.</string>
+
+    <!-- Schedule times and durations -->
+    <string name="day_today">Vandag</string>
+    <string name="day_tomorrow">Môre</string>
+    <string name="stage_badge">Fase %1$d</string>
+    <string name="duration_under_a_minute">minder as \'n minuut</string>
+    <string name="countdown_with_days">%1$dd %2$s</string>
+    <plurals name="duration_hours">
+        <item quantity="one">%1$d uur</item>
+        <item quantity="other">%1$d uur</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d minuut</item>
+        <item quantity="other">%1$d minute</item>
+    </plurals>
+
+    <!-- S01 Splash -->
+    <string name="splash_checking">Kontroleer jou sessie…</string>
+    <string name="splash_error_title">LoadWatch kon nie begin nie</string>
+    <string name="splash_error_message">Jou gestoorde sessie kon nie gelees word nie. Probeer weer.</string>
+
+    <!-- Biometric lock -->
+    <string name="lock_title">LoadWatch is gesluit</string>
+    <string name="lock_message">Gebruik jou vingerafdruk, gesig of skermslot om LoadWatch oop te maak.</string>
+    <string name="lock_unlock">Ontsluit</string>
+    <string name="lock_sign_out">Meld eerder af</string>
+    <string name="lock_prompt_title">Ontsluit LoadWatch</string>
+    <string name="lock_prompt_subtitle">Bevestig dat dit jy is om jou gebiede en instellings te sien.</string>
+    <string name="lock_cancelled">Ontsluiting is gekanselleer. Tik Ontsluit om weer te probeer.</string>
+    <string name="lock_locked_out">Te veel pogings. Wag \'n oomblik en ontsluit dan met jou PIN, patroon of wagwoord.</string>
+    <string name="lock_prompt_unavailable">Biometriese ontsluiting is nie nou beskikbaar nie. Probeer weer, of meld af en meld met Google aan.</string>
+    <string name="lock_no_screen_lock">Biometriese ontsluiting is aan, maar hierdie foon het nie meer \'n vingerafdruk, gesig of skermslot opgestel nie. Stel een in jou foon se instellings op om LoadWatch te beskerm.</string>
+    <string name="lock_continue">Gaan voort</string>
+    <string name="biometric_offer_title">Ontsluit met jou vingerafdruk of gesig?</string>
+    <string name="biometric_offer_message">Skakel biometriese ontsluiting in Instellings aan, en LoadWatch sal elke keer as dit oopmaak vir jou vingerafdruk, gesig of skermslot vra.</string>
+    <string name="biometric_offer_open_settings">Maak Instellings oop</string>
+    <string name="biometric_offer_not_now">Nie nou nie</string>
+
+    <!-- S02 SSO Login -->
+    <string name="login_title">Welkom by LoadWatch</string>
+    <string name="login_tagline">Weet voordat die krag afgaan.</string>
+    <string name="login_why_title">Hoekom aanmeld</string>
+    <string name="login_purpose">Jou rekening hou jou gebied, waarskuwingsinstellings en gunstelinge op al jou toestelle gesinkroniseer, en laat jou bevestig wat werklik in jou gebied gebeur. LoadWatch gebruik net jou naam en e-pos om jou rekening te identifiseer.</string>
+    <string name="login_continue_with_google">Gaan voort met Google</string>
+    <string name="login_signing_in">Meld aan…</string>
+    <string name="login_session_expired">Jou sessie het verval. Meld weer aan om voort te gaan.</string>
+    <string name="login_error_no_google_account">Daar is geen Google-rekening op hierdie toestel nie. Voeg een in die stelselinstellings by en probeer dan weer.</string>
+    <string name="login_error_google_failed">Google-aanmelding is nie voltooi nie. Gaan jou verbinding na en probeer weer.</string>
+    <string name="login_error_firebase_failed">Aanmelding het misluk. Gaan jou verbinding na en probeer weer.</string>
+    <string name="login_privacy_link">Privaatheidsbeleid</string>
+    <string name="login_privacy_dialog_title">Privaatheidsbeleid</string>
+    <string name="login_privacy_dialog_body">Die volledige privaatheidsbeleid sal voor vrystelling hier gepubliseer word. LoadWatch stoor jou naam, e-pos, gekose gebiede en onderbrekingsverslae om die diens te lewer, en verkoop nooit jou data nie.</string>
+
+    <!-- Area search, shared by S03 and S05 -->
+    <string name="area_search_label">Voorstad of munisipaliteit</string>
+    <string name="area_search_hint">Tik ten minste %1$d letters</string>
+    <string name="area_search_clear">Vee soektog uit</string>
+    <string name="area_search_invalid">Gebruik letters, syfers, spasies, koppeltekens of apostrowe.</string>
+    <string name="area_search_no_matches">Geen gebiede pas by “%1$s” nie. Gaan die spelling na of probeer die munisipaliteit se naam.</string>
+    <string name="area_search_cached_notice">Jy is vanlyn, so dit is gebiede wat op hierdie toestel gestoor is.</string>
+    <string name="area_supplier_eskom">Voorsien deur Eskom</string>
+    <string name="area_supplier_municipal">Voorsien deur die munisipaliteit</string>
+    <string name="area_supplier_unknown">Verskaffer onbekend</string>
+    <string name="area_save_device_only_title">Net op hierdie foon gestoor</string>
+    <string name="area_save_device_only_message">Jou gebied is hier gestoor, maar kon nog nie met jou rekening gesinkroniseer word nie.</string>
+    <string name="area_save_continue">Gaan voort op hierdie foon</string>
+    <string name="area_save_rejected_title">Daardie gebied kon nie gestoor word nie</string>
+    <string name="area_save_rejected_message">LoadWatch het nie hierdie instelling aanvaar nie. Probeer weer, of kies \'n ander gebied.</string>
+
+    <!-- S03 Area Onboarding -->
+    <string name="onboarding_title">Soek jou voorstad</string>
+    <string name="onboarding_purpose">Vind die gebied wat LoadWatch vir jou moet dophou. Elke resultaat wys sy munisipaliteit en verskaffer sodat soortgelyke name nie verwar word nie.</string>
+    <string name="onboarding_selected">Gekies: %1$s</string>
+    <string name="onboarding_confirm_area">Bevestig gebied</string>
+    <string name="onboarding_saving">Stoor…</string>
+
+    <!-- S05 Area Selector -->
+    <string name="area_selector_title">Verander gebied</string>
+    <string name="area_selector_current">Huidige gebied: %1$s</string>
+    <string name="area_selector_recent">Onlangs</string>
+    <string name="area_selector_no_recents">Gebiede waarna jy oorskakel, sal hier verskyn. Soek hierbo om \'n ander gebied te vind.</string>
+    <string name="area_selector_favourites">Gunstelinge</string>
+    <string name="area_selector_add_title">Voeg \'n gunsteling by</string>
+    <string name="area_selector_add_hint">Soek die gebied wat jy wil stoor en gee dit dan \'n opsionele etiket.</string>
+
+    <!-- Favourites, shared by S05 and S08 -->
+    <string name="favourite_add_title">Stoor %1$s as \'n gunsteling</string>
+    <string name="favourite_save">Stoor</string>
+    <string name="favourite_added">%1$s is by jou gunstelinge gevoeg.</string>
+    <string name="favourite_already">Reeds in jou gunstelinge.</string>
+    <string name="favourite_removed">%1$s is uit jou gunstelinge verwyder. Die gebied en sy skedule is steeds beskikbaar.</string>
+    <string name="favourite_failed_offline">Jy is vanlyn, so gunstelinge kan nie nou verander word nie. Probeer weer wanneer jy verbind is.</string>
+    <string name="favourite_failed">LoadWatch kon nie jou gunstelinge bywerk nie. Probeer weer.</string>
+    <string name="favourite_add_description">Voeg %1$s by gunstelinge</string>
+    <string name="favourite_remove_description">Verwyder %1$s uit gunstelinge</string>
+
+    <!-- S04 Home Dashboard -->
+    <string name="home_change_area">Verander gebied</string>
+    <string name="home_report">Rapporteer wat gebeur</string>
+    <string name="home_state_on">Die krag is aan</string>
+    <string name="home_state_off">Die krag is af</string>
+    <string name="home_label_power_off_in">Krag gaan af oor</string>
+    <string name="home_label_power_returns_in">Krag kom terug oor</string>
+    <string name="home_target_at">%1$s om %2$s</string>
+    <string name="home_no_upcoming_outage">Geen onderbreking is vir jou gebied geskeduleer nie.</string>
+    <string name="home_current_outage">Huidige onderbreking</string>
+    <string name="home_next_outage">Volgende onderbreking</string>
+    <string name="home_no_further_outage">Geen verdere onderbreking geskeduleer nie</string>
+    <string name="home_current_stage">Huidige fase</string>
+    <string name="home_stage_none">Geen beurtkrag nie</string>
+    <string name="home_stage_unknown">Nog nie bekend nie</string>
+    <string name="accuracy_title">Skedule-akkuraatheid</string>
+    <string name="accuracy_no_reports">Nog geen verslae nie</string>
+    <string name="accuracy_unknown">Nog nie bekend nie</string>
+    <plurals name="accuracy_match">
+        <item quantity="one">%1$d%% skedule-ooreenstemming uit %2$d verslag</item>
+        <item quantity="other">%1$d%% skedule-ooreenstemming uit %2$d verslae</item>
+    </plurals>
+    <string name="home_no_area_title">Geen gebied gekies nie</string>
+    <string name="home_no_area_message">Kies die gebied wat LoadWatch vir jou moet dophou.</string>
+    <string name="home_choose_area">Kies \'n gebied</string>
+
+    <!-- Schedule freshness, shared by S04 and S06 -->
+    <string name="schedule_updated">Bygewerk %1$s</string>
+    <string name="schedule_stale">Hierdie skedule is dalk verouderd. Laas bygewerk %1$s.</string>
+    <string name="schedule_cached_offline">Jy is vanlyn. Wys die skedule wat op hierdie foon gestoor is, bygewerk %1$s.</string>
+    <string name="schedule_cached_error">Kon nie verfris nie. Wys die skedule wat op hierdie foon gestoor is, bygewerk %1$s.</string>
+
+    <!-- S06 Schedule -->
+    <string name="schedule_title">Skedule</string>
+    <string name="schedule_no_outage">Geen geskeduleerde onderbreking nie</string>
+    <string name="schedule_not_loaded">Nog nie gelaai nie. Trek af om te verfris.</string>
+    <plurals name="schedule_range_days">
+        <item quantity="one">%1$d dag</item>
+        <item quantity="other">%1$d dae</item>
+    </plurals>
+
+    <!-- S07 Community Confirmation -->
+    <string name="report_title">Gebeur die onderbreking?</string>
+    <string name="report_area">Rapporteer vir %1$s</string>
+    <string name="report_power_off">Die krag is af</string>
+    <string name="report_power_back">Die krag is terug</string>
+    <string name="report_event_power_off">Krag af</string>
+    <string name="report_event_power_back">Krag weer aan</string>
+    <string name="report_status_sending">Stuur jou verslag…</string>
+    <string name="report_status_accepted">Verslag aanvaar: %1$s. Dankie, dit tel nou by hierdie gebied se akkuraatheidstelling.</string>
+    <string name="report_status_already_reported">Reeds gerapporteer. Jy het dit \'n paar minute gelede gerapporteer, so dit tel net een keer.</string>
+    <string name="report_status_saved_offline">Op hierdie foon gestoor; dit sal gestuur word wanneer jy weer aanlyn is.</string>
+    <string name="report_status_rejected">LoadWatch kon nie hierdie verslag aanvaar nie. Probeer weer.</string>
+    <string name="report_status_rejected_clock">LoadWatch kon nie hierdie verslag aanvaar nie. Maak seker dat jou foon se datum en tyd korrek is en probeer dan weer.</string>
+    <string name="report_status_not_signed_in">Jou sessie het verval, so die verslag is op hierdie foon gehou. Meld weer aan om dit te stuur.</string>
+    <string name="report_status_failed">Die LoadWatch-bediener kon nie nou die verslag ontvang nie. Dit word op hierdie foon gehou; probeer binnekort weer.</string>
+    <string name="report_retry_sending">Probeer weer stuur</string>
+    <string name="report_retry_sending_count">Probeer weer stuur (%1$d wag)</string>
+    <string name="report_accuracy_cached">Kon nie die telling verfris nie.</string>
+    <string name="report_recent_title">Jou onlangse verslae</string>
+    <string name="report_recent_empty">Jy het nog niks vir hierdie gebied gerapporteer nie.</string>
+    <string name="report_sync_pending">Wag om te stuur</string>
+    <string name="report_sync_retrying">Stuur weer</string>
+    <string name="report_sync_synced">Aanvaar</string>
+    <string name="report_sync_rejected">Nie aanvaar nie</string>
+
+    <!-- S08 Favourites and Compare -->
+    <string name="favourites_title">Jou gestoorde gebiede</string>
+    <string name="favourites_add_another">Voeg nog \'n gebied by</string>
+    <string name="favourites_add_area">Voeg \'n gebied by</string>
+    <string name="favourites_empty_title">Nog geen gestoorde gebiede nie</string>
+    <string name="favourites_empty_message">Stoor die gebiede wat vir jou saak maak, soos tuis en werk, om hul volgende onderbrekings langs mekaar te vergelyk.</string>
+    <string name="favourites_schedule_not_loaded">Skedule nog nie gelaai nie. Trek af om te verfris.</string>
+    <string name="favourites_state_stage">%1$s · Fase %2$d</string>
+    <string name="favourites_next">Volgende: %1$s</string>
+    <string name="favourites_more_options">Meer opsies vir %1$s</string>
+    <string name="favourites_edit_label">Wysig etiket</string>
+    <string name="favourites_remove">Verwyder</string>
+    <string name="favourites_remove_title">Verwyder %1$s?</string>
+    <string name="favourites_remove_message">Dit verlaat net jou gunstelinge. Die gebied en sy skedule bly beskikbaar, en jy kan dit enige tyd weer byvoeg.</string>
+    <string name="favourites_label_title">Etiket vir %1$s</string>
+    <string name="favourites_relabelled">Etiket bygewerk vir %1$s.</string>
+    <string name="favourites_cached_offline">Jy is vanlyn. Wys skedules wat op hierdie foon gestoor is.</string>
+    <string name="favourites_cached_error">Kon nie elke gebied verfris nie. Wys skedules wat op hierdie foon gestoor is.</string>
+
+    <!-- S09 Settings -->
+    <string name="settings_title">Instellings</string>
+    <string name="settings_sign_out">Meld af</string>
+    <string name="settings_signed_in_as">Aangemeld as %1$s</string>
+    <string name="settings_cached_notice">Kon nie jou instellings van LoadWatch laai nie. Wys dié wat op hierdie foon gestoor is.</string>
+    <string name="settings_load_failed_title">Instellings kon nie gelaai word nie</string>
+    <string name="settings_load_failed_message">LoadWatch kon nie die bediener bereik nie en het nog geen instellings op hierdie foon gestoor nie. Gaan jou verbinding na en probeer weer.</string>
+    <string name="settings_default_area">Verstekgebied</string>
+    <string name="settings_default_area_none">Kies \'n gebied</string>
+    <string name="settings_area_choice">%1$s, %2$s</string>
+    <string name="settings_find_area">Soek \'n ander gebied</string>
+    <string name="settings_notifications">Kennisgewings</string>
+    <string name="settings_notifications_enabled">Onderbrekingswaarskuwings</string>
+    <string name="settings_notifications_off_note">Waarskuwings is af. Jou waarskuwingstyd word gehou vir wanneer jy dit weer aanskakel.</string>
+    <string name="settings_lead_time">Waarsku my soveel minute voor \'n onderbreking</string>
+    <string name="settings_minutes_suffix">min</string>
+    <string name="settings_lead_decrease">Vyf minute minder</string>
+    <string name="settings_lead_increase">Vyf minute meer</string>
+    <string name="settings_lead_hint">Tussen %1$d en %2$d minute.</string>
+    <string name="settings_lead_out_of_range">Kies \'n heelgetal minute tussen %1$d en %2$d.</string>
+    <string name="settings_lead_empty">Voer in hoeveel minute voor \'n onderbreking jy gewaarsku wil word.</string>
+    <string name="settings_alert_types">Waarsku my oor</string>
+    <string name="settings_alert_power_off">Krag wat afgaan</string>
+    <string name="settings_alert_power_back">Krag wat terugkom</string>
+    <string name="settings_alert_stage_change">Faseveranderings</string>
+    <string name="settings_language">Taal</string>
+    <string name="settings_language_note">Verander LoadWatch se taal dadelik en word saam met jou rekening gestoor.</string>
+    <string name="settings_theme">Tema</string>
+    <string name="settings_theme_system">Volg die stelsel</string>
+    <string name="settings_theme_light">Lig</string>
+    <string name="settings_theme_dark">Donker</string>
+    <string name="settings_theme_note">Geld dadelik.</string>
+    <string name="settings_security">Sekuriteit</string>
+    <string name="settings_biometric">Biometriese ontsluiting</string>
+    <string name="settings_biometric_note">LoadWatch vra elke keer as dit oopmaak vir jou vingerafdruk, gesig of skermslot.</string>
+    <string name="settings_biometric_confirm_title">Skakel biometriese ontsluiting aan</string>
+    <string name="settings_biometric_confirm_subtitle">Bevestig dat dit jy is om LoadWatch te beskerm.</string>
+    <string name="settings_biometric_not_enrolled">Stel eers \'n vingerafdruk, gesig of skermslot in jou foon se instellings op.</string>
+    <string name="settings_biometric_no_hardware">Hierdie foon het geen vingerafdruk- of gesigsensor en geen skermslot nie, so biometriese ontsluiting kan nie gebruik word nie.</string>
+    <string name="settings_biometric_unavailable">Biometriese ontsluiting is nie nou beskikbaar nie. Probeer later weer.</string>
+    <string name="settings_biometric_cancelled">Biometriese ontsluiting is nie aangeskakel nie.</string>
+    <string name="settings_biometric_locked_out">Te veel pogings. Probeer binnekort weer.</string>
+    <string name="settings_save">Stoor veranderinge</string>
+    <string name="settings_saving">Stoor…</string>
+    <string name="settings_saved">Instellings gestoor.</string>
+    <string name="settings_saved_on_device">Op hierdie foon gestoor, maar nog nie met jou rekening gesinkroniseer nie.</string>
+    <string name="settings_rejected">Sommige instellings is nie aanvaar nie (%1$s). Gaan hulle na en probeer weer.</string>
+    <string name="settings_failed_offline">Jy is vanlyn. Verbind en probeer weer.</string>
+    <string name="settings_failed">LoadWatch kon nie jou instellings stoor nie. Probeer weer.</string>
+    <string name="settings_signing_out">Meld af…</string>
+</resources>
