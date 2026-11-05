@@ -60,6 +60,23 @@
     <string name="biometric_offer_open_settings">Maak Instellings oop</string>
     <string name="biometric_offer_not_now">Nie nou nie</string>
 
+    <!-- Stage-change push notifications -->
+    <string name="notification_channel_stage_alerts">Fasewysigingswaarskuwings</string>
+    <string name="notification_channel_stage_alerts_description">Laat weet jou wanneer die beurtkragfase in jou gekose gebied verander.</string>
+    <string name="stage_alert_title">Fase %1$d in %2$s</string>
+    <string name="stage_alert_ended_title">Beurtkrag het in %1$s geëindig</string>
+    <string name="stage_alert_body_changed">Beurtkrag het van fase %1$d na fase %2$d verander.</string>
+    <string name="stage_alert_body_started">Beurtkrag het op fase %1$d begin.</string>
+    <string name="stage_alert_body_ended">Geen onderbrekings is geskeduleer terwyl beurtkrag af is nie.</string>
+    <plurals name="stage_alert_next_outage">
+        <item quantity="one">Jou volgende onderbreking begin oor %1$d minuut.</item>
+        <item quantity="other">Jou volgende onderbreking begin oor %1$d minute.</item>
+    </plurals>
+    <string name="notification_permission_title">Kry fasewysigingswaarskuwings?</string>
+    <string name="notification_permission_message">LoadWatch kan jou laat weet sodra die beurtkragfase in jou gebied verander. Android sal dan vra of LoadWatch kennisgewings mag stuur.</string>
+    <string name="notification_permission_continue">Gaan voort</string>
+    <string name="notification_permission_not_now">Nie nou nie</string>
+
     <!-- S02 SSO Login -->
     <string name="login_title">Welkom by LoadWatch</string>
     <string name="login_tagline">Weet voordat die krag afgaan.</string>
