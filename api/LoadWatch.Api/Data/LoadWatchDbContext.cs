@@ -13,6 +13,8 @@ public class LoadWatchDbContext(DbContextOptions<LoadWatchDbContext> options) : 
     public DbSet<OutageReport> OutageReports => Set<OutageReport>();
     public DbSet<AccuracySummary> AccuracySummaries => Set<AccuracySummary>();
     public DbSet<StageStatus> StageStatus => Set<StageStatus>();
+    public DbSet<DeviceToken> DeviceTokens => Set<DeviceToken>();
+    public DbSet<AreaStage> AreaStages => Set<AreaStage>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -120,6 +122,34 @@ public class LoadWatchDbContext(DbContextOptions<LoadWatchDbContext> options) : 
             {
                 t.HasCheckConstraint("CK_StageStatus_SingleRow", "[Id] = 1");
                 t.HasCheckConstraint("CK_StageStatus_Stage", "[Stage] BETWEEN 0 AND 8");
+            });
+        });
+
+        modelBuilder.Entity<DeviceToken>(entity =>
+        {
+            entity.HasKey(d => d.Token);
+            entity.Property(d => d.Token).HasMaxLength(DeviceToken.MaxTokenLength);
+            entity.Property(d => d.Platform).HasMaxLength(16);
+            entity.HasOne<UserProfile>()
+                .WithMany()
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(d => d.UserId);
+            entity.ToTable(t => t.HasCheckConstraint("CK_DeviceTokens_Platform", "[Platform] IN ('android')"));
+        });
+
+        modelBuilder.Entity<AreaStage>(entity =>
+        {
+            entity.HasKey(a => a.AreaId);
+            entity.HasOne<Area>()
+                .WithOne()
+                .HasForeignKey<AreaStage>(a => a.AreaId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.ToTable(t =>
+            {
+                t.HasCheckConstraint("CK_AreaStages_Stage", "[Stage] IS NULL OR [Stage] BETWEEN 0 AND 8");
+                t.HasCheckConstraint(
+                    "CK_AreaStages_LastAlertedStage", "[LastAlertedStage] IS NULL OR [LastAlertedStage] BETWEEN 0 AND 8");
             });
         });
     }
