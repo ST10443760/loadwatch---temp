@@ -97,6 +97,8 @@ dependencies {
     implementation(libs.googleid)
     implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.androidx.compose.material.icons.core)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.biometric)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
