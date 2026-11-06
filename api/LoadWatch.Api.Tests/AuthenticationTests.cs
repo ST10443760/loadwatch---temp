@@ -151,7 +151,7 @@ public class AuthenticationTests(ApiFactory factory) : IClassFixture<ApiFactory>
         var client = factory.CreateClient(ApiFactory.CreateToken("user-a"));
         var body = new { reports = new[] { new { areaId = AreaId, eventType = "power_off" } } };
 
-        var errors = await AssertValidationErrorsAsync(await client.PostAsJsonAsync("/api/sync/outage-reports", body));
+        var errors = await AssertValidationErrorsAsync(await client.PostAsJsonAsync("/api/sync", body));
 
         Assert.Equal(["eventType must be POWER_OFF or POWER_BACK_ON"], ErrorsFor(errors, "reports[0].eventType"));
     }
