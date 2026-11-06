@@ -16,6 +16,10 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+/**
+ * Hilt module that builds the OkHttp client (auth interceptor, token authenticator, timeouts, logging), the
+ * kotlinx.serialization converter and the Retrofit [LoadWatchApi].
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {

@@ -40,6 +40,7 @@ class AuthInterceptor @Inject constructor(
 
 internal const val AUTHORIZATION_HEADER = "Authorization"
 
+/** Returns a copy of the request with the Firebase ID token in the Authorization header. */
 internal fun Request.withBearer(token: String): Request =
     newBuilder().header(AUTHORIZATION_HEADER, "Bearer $token").build()
 

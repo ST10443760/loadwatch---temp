@@ -14,6 +14,7 @@ data class AreaHistoryDto(
     val days: List<HistoryDayDto> = emptyList(),
 )
 
+/** One South African calendar day in the history response, with its outages and community reports. */
 @Serializable
 data class HistoryDayDto(
     val date: String,
@@ -31,6 +32,7 @@ data class HistoryOutageDto(
     val reportCount: Int,
 )
 
+/** A community report in the history response. It carries no reporter, so other users stay anonymous. */
 @Serializable
 data class HistoryReportDto(
     val reportId: String,

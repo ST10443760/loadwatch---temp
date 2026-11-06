@@ -50,6 +50,7 @@ data class SyncResultDto(
     @Serializable(with = InstantSerializer::class) val syncedAt: Instant,
 )
 
+/** A queued item the API refused, with its ID and the reason, so the phone can stop retrying it. */
 @Serializable
 data class SyncRejectionDto(
     val id: String,
