@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.notifications.NotificationChannels
 import com.example.loadwatch.data.repository.PushSync
+import com.example.loadwatch.data.sync.SyncStarter
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +17,10 @@ class LoadWatchApplication : Application() {
 
     @Inject lateinit var pushSync: PushSync
 
-    // Work that lasts as long as the app process, such as following the selected area's FCM topic
+    @Inject lateinit var syncStarter: SyncStarter
+
+    // Work that lasts as long as the app process, such as following the selected area's FCM topic and starting
+    // a sync of anything queued offline
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     override fun onCreate() {
@@ -25,5 +29,6 @@ class LoadWatchApplication : Application() {
         // Before any FCM message can arrive, so the first stage alert already has its channel
         NotificationChannels.createStageAlertChannel(this)
         pushSync.start(applicationScope)
+        syncStarter.start(applicationScope)
     }
 }
