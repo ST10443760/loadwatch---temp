@@ -148,6 +148,7 @@ private fun LogNavigationTransitions(navController: NavController) {
     }
 }
 
+/** One-time dialog after sign-in that offers to turn on biometric unlock in Settings. */
 @Composable
 private fun BiometricOfferDialog(
     onOpenSettings: () -> Unit,
@@ -166,6 +167,7 @@ private fun BiometricOfferDialog(
     )
 }
 
+/** Explains stage alerts before Android 13 and later asks for the notification permission. */
 @Composable
 private fun NotificationPermissionDialog(
     onContinue: () -> Unit,
@@ -189,6 +191,7 @@ private fun needsNotificationPermission(context: Context): Boolean =
     Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
         ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
 
+/** Bottom navigation between Home, Schedule, Report, Compare and Settings. */
 @Composable
 private fun LoadWatchBottomBar(
     selected: TopLevelDestination,

@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/** Whether the app is waiting to decide, locked behind biometric unlock, or open. */
 enum class AppLockState {
     // Reading the saved settings to decide whether to ask for biometrics
     CHECKING,
