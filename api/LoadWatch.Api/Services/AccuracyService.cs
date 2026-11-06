@@ -9,7 +9,7 @@ namespace LoadWatch.Api.Services;
 public class AccuracyService(LoadWatchDbContext db, TimeProvider time)
 {
     public const int WindowHours = 72;
-    private static readonly TimeSpan Tolerance = TimeSpan.FromMinutes(15);
+    public static readonly TimeSpan Tolerance = TimeSpan.FromMinutes(15);
 
     public async Task<AccuracySummary> RecomputeAsync(string areaId, CancellationToken ct = default)
     {
