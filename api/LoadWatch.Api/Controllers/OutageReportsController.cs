@@ -6,7 +6,6 @@ using LoadWatch.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace LoadWatch.Api.Controllers;
 
@@ -15,12 +14,9 @@ namespace LoadWatch.Api.Controllers;
 public class OutageReportsController(
     LoadWatchDbContext db,
     AccuracyService accuracy,
-    IOptions<OutageReportOptions> options,
+    OutageReportService reports,
     TimeProvider time) : ControllerBase
 {
-    // Device clocks drift, so allow a report to be slightly ahead of server time
-    private static readonly TimeSpan MaxClockSkew = TimeSpan.FromMinutes(5);
-
     private const int MaxReportsReturned = 500;
 
     // POST /api/outage-reports (bearer)
@@ -32,80 +28,33 @@ public class OutageReportsController(
     [HttpPost("outage-reports")]
     public async Task<ActionResult<OutageReport>> CreateReport([FromBody] OutageReportCreate request, CancellationToken ct)
     {
-        var userId = User.GetUserId();
+        var result = await reports.SubmitAsync(User.GetUserId(), request, ct);
+        switch (result.Outcome)
+        {
+            case ReportSubmissionOutcome.AlreadyStored:
+                return Ok(result.Report);
 
-        var original = await FindByClientReportIdAsync(userId, request.ClientReportId, ct);
-        if (original is not null)
-        {
-            return Ok(original);
-        }
+            case ReportSubmissionOutcome.Invalid:
+                foreach (var (field, message) in result.Errors!)
+                {
+                    ModelState.AddModelError(field, message);
+                }
+                return ValidationProblem(ModelState);
 
-        var now = time.GetUtcNow();
-        var eventType = request.EventType!.Value;
-        var reportedAt = request.ReportedAt!.Value.ToUniversalTime();
-        if (string.IsNullOrWhiteSpace(request.ClientReportId))
-        {
-            ModelState.AddModelError("clientReportId", "clientReportId cannot be empty.");
-        }
-        if (reportedAt > now + MaxClockSkew)
-        {
-            ModelState.AddModelError("reportedAt", "reportedAt cannot be in the future.");
-        }
-        if (!await db.Areas.AnyAsync(a => a.AreaId == request.AreaId, ct))
-        {
-            ModelState.AddModelError("areaId", $"No area exists with id '{request.AreaId}'.");
-        }
-        if (!ModelState.IsValid)
-        {
-            return ValidationProblem(ModelState);
-        }
+            case ReportSubmissionOutcome.Duplicate:
+                var problem = ProblemDetailsFactory.CreateProblemDetails(HttpContext,
+                    statusCode: StatusCodes.Status409Conflict,
+                    title: "Duplicate report",
+                    detail: $"This user already reported {request.EventType} for area '{request.AreaId}' within "
+                            + $"{reports.DuplicateWindowMinutes} minutes.");
+                problem.Extensions["existingReportId"] = result.ExistingReportId;
+                return Conflict(problem);
 
-        var window = TimeSpan.FromMinutes(options.Value.DuplicateWindowMinutes);
-        var windowStart = reportedAt - window;
-        var windowEnd = reportedAt + window;
-        var duplicate = await db.OutageReports.AsNoTracking()
-            .Where(r => r.UserId == userId && r.AreaId == request.AreaId && r.EventType == eventType
-                        && r.ReportedAt > windowStart && r.ReportedAt < windowEnd)
-            .OrderByDescending(r => r.ReportedAt)
-            .FirstOrDefaultAsync(ct);
-        if (duplicate is not null)
-        {
-            var problem = ProblemDetailsFactory.CreateProblemDetails(HttpContext,
-                statusCode: StatusCodes.Status409Conflict,
-                title: "Duplicate report",
-                detail: $"This user already reported {eventType} for area '{request.AreaId}' within "
-                        + $"{options.Value.DuplicateWindowMinutes} minutes.");
-            problem.Extensions["existingReportId"] = duplicate.ReportId;
-            return Conflict(problem);
+            default:
+                var report = result.Report!;
+                await accuracy.RecomputeAsync(report.AreaId, ct);
+                return Created($"/api/areas/{report.AreaId}/outage-reports", report);
         }
-
-        var report = new OutageReport
-        {
-            ReportId = Guid.NewGuid().ToString(),
-            ClientReportId = request.ClientReportId,
-            UserId = userId,
-            AreaId = request.AreaId,
-            EventType = eventType,
-            ReportedAt = reportedAt,
-            ClientCreatedAt = request.ClientCreatedAt!.Value.ToUniversalTime(),
-            // Accepted by the server, so it is synced by definition
-            SyncStatus = SyncStatus.SYNCED,
-        };
-        db.OutageReports.Add(report);
-
-        try
-        {
-            await db.SaveChangesAsync(ct);
-        }
-        catch (DbUpdateException ex) when (ex.IsUniqueViolation())
-        {
-            // A concurrent retry with the same clientReportId won the race, so return its report
-            db.Entry(report).State = EntityState.Detached;
-            return Ok(await FindByClientReportIdAsync(userId, request.ClientReportId, ct));
-        }
-
-        await accuracy.RecomputeAsync(report.AreaId, ct);
-        return Created($"/api/areas/{report.AreaId}/outage-reports", report);
     }
 
     // GET /api/areas/{areaId}/outage-reports?since= (anonymous)
@@ -150,8 +99,4 @@ public class OutageReportsController(
             CalculatedAt = time.GetUtcNow(),
         };
     }
-
-    private Task<OutageReport?> FindByClientReportIdAsync(string userId, string clientReportId, CancellationToken ct) =>
-        db.OutageReports.AsNoTracking()
-            .FirstOrDefaultAsync(r => r.UserId == userId && r.ClientReportId == clientReportId, ct);
 }

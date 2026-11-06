@@ -26,6 +26,7 @@ builder.Services.AddHostedService<DatabaseStartupService>();
 builder.Services.AddScoped<UserProfileService>();
 builder.Services.AddScoped<AccuracyService>();
 builder.Services.AddScoped<OutageHistoryService>();
+builder.Services.AddScoped<OutageReportService>();
 builder.Services.Configure<OutageReportOptions>(builder.Configuration.GetSection(OutageReportOptions.SectionName));
 builder.Services.AddFirebaseAuthentication(builder.Configuration);
 // Stage-change alerts: a background check every few seconds, sent to each area's FCM topic
