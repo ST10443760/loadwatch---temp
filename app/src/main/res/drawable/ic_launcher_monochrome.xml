@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Monochrome layer for Android 13 themed icons: the same mark in one colour, which the launcher tints -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- The thin ring: "watching" -->
+    <path
+        android:pathData="M54,24a30,30 0 1,1 0,60a30,30 0 1,1 0,-60z"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="3" />
+    <!-- The location pin: "this place" -->
+    <path
+        android:pathData="M54,72C50,66 39,58 39,47A15,15 0 1,1 69,47C69,58 58,66 54,72Z"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineJoin="round"
+        android:strokeWidth="3" />
+    <!-- The lightning bolt inside the pin: "electricity" -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M49,38L49,49L52,49L52,58L59,46L55,46L59,38Z" />
+</vector>
