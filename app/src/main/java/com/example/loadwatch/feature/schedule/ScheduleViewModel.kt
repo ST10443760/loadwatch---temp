@@ -44,6 +44,9 @@ enum class ScheduleRange(val days: Int) {
     FOURTEEN_DAYS(14),
 }
 
+/**
+ * What S06 Schedule shows: loading, no area, unavailable with nothing cached, or the days in the chosen range.
+ */
 sealed interface ScheduleUiState {
     data object Loading : ScheduleUiState
     data object NoArea : ScheduleUiState
@@ -61,14 +64,20 @@ sealed interface ScheduleUiState {
     ) : ScheduleUiState
 }
 
+/** The default area the schedule follows: still loading, none chosen, or a selected area. */
 private sealed interface ActiveArea {
     data object Loading : ActiveArea
     data object None : ActiveArea
     data class Selected(val areaId: String) : ActiveArea
 }
 
+/** Whether a refresh is running and why the last one failed. */
 private data class RefreshStatus(val isRefreshing: Boolean = false, val failure: DataFailure? = null)
 
+/**
+ * View model for S06 Schedule. It groups the default area's cached windows by day for the chosen range, and
+ * refreshes from the API on open and whenever the area or range changes.
+ */
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class ScheduleViewModel @Inject constructor(

@@ -100,6 +100,10 @@ fun HomeScreen(
     }
 }
 
+/**
+ * Stateless body of S04 Home: the area header, the countdown card, the next outage, the stage and accuracy
+ * cards, and the report button.
+ */
 @Composable
 private fun HomeContent(
     state: HomeUiState.Ready,
@@ -210,6 +214,7 @@ private fun SupplyStatusCard(state: HomeUiState.Ready, today: LocalDate, zone: Z
     }
 }
 
+/** Card with the next scheduled outage and its stage. */
 @Composable
 private fun NextEventCard(current: ScheduleEvent?, next: ScheduleEvent?, today: LocalDate, zone: ZoneId) {
     Card(modifier = Modifier.fillMaxWidth()) {
@@ -235,6 +240,7 @@ private fun NextEventCard(current: ScheduleEvent?, next: ScheduleEvent?, today: 
     }
 }
 
+/** A labelled outage time range, such as Next outage, Tomorrow, 5:00 AM to 7:30 AM. */
 @Composable
 private fun EventLine(title: String, event: ScheduleEvent, today: LocalDate, zone: ZoneId) {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -253,6 +259,7 @@ private fun EventLine(title: String, event: ScheduleEvent, today: LocalDate, zon
     }
 }
 
+/** Card with the current load-shedding stage. */
 @Composable
 private fun StageCard(stage: Int?, modifier: Modifier = Modifier) {
     SmallInfoCard(
@@ -276,6 +283,7 @@ private fun AccuracyCard(accuracy: AccuracyScore?, modifier: Modifier = Modifier
     )
 }
 
+/** Small card with a label above a value, used for the stage and accuracy on Home. */
 @Composable
 private fun SmallInfoCard(title: String, value: String, modifier: Modifier = Modifier) {
     Card(modifier = modifier) {

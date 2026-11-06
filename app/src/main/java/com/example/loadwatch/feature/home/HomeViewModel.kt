@@ -38,6 +38,10 @@ import java.time.Instant
 import java.time.LocalDate
 import javax.inject.Inject
 
+/**
+ * What S04 Home shows: loading, no area, unavailable with nothing cached, or the live countdown for the
+ * default area.
+ */
 sealed interface HomeUiState {
     data object Loading : HomeUiState
 
@@ -61,14 +65,20 @@ sealed interface HomeUiState {
     ) : HomeUiState
 }
 
+/** The default area Home follows: still loading, none chosen, or a selected area. */
 private sealed interface ActiveArea {
     data object Loading : ActiveArea
     data object None : ActiveArea
     data class Selected(val areaId: String) : ActiveArea
 }
 
+/** Whether a refresh is running and why the last one failed. */
 private data class RefreshStatus(val isRefreshing: Boolean = false, val failure: DataFailure? = null)
 
+/**
+ * View model for S04 Home. It follows the default area's cached schedule, ticks the countdown every second,
+ * and refreshes from the API when Home opens or the area changes.
+ */
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class HomeViewModel @Inject constructor(

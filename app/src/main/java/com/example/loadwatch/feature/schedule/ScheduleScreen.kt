@@ -123,6 +123,7 @@ fun ScheduleScreen(
     }
 }
 
+/** The 3, 7 and 14 day switch. */
 @Composable
 private fun RangeSelector(selected: ScheduleRange, onSelect: (ScheduleRange) -> Unit) {
     SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
@@ -138,6 +139,7 @@ private fun RangeSelector(selected: ScheduleRange, onSelect: (ScheduleRange) -> 
     }
 }
 
+/** The schedule as a list of days, each with its outage windows. */
 @Composable
 private fun Timeline(state: ScheduleUiState.Ready, onRetry: () -> Unit) {
     val zone = ZoneId.systemDefault()
@@ -178,6 +180,10 @@ private fun Timeline(state: ScheduleUiState.Ready, onRetry: () -> Unit) {
     }
 }
 
+/**
+ * One day's heading and outage windows. A day beyond the cached schedule says it is not loaded yet instead of
+ * showing as clear.
+ */
 @Composable
 private fun DaySection(day: ScheduleDay, today: LocalDate, zone: ZoneId) {
     Column(Modifier.padding(top = 8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
