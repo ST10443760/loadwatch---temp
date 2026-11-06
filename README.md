@@ -27,6 +27,7 @@ describes what the app does, how it is built and why, and how to build, run and 
 11. [Screenshots](#11-screenshots)
 12. [How to build and run](#12-how-to-build-and-run)
 13. [AI usage](#13-ai-usage)
+14. [Release notes and Play Store readiness](#14-release-notes-and-play-store-readiness)
 
 ## 1. Purpose
 
@@ -614,3 +615,10 @@ A `null` stage puts the area back on the national stage.
 
 How AI tools were used in this project, what I did myself and how the output was checked is declared in
 [docs/ai-usage.md](docs/ai-usage.md).
+
+## 14. Release notes and Play Store readiness
+
+- [RELEASE_NOTES.md](RELEASE_NOTES.md) lists every change since the Part 2 prototype and marks the features
+  that are new in the final version.
+- [docs/play-store-listing.md](docs/play-store-listing.md) holds the store listing, the data safety summary,
+  the signing and versioning details, and the promotional screenshots.
