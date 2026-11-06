@@ -430,7 +430,7 @@ The web app's settings:
 
 ## 11. Screenshots
 
-Screenshots go in `docs/screenshots/`. Replace each placeholder with the real file of the same name.
+These screenshots were taken on a Samsung phone. The files are in `docs/screenshots/`.
 
 | Screen | Image |
 |---|---|
@@ -443,9 +443,9 @@ Screenshots go in `docs/screenshots/`. Replace each placeholder with the real fi
 | S10 Outage history calendar | ![History calendar](docs/screenshots/s10-history-calendar.png) |
 | S10 Outage history list | ![History list](docs/screenshots/s10-history-list.png) |
 | Biometric lock | ![Lock](docs/screenshots/lock.png) |
-| Stage-change notification | ![Notification](docs/screenshots/stage-alert.png) |
+| Stage-change notification on the home screen | ![Notification](docs/screenshots/stage-alert.png) |
 | Offline banner and pending report | ![Offline](docs/screenshots/offline-pending.png) |
-| isiZulu and Afrikaans | ![Languages](docs/screenshots/languages.png) |
+| Home in isiZulu, with the offline banner | ![isiZulu](docs/screenshots/languages.png) |
 
 ## 12. How to build and run
 
