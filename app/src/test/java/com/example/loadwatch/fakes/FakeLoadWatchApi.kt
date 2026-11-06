@@ -3,6 +3,7 @@ package com.example.loadwatch.fakes
 import com.example.loadwatch.core.network.LoadWatchApi
 import com.example.loadwatch.core.network.dto.AccuracySummaryDto
 import com.example.loadwatch.core.network.dto.AreaDto
+import com.example.loadwatch.core.network.dto.AreaHistoryDto
 import com.example.loadwatch.core.network.dto.AreaSummaryDto
 import com.example.loadwatch.core.network.dto.CurrentStageDto
 import com.example.loadwatch.core.network.dto.DeviceRegistrationDto
@@ -13,6 +14,8 @@ import com.example.loadwatch.core.network.dto.NotificationRegistrationDto
 import com.example.loadwatch.core.network.dto.OutageReportCreateDto
 import com.example.loadwatch.core.network.dto.OutageReportDto
 import com.example.loadwatch.core.network.dto.ScheduleEventDto
+import com.example.loadwatch.core.network.dto.SyncBatchDto
+import com.example.loadwatch.core.network.dto.SyncResultDto
 import com.example.loadwatch.core.network.dto.UserSettingsDto
 import com.example.loadwatch.core.network.dto.UserSettingsUpdateDto
 import okhttp3.MediaType.Companion.toMediaType
@@ -28,6 +31,8 @@ class FakeLoadWatchApi : LoadWatchApi {
     val scheduleRequests = mutableListOf<Triple<String, Instant, Instant>>()
     val settingsUpdates = mutableListOf<UserSettingsUpdateDto>()
     val favouriteRequests = mutableListOf<FavouriteAreaCreateDto>()
+    val syncBatches = mutableListOf<SyncBatchDto>()
+    val historyRequests = mutableListOf<Pair<String, String>>()
 
     var searchHandler: suspend (String?) -> List<AreaSummaryDto> = { offline() }
     var areaHandler: suspend (String) -> AreaDto = { offline() }
@@ -42,6 +47,8 @@ class FakeLoadWatchApi : LoadWatchApi {
     var removeFavouriteHandler: suspend (String, String) -> Response<Unit> = { _, _ -> offline() }
     var registerDeviceHandler: suspend (NotificationRegistrationDto) -> DeviceRegistrationDto = { offline() }
     var createReportHandler: suspend (OutageReportCreateDto) -> Response<OutageReportDto> = { offline() }
+    var historyHandler: suspend (String, String) -> AreaHistoryDto = { _, _ -> offline() }
+    var syncHandler: suspend (SyncBatchDto) -> SyncResultDto = { offline() }
 
     fun callCount(name: String) = calls.count { it == name }
 
@@ -113,6 +120,18 @@ class FakeLoadWatchApi : LoadWatchApi {
         return accuracyHandler(areaId)
     }
 
+
+    override suspend fun getHistory(areaId: String, month: String): AreaHistoryDto {
+        calls += "getHistory"
+        historyRequests += areaId to month
+        return historyHandler(areaId, month)
+    }
+
+    override suspend fun sync(batch: SyncBatchDto): SyncResultDto {
+        calls += "sync"
+        syncBatches += batch
+        return syncHandler(batch)
+    }
     override suspend fun registerDevice(request: NotificationRegistrationDto): DeviceRegistrationDto {
         calls += "registerDevice"
         return registerDeviceHandler(request)

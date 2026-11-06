@@ -2,6 +2,7 @@ package com.example.loadwatch.core.network
 
 import com.example.loadwatch.core.network.dto.AccuracySummaryDto
 import com.example.loadwatch.core.network.dto.AreaDto
+import com.example.loadwatch.core.network.dto.AreaHistoryDto
 import com.example.loadwatch.core.network.dto.AreaSummaryDto
 import com.example.loadwatch.core.network.dto.CurrentStageDto
 import com.example.loadwatch.core.network.dto.DeviceRegistrationDto
@@ -12,6 +13,8 @@ import com.example.loadwatch.core.network.dto.NotificationRegistrationDto
 import com.example.loadwatch.core.network.dto.OutageReportCreateDto
 import com.example.loadwatch.core.network.dto.OutageReportDto
 import com.example.loadwatch.core.network.dto.ScheduleEventDto
+import com.example.loadwatch.core.network.dto.SyncBatchDto
+import com.example.loadwatch.core.network.dto.SyncResultDto
 import com.example.loadwatch.core.network.dto.UserSettingsDto
 import com.example.loadwatch.core.network.dto.UserSettingsUpdateDto
 import retrofit2.Response
@@ -25,8 +28,7 @@ import retrofit2.http.Query
 import java.time.Instant
 
 // The endpoints from Table 6. Routes marked bearer (settings, favourites, the outage report POST, device
-// registration) get the Firebase ID token from AuthInterceptor. The sync batch and history endpoints are added
-// with those features.
+// registration, the sync batch) get the Firebase ID token from AuthInterceptor.
 // Instant query values are sent as ISO-8601 UTC via Instant.toString().
 interface LoadWatchApi {
 
@@ -88,6 +90,14 @@ interface LoadWatchApi {
 
     @GET("api/areas/{areaId}/accuracy")
     suspend fun getAreaAccuracy(@Path("areaId") areaId: String): AccuracySummaryDto
+
+    // Outage history (anonymous); month is yyyy-MM
+    @GET("api/areas/{areaId}/history")
+    suspend fun getHistory(@Path("areaId") areaId: String, @Query("month") month: String): AreaHistoryDto
+
+    // Offline sync (bearer): reports, favourite changes and settings queued on the phone, in one request
+    @POST("api/sync")
+    suspend fun sync(@Body batch: SyncBatchDto): SyncResultDto
 
     // Push notifications (bearer)
 
