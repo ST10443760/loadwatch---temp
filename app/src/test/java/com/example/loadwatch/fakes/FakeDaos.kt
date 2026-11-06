@@ -4,6 +4,7 @@ import com.example.loadwatch.core.common.SyncStatus
 import com.example.loadwatch.core.database.dao.AreaDao
 import com.example.loadwatch.core.database.dao.AreaStatusDao
 import com.example.loadwatch.core.database.dao.FavouriteAreaDao
+import com.example.loadwatch.core.database.dao.HistoryDao
 import com.example.loadwatch.core.database.dao.OutageReportDao
 import com.example.loadwatch.core.database.dao.PendingSyncDao
 import com.example.loadwatch.core.database.dao.RecentAreaDao
@@ -15,6 +16,9 @@ import com.example.loadwatch.core.database.entity.AreaRefreshEntity
 import com.example.loadwatch.core.database.entity.CurrentStageEntity
 import com.example.loadwatch.core.database.entity.FavouriteAreaEntity
 import com.example.loadwatch.core.database.entity.FavouriteWithArea
+import com.example.loadwatch.core.database.entity.HistoryMonthEntity
+import com.example.loadwatch.core.database.entity.HistoryOutageEntity
+import com.example.loadwatch.core.database.entity.HistoryReportEntity
 import com.example.loadwatch.core.database.entity.OutageReportEntity
 import com.example.loadwatch.core.database.entity.PendingSyncEntity
 import com.example.loadwatch.core.database.entity.PendingSyncStatus
@@ -186,4 +190,27 @@ class FakeRecentAreaDao(private val areaDao: FakeAreaDao) : RecentAreaDao {
     override suspend fun deleteAll() {
         recents.value = emptyList()
     }
+}
+
+class FakeHistoryDao : HistoryDao {
+    val outages = MutableStateFlow<List<HistoryOutageEntity>>(emptyList())
+    val reports = MutableStateFlow<List<HistoryReportEntity>>(emptyList())
+    val months = MutableStateFlow<List<HistoryMonthEntity>>(emptyList())
+
+    override fun observeOutages(areaId: String, month: String): Flow<List<HistoryOutageEntity>> =
+        outages.map { list -> list.filter { it.areaId == areaId && it.month == month }.sortedBy { it.startAt } }
+    override fun observeReports(areaId: String, month: String): Flow<List<HistoryReportEntity>> =
+        reports.map { list -> list.filter { it.areaId == areaId && it.month == month }.sortedBy { it.reportedAt } }
+    override fun observeMonth(areaId: String, month: String): Flow<HistoryMonthEntity?> =
+        months.map { list -> list.firstOrNull { it.areaId == areaId && it.month == month } }
+    override suspend fun deleteOutages(areaId: String, month: String) =
+        outages.update { list -> list.filterNot { it.areaId == areaId && it.month == month } }
+    override suspend fun deleteReports(areaId: String, month: String) =
+        reports.update { list -> list.filterNot { it.areaId == areaId && it.month == month } }
+    override suspend fun insertOutages(outages: List<HistoryOutageEntity>) =
+        this.outages.update { current -> current.filterNot { old -> outages.any { it.scheduleId == old.scheduleId } } + outages }
+    override suspend fun insertReports(reports: List<HistoryReportEntity>) =
+        this.reports.update { current -> current.filterNot { old -> reports.any { it.reportId == old.reportId } } + reports }
+    override suspend fun upsertMonth(month: HistoryMonthEntity) =
+        months.update { list -> list.filterNot { it.areaId == month.areaId && it.month == month.month } + month }
 }
