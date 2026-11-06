@@ -12,6 +12,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import javax.inject.Inject
 
+/**
+ * Application entry point and Hilt root. On start it creates the stage alert notification channel, keeps the
+ * FCM token and area topic in step with the session, and starts a sync of anything still queued from offline
+ * use.
+ */
 @HiltAndroidApp
 class LoadWatchApplication : Application() {
 

@@ -28,11 +28,13 @@ import java.util.Locale
 @ReadOnlyComposable
 private fun currentLocale(): Locale = LocalConfiguration.current.locales[0]
 
+/** Formats an instant as a short local time, such as 5:00 PM or 17:00, in the app's current language. */
 @Composable
 @ReadOnlyComposable
 fun formatLocalTime(instant: Instant, zone: ZoneId = ZoneId.systemDefault()): String =
     DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(currentLocale()).format(instant.atZone(zone))
 
+/** Formats an outage window as a localised start to end time range. */
 @Composable
 @ReadOnlyComposable
 fun formatTimeRange(start: Instant, end: Instant, zone: ZoneId = ZoneId.systemDefault()): String =
@@ -80,6 +82,7 @@ fun describeDuration(remaining: Duration): String {
     }
 }
 
+/** Small badge that shows a load-shedding stage, such as Stage 4, in the app's language. */
 @Composable
 fun StageBadge(stage: Int, modifier: Modifier = Modifier) {
     Surface(

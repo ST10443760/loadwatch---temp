@@ -85,6 +85,10 @@ fun LoadWatchTheme(
     }
 }
 
+/**
+ * Access to LoadWatch's own theme values that Material 3 has no slot for, such as the power on and power off
+ * status colours.
+ */
 object LoadWatchTheme {
     val statusColors: StatusColors
         @Composable
