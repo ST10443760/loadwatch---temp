@@ -5,6 +5,8 @@ namespace LoadWatch.Api.Health;
 
 // Healthy when startup has prepared the database and the API can still open a connection to it. Never throws,
 // so an unreachable database turns into a 503 from /health rather than an error.
+// Reference: Microsoft Learn, "Health checks in ASP.NET Core",
+// learn.microsoft.com/aspnet/core/host-and-deploy/health-checks
 public class DatabaseHealthCheck(LoadWatchDbContext db, DatabaseReadiness readiness) : IHealthCheck
 {
     // Health checks must answer quickly, so don't wait out EF Core's retries or a full resume

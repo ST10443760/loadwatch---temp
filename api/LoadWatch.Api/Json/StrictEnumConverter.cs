@@ -14,6 +14,7 @@ public class StrictEnumConverterFactory : JsonConverterFactory
         (JsonConverter)Activator.CreateInstance(typeof(StrictEnumConverter<>).MakeGenericType(typeToConvert))!;
 }
 
+/// <summary>The converter the factory creates for one enum type.</summary>
 public class StrictEnumConverter<T> : JsonConverter<T> where T : struct, Enum
 {
     private static readonly string[] Names = Enum.GetNames<T>();

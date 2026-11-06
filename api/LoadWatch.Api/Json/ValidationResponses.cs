@@ -14,6 +14,9 @@ public static class ValidationResponses
     // e.g. "must be POWER_OFF or POWER_BACK_ON" becomes "eventType must be POWER_OFF or POWER_BACK_ON"
     public const string FieldMessagePrefix = "must be ";
 
+    /// <summary>
+    /// Builds the 400 response for an invalid request, used as the API's InvalidModelStateResponseFactory.
+    /// </summary>
     public static IActionResult Create(ActionContext context)
     {
         var bodyParameters = context.ActionDescriptor.Parameters
@@ -51,6 +54,7 @@ public static class ValidationResponses
         return new BadRequestObjectResult(problem) { ContentTypes = { "application/problem+json" } };
     }
 
+    /// <summary>Turns a System.Text.Json error into a message that names the field.</summary>
     private static string DescribeJsonError(string field, string message)
     {
         // "reports[0].eventType" is described as "eventType"

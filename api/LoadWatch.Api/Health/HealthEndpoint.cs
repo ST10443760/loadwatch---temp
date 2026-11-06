@@ -15,6 +15,7 @@ public static class HealthEndpoint
 
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
 
+    /// <summary>Registers the database health check used by /health.</summary>
     public static IServiceCollection AddLoadWatchHealthChecks(this IServiceCollection services)
     {
         services.AddHealthChecks().AddCheck<DatabaseHealthCheck>(DatabaseCheck);
@@ -26,6 +27,9 @@ public static class HealthEndpoint
             .MapHealthChecks(Path, new HealthCheckOptions { ResponseWriter = WriteJsonAsync })
             .AllowAnonymous();
 
+    /// <summary>
+    /// Writes the health report as JSON: the overall and database status, and a detail only when something is wrong.
+    /// </summary>
     private static Task WriteJsonAsync(HttpContext context, HealthReport report)
     {
         var found = report.Entries.TryGetValue(DatabaseCheck, out var entry);
@@ -38,6 +42,7 @@ public static class HealthEndpoint
         return context.Response.WriteAsync(JsonSerializer.Serialize(body, JsonOptions));
     }
 
+    /// <summary>The JSON body returned by /health.</summary>
     public record HealthResponse(
         string Status,
         string Database,

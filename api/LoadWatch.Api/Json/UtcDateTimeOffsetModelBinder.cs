@@ -31,6 +31,7 @@ public class UtcDateTimeOffsetModelBinder : IModelBinder
     }
 }
 
+/// <summary>Applies the UTC model binder to every DateTimeOffset query or route parameter.</summary>
 public class UtcDateTimeOffsetModelBinderProvider : IModelBinderProvider
 {
     public IModelBinder? GetBinder(ModelBinderProviderContext context)

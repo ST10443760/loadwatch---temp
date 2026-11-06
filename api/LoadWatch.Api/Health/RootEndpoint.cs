@@ -15,5 +15,8 @@ public static class RootEndpoint
             .AllowAnonymous()
             .ExcludeFromDescription();
 
+    /// <summary>
+    /// The JSON body returned by the root path, which says the API is running and where /health is.
+    /// </summary>
     public record RootResponse(string Service, string Status, string Message, string Health);
 }
