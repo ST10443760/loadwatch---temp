@@ -10,10 +10,12 @@ import com.example.loadwatch.data.remote.ScheduleRemoteDataSource
 import com.example.loadwatch.fakes.FakeAreaStatusDao
 import com.example.loadwatch.fakes.FakeAuthSession
 import com.example.loadwatch.fakes.FakeLoadWatchApi
+import com.example.loadwatch.fakes.FakePendingSyncDao
 import com.example.loadwatch.fakes.FakeOutageReportDao
 import com.example.loadwatch.fakes.SAST
 import com.example.loadwatch.fakes.offline
 import com.example.loadwatch.fakes.testJson
+import com.example.loadwatch.fakes.testSyncQueue
 import kotlinx.coroutines.test.runTest
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -28,6 +30,7 @@ class OfflineFirstReportRepositoryTest {
 
     private val now = Instant.parse("2026-10-22T18:00:00Z")
     private val api = FakeLoadWatchApi()
+    private val pendingSyncDao = FakePendingSyncDao()
     private val reportDao = FakeOutageReportDao()
     private val statusDao = FakeAreaStatusDao()
     private val repository = OfflineFirstReportRepository(
@@ -36,6 +39,7 @@ class OfflineFirstReportRepositoryTest {
         scheduleRemote = ScheduleRemoteDataSource(api, testJson),
         outageReportDao = reportDao,
         areaStatusDao = statusDao,
+        syncQueue = testSyncQueue(pendingSyncDao),
         clock = Clock.fixed(now, SAST),
     )
 

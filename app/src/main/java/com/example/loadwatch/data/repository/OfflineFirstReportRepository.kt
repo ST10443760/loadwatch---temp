@@ -17,6 +17,8 @@ import com.example.loadwatch.data.remote.RemoteResult
 import com.example.loadwatch.data.remote.ReportPostResult
 import com.example.loadwatch.data.remote.ReportRemoteDataSource
 import com.example.loadwatch.data.remote.ScheduleRemoteDataSource
+import com.example.loadwatch.data.sync.SyncEntityType
+import com.example.loadwatch.data.sync.SyncQueue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -34,6 +36,7 @@ class OfflineFirstReportRepository @Inject constructor(
     private val scheduleRemote: ScheduleRemoteDataSource,
     private val outageReportDao: OutageReportDao,
     private val areaStatusDao: AreaStatusDao,
+    private val syncQueue: SyncQueue,
     private val clock: Clock,
 ) : ReportRepository {
 
@@ -97,12 +100,14 @@ class OfflineFirstReportRepository @Inject constructor(
     }
 
     // Sends a stored report. The same clientReportId is used on every attempt, so a retry after a dropped
-    // response returns the original report instead of counting twice.
+    // response returns the original report instead of counting twice. A report that cannot be sent now is queued,
+    // and the sync worker sends it as soon as the phone is online.
     private suspend fun send(report: OutageReportEntity): ReportResult =
         when (val result = reportRemote.submit(report.toCreateDto())) {
             is ReportPostResult.Accepted -> {
                 val accepted = result.report.toEntity()
                 outageReportDao.replaceWithServerCopy(accepted)
+                syncQueue.remove(SyncEntityType.REPORT, report.clientReportId)
                 Log.i(LogTags.API, "Report accepted for ${report.areaId}")
                 // Show the effect of the report on the area's score
                 refreshAccuracy(report.areaId)
@@ -111,27 +116,32 @@ class OfflineFirstReportRepository @Inject constructor(
             is ReportPostResult.AlreadyReported -> {
                 // The API already counts this event; the local duplicate has nothing left to do
                 outageReportDao.deleteByClientReportId(report.userId, report.clientReportId)
+                syncQueue.remove(SyncEntityType.REPORT, report.clientReportId)
                 Log.i(LogTags.API, "Report for ${report.areaId} was already reported")
                 ReportResult.AlreadyReported
             }
             is ReportPostResult.Rejected ->
                 if (result.status == 401) {
                     outageReportDao.updateSyncStatus(report.reportId, SyncStatus.PENDING)
+                    syncQueue.enqueueReport(report.toCreateDto())
                     Log.w(LogTags.SYNC, "Report for ${report.areaId} kept as PENDING: not signed in")
                     ReportResult.NotSignedIn
                 } else {
                     outageReportDao.updateSyncStatus(report.reportId, SyncStatus.REJECTED)
+                    syncQueue.remove(SyncEntityType.REPORT, report.clientReportId)
                     Log.e(LogTags.SYNC, "Report for ${report.areaId} marked REJECTED with HTTP ${result.status}")
                     ReportResult.Rejected(result.problem?.errors?.keys?.toList().orEmpty())
                 }
             is ReportPostResult.ServerError -> {
                 outageReportDao.updateSyncStatus(report.reportId, SyncStatus.PENDING)
+                syncQueue.enqueueReport(report.toCreateDto())
                 Log.e(LogTags.SYNC, "Report for ${report.areaId} kept as PENDING after server error ${result.status}")
                 ReportResult.Failed(DataFailure.SERVER)
             }
             is ReportPostResult.NetworkFailure -> {
                 outageReportDao.updateSyncStatus(report.reportId, SyncStatus.PENDING)
-                Log.i(LogTags.SYNC, "Report for ${report.areaId} saved on the device as PENDING")
+                syncQueue.enqueueReport(report.toCreateDto())
+                Log.i(LogTags.SYNC, "Report for ${report.areaId} saved on the device as PENDING and queued")
                 ReportResult.SavedOffline(report.copy(syncStatus = SyncStatus.PENDING).toModel())
             }
         }
