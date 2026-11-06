@@ -1,6 +1,8 @@
 package com.example.loadwatch.core.network.dto
 
 import com.example.loadwatch.core.network.InstantSerializer
+import kotlinx.serialization.EncodeDefault
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import java.time.Instant
 
@@ -48,11 +50,13 @@ data class FavouriteAreaCreateDto(
     val label: String? = null,
 )
 
-// POST /api/notifications/registrations body: the phone's FCM token
+// POST /api/notifications/registrations body: the phone's FCM token. The API rejects a body without platform,
+// and the shared Json leaves out fields equal to their default, so platform is written out every time.
+@OptIn(ExperimentalSerializationApi::class)
 @Serializable
 data class NotificationRegistrationDto(
     val fcmToken: String,
-    val platform: String = "android",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS) val platform: String = "android",
 )
 
 // POST /api/notifications/registrations returns the stored DeviceToken (201 new, 200 already registered)
