@@ -6,6 +6,9 @@ using Microsoft.Extensions.Options;
 
 namespace LoadWatch.Api.Services;
 
+/// <summary>
+/// How a submitted report was handled, which the controllers turn into a status code or a sync outcome.
+/// </summary>
 public enum ReportSubmissionOutcome
 {
     // A new report was stored
@@ -20,6 +23,7 @@ public enum ReportSubmissionOutcome
     Invalid,
 }
 
+/// <summary>The outcome of a submission, with the stored report or the validation errors.</summary>
 public record ReportSubmission(
     ReportSubmissionOutcome Outcome,
     OutageReport? Report = null,
@@ -35,6 +39,10 @@ public class OutageReportService(LoadWatchDbContext db, IOptions<OutageReportOpt
 
     public int DuplicateWindowMinutes => options.Value.DuplicateWindowMinutes;
 
+    /// <summary>
+    /// Validates and stores one report for the signed-in user. A retried clientReportId returns the original
+    /// report instead of storing a second one.
+    /// </summary>
     public async Task<ReportSubmission> SubmitAsync(string userId, OutageReportCreate request, CancellationToken ct)
     {
         var original = await FindByClientReportIdAsync(userId, request.ClientReportId, ct);

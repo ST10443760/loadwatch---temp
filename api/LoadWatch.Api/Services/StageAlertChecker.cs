@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoadWatch.Api.Services;
 
+/// <summary>One detected stage change and what happened when its alert was sent.</summary>
 public record StageAlertOutcome(StageChange Change, StageAlertSendResult Result);
 
 // Lets only one check run at a time, so the background service and the demo endpoint never alert the same change twice
@@ -80,6 +81,9 @@ public class StageAlertChecker(
         return outcomes;
     }
 
+    /// <summary>
+    /// Stores the stage that was announced for an area, adding its AreaStages row if it has none yet.
+    /// </summary>
     private void Record(Dictionary<string, AreaStage> stages, string areaId, int alertedStage, DateTimeOffset now)
     {
         if (!stages.TryGetValue(areaId, out var row))

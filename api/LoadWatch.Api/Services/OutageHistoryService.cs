@@ -14,6 +14,9 @@ public class OutageHistoryService(LoadWatchDbContext db, TimeProvider time)
     // Keeps one month's response bounded even for a busy area
     public const int MaxReports = 2000;
 
+    /// <summary>
+    /// Builds the history for one area and month. Only outages that have already started are included.
+    /// </summary>
     public async Task<AreaHistory> GetMonthAsync(string areaId, DateOnly month, CancellationToken ct)
     {
         var monthStart = new DateTimeOffset(month.ToDateTime(TimeOnly.MinValue), Sast);

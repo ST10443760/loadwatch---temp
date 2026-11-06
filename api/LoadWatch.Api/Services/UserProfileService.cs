@@ -11,6 +11,10 @@ namespace LoadWatch.Api.Services;
 // and pick up a changed name or email.
 public class UserProfileService(LoadWatchDbContext db, TimeProvider time)
 {
+    /// <summary>
+    /// Creates the signed-in user's profile on first use, or refreshes lastSeenAt and any changed name or
+    /// email.
+    /// </summary>
     public async Task<UserProfile> EnsureProfileAsync(ClaimsPrincipal user, CancellationToken ct = default)
     {
         var userId = user.GetUserId();

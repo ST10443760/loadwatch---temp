@@ -7,6 +7,8 @@ namespace LoadWatch.Api.Services;
 // Sends stage-change alerts through Firebase Cloud Messaging with the Admin SDK. The service account key comes
 // from the FIREBASE_SERVICE_ACCOUNT_JSON environment variable (an App Service setting on Azure) and is never
 // committed. Without it the API still runs: each alert is logged and skipped instead.
+// Reference: Firebase, "Send messages to topics" with the Firebase Admin SDK for .NET,
+// firebase.google.com/docs/cloud-messaging/send-message
 public sealed class FirebaseStageAlertSender : IStageAlertSender
 {
     public const string ServiceAccountVariable = "FIREBASE_SERVICE_ACCOUNT_JSON";
@@ -17,6 +19,10 @@ public sealed class FirebaseStageAlertSender : IStageAlertSender
     private readonly FirebaseMessaging? _messaging;
     private readonly ILogger<FirebaseStageAlertSender> _logger;
 
+    /// <summary>
+    /// Reads the service account from configuration and creates the Firebase app once. Without a key, sending
+    /// is turned off.
+    /// </summary>
     public FirebaseStageAlertSender(IConfiguration configuration, ILogger<FirebaseStageAlertSender> logger)
     {
         _logger = logger;
@@ -42,6 +48,9 @@ public sealed class FirebaseStageAlertSender : IStageAlertSender
         }
     }
 
+    /// <summary>
+    /// Sends one data-only, high-priority message to the area's topic and maps Firebase errors to Failed.
+    /// </summary>
     public async Task<StageAlertSendResult> SendAsync(
         string topic, IReadOnlyDictionary<string, string> data, CancellationToken ct)
     {

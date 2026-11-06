@@ -3,8 +3,13 @@ namespace LoadWatch.Api.Services;
 // What one area looks like to the detector: its own stage if it has one, and the stage last announced for it
 public record AreaStageSnapshot(string AreaId, int? OwnStage, int? LastAlertedStage);
 
+/// <summary>An area whose stage differs from the one last announced, and needs an alert.</summary>
 public record StageChange(string AreaId, int PreviousStage, int Stage);
 
+/// <summary>
+/// The detector's result: the changes to announce, and the areas seen for the first time that only need a
+/// baseline recorded.
+/// </summary>
 public record StageDetection(
     // Areas whose stage moved since subscribers were last told; each needs an alert
     IReadOnlyList<StageChange> Changes,
@@ -18,6 +23,9 @@ public static class StageChangeDetector
     // An area's stage is its own when set, otherwise the national stage
     public static int EffectiveStage(int nationalStage, int? ownStage) => ownStage ?? nationalStage;
 
+    /// <summary>
+    /// Compares each area's effective stage, its own or the national one, with the stage last announced for it.
+    /// </summary>
     public static StageDetection Detect(int nationalStage, IEnumerable<AreaStageSnapshot> areas)
     {
         var changes = new List<StageChange>();

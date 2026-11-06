@@ -1,5 +1,6 @@
 namespace LoadWatch.Api.Services;
 
+/// <summary>The result of trying to send one stage-change alert.</summary>
 public enum StageAlertSendResult
 {
     Sent,
@@ -11,6 +12,10 @@ public enum StageAlertSendResult
     Failed,
 }
 
+/// <summary>
+/// Sends a stage-change alert to an area's FCM topic. An interface so the tests can record alerts instead of
+/// calling Firebase.
+/// </summary>
 public interface IStageAlertSender
 {
     Task<StageAlertSendResult> SendAsync(string topic, IReadOnlyDictionary<string, string> data, CancellationToken ct);

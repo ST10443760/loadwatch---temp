@@ -1,5 +1,9 @@
 namespace LoadWatch.Api.Services;
 
+/// <summary>
+/// Settings for stage-change alerts, bound from the StageAlerts configuration section (StageAlerts__* on
+/// Azure).
+/// </summary>
 public class StageAlertOptions
 {
     public const string SectionName = "StageAlerts";

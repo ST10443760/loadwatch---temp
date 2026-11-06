@@ -11,6 +11,7 @@ public class AccuracyService(LoadWatchDbContext db, TimeProvider time)
     public const int WindowHours = 72;
     public static readonly TimeSpan Tolerance = TimeSpan.FromMinutes(15);
 
+    /// <summary>Recomputes and saves the accuracy score for one area from its recent reports.</summary>
     public async Task<AccuracySummary> RecomputeAsync(string areaId, CancellationToken ct = default)
     {
         var now = time.GetUtcNow();

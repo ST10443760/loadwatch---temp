@@ -6,6 +6,8 @@ namespace LoadWatch.Api.Services;
 // Checks for stage changes every few seconds once the database is ready. It waits for DatabaseStartupService
 // rather than retrying on its own, so the startup retry stays the one place that decides whether the API can run.
 // A failed pass is logged and tried again on the next tick; it never stops the API.
+// Reference: Microsoft Learn, "Background tasks with hosted services in ASP.NET Core",
+// learn.microsoft.com/aspnet/core/fundamentals/host/hosted-services
 public class StageAlertService(
     IServiceScopeFactory scopes,
     DatabaseReadiness readiness,
@@ -46,6 +48,10 @@ public class StageAlertService(
         }
     }
 
+    /// <summary>
+    /// Runs one check in its own DI scope, so each pass gets a fresh DbContext. Errors are logged and the loop
+    /// goes on.
+    /// </summary>
     private async Task CheckOnceAsync(CancellationToken ct)
     {
         try
