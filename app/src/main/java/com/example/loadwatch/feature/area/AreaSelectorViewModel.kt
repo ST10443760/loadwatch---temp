@@ -38,6 +38,7 @@ sealed interface FavouriteMessage {
     data class Failed(val failure: DataFailure) : FavouriteMessage
 }
 
+/** State of the favourite label dialog on S05 Area Selector, and the last result to show. */
 data class FavouriteEditState(
     // The area waiting for a label before it is saved as a favourite
     val pendingArea: Area? = null,
@@ -45,6 +46,10 @@ data class FavouriteEditState(
     val message: FavouriteMessage? = null,
 )
 
+/**
+ * View model for S05 Area Selector. It searches areas, switches the default area, records recent areas and
+ * saves favourites.
+ */
 @HiltViewModel
 class AreaSelectorViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,

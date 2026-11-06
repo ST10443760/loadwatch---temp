@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/** Progress of saving a chosen area as the default, shared by S03 Area Onboarding and S05 Area Selector. */
 data class AreaChoiceState(
     val savingAreaId: String? = null,
     // The last save that did not fully succeed, with the area it was for

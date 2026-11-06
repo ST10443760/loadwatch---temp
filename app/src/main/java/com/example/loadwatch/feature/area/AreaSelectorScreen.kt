@@ -187,6 +187,7 @@ private fun FavouriteChips(favourites: List<Favourite>, enabled: Boolean, onClic
     }
 }
 
+/** Heart button that saves or removes an area as a favourite, labelled for TalkBack with the area's name. */
 @Composable
 private fun FavouriteToggle(isFavourite: Boolean, areaName: String, onClick: () -> Unit) {
     IconButton(onClick = onClick) {
@@ -201,6 +202,7 @@ private fun FavouriteToggle(isFavourite: Boolean, areaName: String, onClick: () 
     }
 }
 
+/** The areas the user switched to recently, so they can switch back with one tap. */
 @Composable
 private fun RecentAreas(
     areas: List<Area>,
@@ -238,6 +240,7 @@ private fun RecentAreas(
     }
 }
 
+/** Text for the result of saving a favourite, such as added, already saved or saved offline. */
 @Composable
 private fun favouriteMessageText(message: FavouriteMessage): String = when (message) {
     is FavouriteMessage.Added -> stringResource(R.string.favourite_added, message.areaName)

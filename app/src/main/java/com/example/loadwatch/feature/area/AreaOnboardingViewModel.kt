@@ -13,6 +13,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
+/**
+ * View model for S03 Area Onboarding. It searches for the user's suburb and saves the chosen area as their
+ * default before Home opens.
+ */
 @HiltViewModel
 class AreaOnboardingViewModel @Inject constructor(
     areaRepository: AreaRepository,

@@ -38,6 +38,7 @@ import com.example.loadwatch.data.model.DataFailure
 import com.example.loadwatch.data.model.Supplier
 import com.example.loadwatch.data.repository.SaveSettingsResult
 
+/** Suburb or municipality search box with the minimum-length and invalid-character hints. */
 @Composable
 fun AreaSearchField(
     query: String,
@@ -66,6 +67,10 @@ fun AreaSearchField(
 // How a result row responds to a tap: a radio choice confirmed later (S03), or an immediate switch (S05)
 enum class AreaRowMode { SELECT, SWITCH }
 
+/**
+ * One area in the search results or the recent list, with its municipality and supplier so similar suburb
+ * names can be told apart.
+ */
 @Composable
 fun AreaRow(
     area: Area,

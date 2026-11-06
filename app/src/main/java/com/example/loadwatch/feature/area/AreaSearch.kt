@@ -21,6 +21,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
+/**
+ * What the area search shows as the user types: nothing yet, a validation hint, searching, the results, no
+ * matches or a failure.
+ */
 sealed interface AreaSearchState {
     // Fewer than MIN_QUERY_LENGTH characters typed
     data object Idle : AreaSearchState
