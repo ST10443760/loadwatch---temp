@@ -17,6 +17,8 @@ import com.example.loadwatch.data.model.ThemePreference
 import com.example.loadwatch.data.model.UserSettings
 import com.example.loadwatch.data.remote.RemoteResult
 import com.example.loadwatch.data.remote.SettingsRemoteDataSource
+import com.example.loadwatch.data.sync.SyncEntityType
+import com.example.loadwatch.data.sync.SyncQueue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -47,6 +49,7 @@ class SettingsRepository @Inject constructor(
     private val local: SettingsLocalDataSource,
     private val remote: SettingsRemoteDataSource,
     private val areaRepository: AreaRepository,
+    private val syncQueue: SyncQueue,
 ) {
 
     // The signed-in user's default area, which Home shows and S05 switches
@@ -139,32 +142,46 @@ class SettingsRepository @Inject constructor(
     }
 
     // Copies the API's settings into Room, e.g. after signing in on a new device. Returns null when the API
-    // cannot be reached.
-    suspend fun restoreFromServer(userId: String): UserSettingsEntity? =
-        when (val result = remote.getSettings(userId)) {
-            is RemoteResult.Success -> cacheServerSettings(result.data)
+    // cannot be reached. Settings saved offline and still queued are newer than the API's copy, so they are kept.
+    suspend fun restoreFromServer(userId: String): UserSettingsEntity? {
+        if (syncQueue.hasUnsent(SyncEntityType.SETTINGS)) {
+            Log.i(LogTags.SYNC, "Kept the settings saved on this phone; they are still waiting to sync")
+            return local.get(userId)
+        }
+        return when (val result = remote.getSettings(userId)) {
+            is RemoteResult.Success -> applyServerSettings(result.data)
             else -> null
         }
+    }
 
+    // A save that cannot reach the API is queued, and the sync worker sends it once the phone is online. The time it
+    // was saved goes with it, so the API keeps whichever copy was written last.
     private suspend fun pushToServer(userId: String, settings: UserSettingsEntity): SaveSettingsResult =
         when (val result = remote.updateSettings(userId, settings.toUpdateDto())) {
             is RemoteResult.Success -> {
-                cacheServerSettings(result.data)
+                applyServerSettings(result.data)
+                // Anything queued earlier is older than what the API now has
+                syncQueue.remove(SyncEntityType.SETTINGS, userId)
                 Log.i(LogTags.SYNC, "Settings synced to the API")
                 SaveSettingsResult.Saved
             }
             is RemoteResult.NetworkFailure -> {
-                Log.i(LogTags.SYNC, "Settings kept on the device only: offline")
+                syncQueue.enqueueSettings(userId, settings.toUpdateDto(), settings.updatedAt)
+                Log.i(LogTags.SYNC, "Settings kept on the device and queued: offline")
                 SaveSettingsResult.SavedOnDeviceOnly(DataFailure.OFFLINE)
             }
             is RemoteResult.HttpFailure -> when (result.status) {
                 400 -> SaveSettingsResult.Rejected(result.problem?.errors?.keys?.toList().orEmpty())
                 401 -> SaveSettingsResult.SavedOnDeviceOnly(DataFailure.NOT_SIGNED_IN)
                 else -> SaveSettingsResult.SavedOnDeviceOnly(DataFailure.SERVER)
-            }.also { Log.w(LogTags.SYNC, "Settings sync answered HTTP ${result.status}: ${it.javaClass.simpleName}") }
+            }.also {
+                if (it is SaveSettingsResult.SavedOnDeviceOnly) syncQueue.enqueueSettings(userId, settings.toUpdateDto(), settings.updatedAt)
+                Log.w(LogTags.SYNC, "Settings sync answered HTTP ${result.status}: ${it.javaClass.simpleName}")
+            }
         }
 
-    private suspend fun cacheServerSettings(dto: UserSettingsDto): UserSettingsEntity {
+    // Stores the API's copy in Room. Also used by the sync worker, whose answer carries the API's settings.
+    suspend fun applyServerSettings(dto: UserSettingsDto): UserSettingsEntity {
         // Keep the foreign key valid: drop a default area that cannot be cached rather than fail the save
         val areaAvailable = dto.defaultAreaId?.let { areaRepository.ensureAreaCached(it) } ?: true
         val entity = dto.toEntity().let { if (areaAvailable) it else it.copy(defaultAreaId = null) }

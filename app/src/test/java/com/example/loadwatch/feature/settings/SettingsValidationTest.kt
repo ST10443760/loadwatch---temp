@@ -13,6 +13,7 @@ import com.example.loadwatch.fakes.FakeAuthSession
 import com.example.loadwatch.fakes.FakeLoadWatchApi
 import com.example.loadwatch.fakes.FakeUserSettingsDao
 import com.example.loadwatch.fakes.testJson
+import com.example.loadwatch.fakes.testSyncQueue
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -74,6 +75,7 @@ class SettingsValidationTest {
             local = SettingsLocalDataSource(settingsDao),
             remote = SettingsRemoteDataSource(api, testJson),
             areaRepository = FakeAreaRepository(areaDao),
+            syncQueue = testSyncQueue(),
         )
 
         val result = repository.save(valid.toModel().copy(notificationLeadMinutes = 121, themePreference = "blue"))

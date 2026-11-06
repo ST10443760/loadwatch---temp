@@ -33,6 +33,7 @@ class ScheduleEnvironment(scheduler: TestCoroutineScheduler, val start: Instant 
         local = SettingsLocalDataSource(settingsDao),
         remote = SettingsRemoteDataSource(api, testJson),
         areaRepository = areaRepository,
+        syncQueue = testSyncQueue(),
     )
 
     val scheduleRepository = ScheduleRepository(

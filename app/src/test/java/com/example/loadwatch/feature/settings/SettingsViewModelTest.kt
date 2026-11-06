@@ -27,6 +27,7 @@ import com.example.loadwatch.fakes.FakeTransactionRunner
 import com.example.loadwatch.fakes.FakeUserSettingsDao
 import com.example.loadwatch.fakes.MainDispatcherRule
 import com.example.loadwatch.fakes.testJson
+import com.example.loadwatch.fakes.testSyncQueue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -65,6 +66,7 @@ class SettingsViewModelTest {
             local = SettingsLocalDataSource(settingsDao),
             remote = SettingsRemoteDataSource(api, testJson),
             areaRepository = areaRepository,
+            syncQueue = testSyncQueue(),
         )
         val authRepository = AuthRepository(
             authSession = authSession,
