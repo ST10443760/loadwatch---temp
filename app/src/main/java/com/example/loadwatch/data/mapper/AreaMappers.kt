@@ -6,6 +6,7 @@ import com.example.loadwatch.core.network.dto.AreaSummaryDto
 import com.example.loadwatch.data.model.Area
 import com.example.loadwatch.data.model.Supplier
 
+/** Maps a full area from the API to its Room row. */
 fun AreaDto.toEntity() = AreaEntity(
     areaId = areaId,
     name = name,
@@ -29,6 +30,7 @@ fun AreaSummaryDto.toEntity() = AreaEntity(
     isActive = true,
 )
 
+/** Maps an area search result from the API to the domain model. */
 fun AreaSummaryDto.toModel() = Area(
     areaId = areaId,
     name = name,
@@ -37,6 +39,7 @@ fun AreaSummaryDto.toModel() = Area(
     supplier = Supplier.fromSupplyType(supplyType),
 )
 
+/** Maps a cached area row to the domain model the screens use. */
 fun AreaEntity.toModel() = Area(
     areaId = areaId,
     name = name,

@@ -7,6 +7,10 @@ import com.example.loadwatch.core.network.dto.HistoryReportDto
 import com.example.loadwatch.data.model.HistoryOutage
 import com.example.loadwatch.data.model.HistoryReport
 
+/**
+ * Maps a history outage from the API to its Room row, tagged with the area and month (yyyy-MM) it was fetched
+ * for.
+ */
 fun HistoryOutageDto.toEntity(areaId: String, month: String) = HistoryOutageEntity(
     scheduleId = scheduleId,
     areaId = areaId,
@@ -17,6 +21,10 @@ fun HistoryOutageDto.toEntity(areaId: String, month: String) = HistoryOutageEnti
     reportCount = reportCount,
 )
 
+/**
+ * Maps a history community report from the API to its Room row, tagged with the area and month it was fetched
+ * for.
+ */
 fun HistoryReportDto.toEntity(areaId: String, month: String) = HistoryReportEntity(
     reportId = reportId,
     areaId = areaId,
@@ -25,6 +33,7 @@ fun HistoryReportDto.toEntity(areaId: String, month: String) = HistoryReportEnti
     reportedAt = reportedAt,
 )
 
+/** Maps a cached history outage to the domain model. */
 fun HistoryOutageEntity.toModel() = HistoryOutage(
     scheduleId = scheduleId,
     stage = stage,
@@ -33,6 +42,7 @@ fun HistoryOutageEntity.toModel() = HistoryOutage(
     reportCount = reportCount,
 )
 
+/** Maps a cached history report to the domain model. */
 fun HistoryReportEntity.toModel() = HistoryReport(
     reportId = reportId,
     eventType = eventType,

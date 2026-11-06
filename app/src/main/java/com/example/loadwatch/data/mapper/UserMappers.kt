@@ -10,6 +10,7 @@ import com.example.loadwatch.data.model.AlertType
 import com.example.loadwatch.data.model.Favourite
 import com.example.loadwatch.data.model.UserSettings
 
+/** Maps the API's copy of the user's settings to the Room row. */
 fun UserSettingsDto.toEntity() = UserSettingsEntity(
     userId = userId,
     defaultAreaId = defaultAreaId,
@@ -22,6 +23,7 @@ fun UserSettingsDto.toEntity() = UserSettingsEntity(
     updatedAt = updatedAt,
 )
 
+/** Builds the PUT body that sends the stored settings to the API. */
 fun UserSettingsEntity.toUpdateDto() = UserSettingsUpdateDto(
     defaultAreaId = defaultAreaId,
     notificationLeadMinutes = notificationLeadMinutes,
@@ -32,6 +34,7 @@ fun UserSettingsEntity.toUpdateDto() = UserSettingsUpdateDto(
     biometricEnabled = biometricEnabled,
 )
 
+/** Maps a favourite from the API to its Room row. */
 fun FavouriteAreaDto.toEntity() = FavouriteAreaEntity(
     favouriteId = favouriteId,
     userId = userId,
@@ -41,6 +44,7 @@ fun FavouriteAreaDto.toEntity() = FavouriteAreaEntity(
     createdAt = createdAt,
 )
 
+/** Maps a favourite joined with its area to the domain model S08 Compare shows. */
 fun FavouriteWithArea.toModel() = Favourite(
     favouriteId = favourite.favouriteId,
     area = area.toModel(),
@@ -48,6 +52,7 @@ fun FavouriteWithArea.toModel() = Favourite(
     sortOrder = favourite.sortOrder,
 )
 
+/** Maps the stored settings row to the domain model. */
 fun UserSettingsEntity.toModel() = UserSettings(
     defaultAreaId = defaultAreaId,
     notificationLeadMinutes = notificationLeadMinutes,
@@ -62,6 +67,7 @@ fun UserSettingsEntity.toModel() = UserSettings(
     updatedAt = updatedAt,
 )
 
+/** Maps edited settings back to the Room row for the given user. */
 fun UserSettings.toEntity(userId: String) = UserSettingsEntity(
     userId = userId,
     defaultAreaId = defaultAreaId,
