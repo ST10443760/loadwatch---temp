@@ -10,14 +10,18 @@ import com.example.loadwatch.fakes.FakeAreaRepository
 import com.example.loadwatch.fakes.FakeAuthSession
 import com.example.loadwatch.fakes.FakeFavouriteAreaDao
 import com.example.loadwatch.fakes.FakeLoadWatchApi
+import com.example.loadwatch.fakes.FakePendingSyncDao
+import com.example.loadwatch.fakes.SAST
 import com.example.loadwatch.fakes.httpError
 import com.example.loadwatch.fakes.testJson
+import com.example.loadwatch.fakes.testSyncQueue
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import retrofit2.Response
+import java.time.Clock
 import java.time.Instant
 
 class FavouritesRepositoryTest {
@@ -28,11 +32,14 @@ class FavouritesRepositoryTest {
     )
     private val favouriteDao = FakeFavouriteAreaDao(areaDao)
     private val api = FakeLoadWatchApi()
+    private val pendingSyncDao = FakePendingSyncDao()
     private val repository = OfflineFirstFavouritesRepository(
         authSession = FakeAuthSession(),
         remote = FavouritesRemoteDataSource(api, testJson),
         favouriteAreaDao = favouriteDao,
         areaRepository = FakeAreaRepository(areaDao),
+        syncQueue = testSyncQueue(pendingSyncDao),
+        clock = Clock.fixed(now, SAST),
     )
 
     @Test

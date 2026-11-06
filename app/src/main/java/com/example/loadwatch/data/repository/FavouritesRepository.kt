@@ -7,6 +7,9 @@ import kotlinx.coroutines.flow.Flow
 sealed interface FavouriteResult {
     data object Saved : FavouriteResult
 
+    // No connection: changed on this phone and queued, and the sync worker sends it once the phone is online
+    data object SavedOffline : FavouriteResult
+
     // 409 from the API, or already saved on this device
     data object AlreadyFavourite : FavouriteResult
 
