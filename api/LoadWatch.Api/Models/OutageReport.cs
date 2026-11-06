@@ -21,6 +21,10 @@ public enum OutageEventType
     POWER_BACK_ON
 }
 
+/// <summary>
+/// Where a report is in its trip from the phone to the server. The API stores SYNCED, and the other values are
+/// used by the phone.
+/// </summary>
 public enum SyncStatus
 {
     PENDING,

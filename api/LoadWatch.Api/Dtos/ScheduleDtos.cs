@@ -11,6 +11,7 @@ public record NextEvent(
     DateTimeOffset ServerTime,
     DateTimeOffset UpdatedAt);
 
+/// <summary>The national load-shedding stage and when it last changed.</summary>
 public record CurrentStage(
     int Stage,
     DateTimeOffset UpdatedAt);

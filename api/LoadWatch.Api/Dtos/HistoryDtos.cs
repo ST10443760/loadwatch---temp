@@ -9,6 +9,9 @@ public record AreaHistory(
     string Month,
     IReadOnlyList<HistoryDay> Days);
 
+/// <summary>
+/// One South African calendar day of an area's history, with its outages and community reports.
+/// </summary>
 public record HistoryDay(
     DateOnly Date,
     IReadOnlyList<HistoryOutage> Outages,

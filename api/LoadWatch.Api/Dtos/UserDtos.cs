@@ -13,6 +13,7 @@ public record UserSettingsUpdate
     public bool BiometricEnabled { get; init; }
 }
 
+/// <summary>Body of POST /api/users/{userId}/favourites: the area to save and an optional label.</summary>
 public record FavouriteAreaCreate
 {
     public string AreaId { get; init; } = null!;

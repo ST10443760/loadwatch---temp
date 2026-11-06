@@ -53,6 +53,9 @@ public record SyncResult(
     IReadOnlyList<FavouriteArea>? Favourites,
     DateTimeOffset SyncedAt);
 
+/// <summary>
+/// A batch item the API refused, with the item's ID and the reason, so the phone stops retrying it.
+/// </summary>
 public record SyncRejection(
     string Id,
     string Reason);
