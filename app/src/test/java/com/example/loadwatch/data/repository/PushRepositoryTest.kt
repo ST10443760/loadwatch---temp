@@ -6,6 +6,7 @@ import com.example.loadwatch.fakes.FakeAuthSession
 import com.example.loadwatch.fakes.FakeLoadWatchApi
 import com.example.loadwatch.fakes.FakePushMessaging
 import com.example.loadwatch.fakes.FakePushPreferences
+import com.example.loadwatch.fakes.httpError
 import com.example.loadwatch.fakes.testJson
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -102,5 +103,17 @@ class PushRepositoryTest {
         assertEquals(0, api.callCount("registerDevice"))
 
         assertFalse("The fake API is offline by default", repository().registerDevice(token = "new-token"))
+    }
+
+    @Test
+    fun `a registration refused with 401 is sent again on the next sign-in or launch`() = runTest {
+        api.registerDeviceHandler = { httpError(401, """{"status":401,"title":"Not signed in"}""") }
+        assertFalse(repository().registerDevice())
+
+        api.registerDeviceHandler = { request ->
+            DeviceRegistrationDto(request.fcmToken, "user-1", request.platform, Instant.parse("2026-11-05T10:00:00Z"))
+        }
+        assertTrue(repository().registerDevice())
+        assertEquals(2, api.callCount("registerDevice"))
     }
 }
