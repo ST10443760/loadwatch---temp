@@ -23,17 +23,23 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/** Why sign-in failed, each with its own message on S02 Login. */
 enum class LoginError {
     NO_GOOGLE_ACCOUNT,
     GOOGLE_SIGN_IN_FAILED,
     FIREBASE_SIGN_IN_FAILED,
 }
 
+/** S02 Login state: whether sign-in is in progress and the last error. */
 data class LoginUiState(
     val isSigningIn: Boolean = false,
     val error: LoginError? = null,
 )
 
+/**
+ * View model for S02 Login. It exchanges the Google ID token from Credential Manager for a Firebase session
+ * and offers biometric unlock after a successful sign-in.
+ */
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val googleSignInRequester: GoogleSignInRequester,

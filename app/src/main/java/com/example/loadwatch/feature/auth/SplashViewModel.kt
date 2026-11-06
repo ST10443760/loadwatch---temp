@@ -14,12 +14,17 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/** Whether the splash screen is still working out where to go, has decided, or could not tell. */
 sealed interface SplashUiState {
     data object Resolving : SplashUiState
     data class Resolved(val status: SessionStatus) : SplashUiState
     data object Failed : SplashUiState
 }
 
+/**
+ * View model for the splash screen. It restores the Firebase session and decides whether to open Login, Area
+ * Onboarding or Home.
+ */
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val sessionRepository: SessionRepository,

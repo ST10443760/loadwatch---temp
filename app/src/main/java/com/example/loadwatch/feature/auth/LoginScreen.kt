@@ -68,6 +68,10 @@ fun LoginScreen(
     )
 }
 
+/**
+ * Stateless body of S02 Login: the welcome text, the Continue with Google button, errors and the privacy
+ * policy link.
+ */
 @Composable
 private fun LoginContent(
     uiState: LoginUiState,

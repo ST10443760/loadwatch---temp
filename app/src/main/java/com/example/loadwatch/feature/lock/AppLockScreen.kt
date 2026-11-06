@@ -101,6 +101,7 @@ fun AppLockScreen(
     }
 }
 
+/** The lock screen message for the last biometric outcome, such as cancelled or too many attempts. */
 @Composable
 private fun lockMessage(hasScreenLock: Boolean, outcome: BiometricOutcome?): String = when {
     !hasScreenLock -> stringResource(R.string.lock_no_screen_lock)
