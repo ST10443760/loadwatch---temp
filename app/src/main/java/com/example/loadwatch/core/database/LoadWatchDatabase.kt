@@ -8,6 +8,7 @@ import com.example.loadwatch.core.database.converter.InstantConverter
 import com.example.loadwatch.core.database.dao.AreaDao
 import com.example.loadwatch.core.database.dao.AreaStatusDao
 import com.example.loadwatch.core.database.dao.FavouriteAreaDao
+import com.example.loadwatch.core.database.dao.HistoryDao
 import com.example.loadwatch.core.database.dao.OutageReportDao
 import com.example.loadwatch.core.database.dao.PendingSyncDao
 import com.example.loadwatch.core.database.dao.RecentAreaDao
@@ -18,6 +19,9 @@ import com.example.loadwatch.core.database.entity.AreaEntity
 import com.example.loadwatch.core.database.entity.AreaRefreshEntity
 import com.example.loadwatch.core.database.entity.CurrentStageEntity
 import com.example.loadwatch.core.database.entity.FavouriteAreaEntity
+import com.example.loadwatch.core.database.entity.HistoryMonthEntity
+import com.example.loadwatch.core.database.entity.HistoryOutageEntity
+import com.example.loadwatch.core.database.entity.HistoryReportEntity
 import com.example.loadwatch.core.database.entity.OutageReportEntity
 import com.example.loadwatch.core.database.entity.PendingSyncEntity
 import com.example.loadwatch.core.database.entity.RecentAreaEntity
@@ -36,14 +40,19 @@ import com.example.loadwatch.core.database.entity.UserSettingsEntity
         AccuracySummaryEntity::class,
         AreaRefreshEntity::class,
         CurrentStageEntity::class,
+        HistoryOutageEntity::class,
+        HistoryReportEntity::class,
+        HistoryMonthEntity::class,
     ],
-    version = 3,
+    version = 4,
     exportSchema = true,
     autoMigrations = [
         // 2: adds recent_areas for the area selector
         AutoMigration(from = 1, to = 2),
         // 3: adds accuracy summaries, per-area refresh state and the current stage for Home and Schedule
         AutoMigration(from = 2, to = 3),
+        // 4: adds the cached outage history (history_outages, history_reports, history_months)
+        AutoMigration(from = 3, to = 4),
     ],
 )
 @TypeConverters(InstantConverter::class)
@@ -56,6 +65,7 @@ abstract class LoadWatchDatabase : RoomDatabase() {
     abstract fun pendingSyncDao(): PendingSyncDao
     abstract fun recentAreaDao(): RecentAreaDao
     abstract fun areaStatusDao(): AreaStatusDao
+    abstract fun historyDao(): HistoryDao
 
     companion object {
         const val NAME = "loadwatch.db"

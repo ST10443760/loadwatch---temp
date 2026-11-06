@@ -9,6 +9,7 @@ import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.database.dao.AreaDao
 import com.example.loadwatch.core.database.dao.AreaStatusDao
 import com.example.loadwatch.core.database.dao.FavouriteAreaDao
+import com.example.loadwatch.core.database.dao.HistoryDao
 import com.example.loadwatch.core.database.dao.OutageReportDao
 import com.example.loadwatch.core.database.dao.PendingSyncDao
 import com.example.loadwatch.core.database.dao.RecentAreaDao
@@ -57,6 +58,8 @@ object DatabaseModule {
     @Provides fun provideRecentAreaDao(db: LoadWatchDatabase): RecentAreaDao = db.recentAreaDao()
 
     @Provides fun provideAreaStatusDao(db: LoadWatchDatabase): AreaStatusDao = db.areaStatusDao()
+
+    @Provides fun provideHistoryDao(db: LoadWatchDatabase): HistoryDao = db.historyDao()
 
     @Provides fun provideTransactionRunner(db: LoadWatchDatabase): TransactionRunner = RoomTransactionRunner(db)
 }
