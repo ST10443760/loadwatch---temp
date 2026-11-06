@@ -7,6 +7,11 @@
 LoadWatch is a load-shedding companion app for Android, backed by its own REST API on Azure. This report
 describes what the app does, how it is built and why, and how to build, run and release it.
 
+## Demo video
+
+- Final POE demo: PASTE_YOUTUBE_LINK_HERE
+- Part 2 prototype demo: https://youtu.be/Tpmgyyzz67U
+
 ## Contents
 
 1. [Purpose](#1-purpose)
@@ -20,8 +25,7 @@ describes what the app does, how it is built and why, and how to build, run and 
 9. [DevOps](#9-devops)
 10. [Languages supported](#10-languages-supported)
 11. [Screenshots](#11-screenshots)
-12. [Demo video](#12-demo-video)
-13. [How to build and run](#13-how-to-build-and-run)
+12. [How to build and run](#12-how-to-build-and-run)
 
 ## 1. Purpose
 
@@ -443,12 +447,7 @@ Screenshots go in `docs/screenshots/`. Replace each placeholder with the real fi
 | Offline banner and pending report | ![Offline](docs/screenshots/offline-pending.png) |
 | isiZulu and Afrikaans | ![Languages](docs/screenshots/languages.png) |
 
-## 12. Demo video
-
-- Final POE demo: _link to be added_
-- Part 2 prototype demo: https://youtu.be/Tpmgyyzz67U
-
-## 13. How to build and run
+## 12. How to build and run
 
 ### Requirements
 
