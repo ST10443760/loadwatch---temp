@@ -31,6 +31,9 @@ import com.example.loadwatch.core.database.entity.UserSettingsEntity
 /**
  * The on-device Room database (version 4). It caches the area catalogue, schedules, accuracy and history for
  * offline use, and holds the user's settings, favourites, reports and the pending sync queue.
+ *
+ * Reference: Android Developers, "Save data in a local database using Room" and "Migrate your Room database",
+ * developer.android.com/training/data-storage/room
  */
 @Database(
     entities = [

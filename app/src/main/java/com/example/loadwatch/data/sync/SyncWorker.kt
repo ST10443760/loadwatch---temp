@@ -13,6 +13,8 @@ import kotlinx.coroutines.CancellationException
 
 // Runs SyncEngine in the background. WorkManager only starts it while the phone is online, and runs it again with
 // a growing delay when it asks to retry.
+// Reference: Android Developers, "Threading in CoroutineWorker" in the WorkManager guide,
+// developer.android.com/develop/background-work/background-tasks/persistent
 class SyncWorker(
     context: Context,
     params: WorkerParameters,

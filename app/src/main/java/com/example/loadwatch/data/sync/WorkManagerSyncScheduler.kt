@@ -16,6 +16,8 @@ import javax.inject.Inject
 // One unique sync job with a network constraint: while the phone is offline it waits, and it runs as soon as
 // connectivity returns. A newer request replaces the waiting or running job, which is safe because every queued
 // item can be sent twice without harm.
+// Reference: Android Developers, "Define work requests" (constraints and backoff) and "Managing work" (unique
+// work) in the WorkManager guide, developer.android.com/develop/background-work/background-tasks/persistent
 class WorkManagerSyncScheduler @Inject constructor(
     @param:ApplicationContext private val context: Context,
 ) : SyncScheduler {
