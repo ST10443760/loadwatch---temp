@@ -9,6 +9,7 @@
 #   hiltLifecycleViewModelCompose 1.3.0 (1.4.0 needs AGP 9.1)
 #   firebaseBom 34.19.0        (35.x brings firebase-auth 25, compiled with Kotlin 2.4, which Kotlin 2.2.10 cannot read)
 #   googleId 1.2.0             (1.2.1 is compiled with Kotlin 2.4)
+#   work 2.10.5                (newest 2.10 release, checked against these pins; 2.11+ not tried)
 # kotlin must match the Kotlin built into AGP 9.0.1 (2.2.10), because the Compose and serialization
 # compiler plugins are tied to it. composeBom 2025.09.01 is the BOM whose Compose UI version (1.9.2)
 # matches what the libraries above pull in, so every Compose artifact resolves to one release.
@@ -38,6 +39,7 @@ credentials = "1.6.0"
 googleId = "1.2.0"
 biometric = "1.1.0"
 appcompat = "1.7.1"
+work = "2.10.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -81,6 +83,7 @@ kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "ko
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
 androidx-biometric = { group = "androidx.biometric", name = "biometric", version.ref = "biometric" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
