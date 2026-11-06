@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoadWatch.Api.Tests;
 
+/// <summary>Integration tests for registering, re-registering and moving FCM device tokens.</summary>
 public class NotificationRegistrationTests(ApiFactory factory) : IClassFixture<ApiFactory>
 {
     private const string Route = "/api/notifications/registrations";

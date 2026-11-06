@@ -4,6 +4,9 @@ using LoadWatch.Api.Models;
 
 namespace LoadWatch.Api.Tests;
 
+/// <summary>
+/// Unit tests that enums read and write only as their exact names, with an error that lists the allowed values.
+/// </summary>
 public class StrictEnumConverterTests
 {
     private static readonly JsonSerializerOptions Options = new() { Converters = { new StrictEnumConverterFactory() } };

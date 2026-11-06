@@ -5,6 +5,10 @@ using Microsoft.Extensions.Logging;
 
 namespace LoadWatch.Api.Tests;
 
+/// <summary>
+/// Unit tests for the startup retry: transient errors are retried, permanent ones fail at once, and it gives up
+/// in time.
+/// </summary>
 public class StartupRetryTests
 {
     private readonly FakeClock _clock = new();

@@ -2,6 +2,7 @@ using LoadWatch.Api.Services;
 
 namespace LoadWatch.Api.Tests;
 
+/// <summary>Unit tests for stage change detection, baselines and per-area stage overrides.</summary>
 public class StageChangeDetectorTests
 {
     [Fact]

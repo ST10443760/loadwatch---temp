@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LoadWatch.Api.Tests;
 
+/// <summary>Tests that the root path answers at once, even before the database is available.</summary>
 public class RootEndpointTests(ApiFactory factory) : IClassFixture<ApiFactory>
 {
     [Fact]

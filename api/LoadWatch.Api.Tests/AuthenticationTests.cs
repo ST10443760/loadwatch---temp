@@ -5,6 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoadWatch.Api.Tests;
 
+/// <summary>
+/// Integration tests for Firebase JWT validation, the per-user route check, profile creation and clean 400
+/// validation errors.
+/// </summary>
 public class AuthenticationTests(ApiFactory factory) : IClassFixture<ApiFactory>
 {
     private const string AreaId = "eth-berea";

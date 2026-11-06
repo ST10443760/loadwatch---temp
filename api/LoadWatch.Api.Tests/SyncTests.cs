@@ -5,6 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoadWatch.Api.Tests;
 
+/// <summary>
+/// Integration tests for POST /api/sync: idempotent reports, duplicates, settings conflicts, favourite order
+/// and batch limits.
+/// </summary>
 public class SyncTests(ApiFactory factory) : IClassFixture<ApiFactory>
 {
     private const string Route = "/api/sync";

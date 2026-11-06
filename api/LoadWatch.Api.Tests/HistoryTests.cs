@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoadWatch.Api.Tests;
 
+/// <summary>Integration tests for GET /api/areas/{areaId}/history.</summary>
 public class HistoryTests(ApiFactory factory) : IClassFixture<ApiFactory>
 {
     private static readonly TimeSpan Sast = TimeSpan.FromHours(2);

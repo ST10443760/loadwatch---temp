@@ -10,6 +10,9 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace LoadWatch.Api.Tests;
 
+/// <summary>
+/// Integration tests for /health, startup migrations and the 503 answers while the database is not ready.
+/// </summary>
 public class HealthTests(ApiFactory factory) : IClassFixture<ApiFactory>
 {
     // Nothing listens on port 1, so the connection is refused straight away
