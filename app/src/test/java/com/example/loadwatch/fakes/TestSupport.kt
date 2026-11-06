@@ -2,6 +2,7 @@ package com.example.loadwatch.fakes
 
 import com.example.loadwatch.core.authentication.AuthSession
 import com.example.loadwatch.core.database.TransactionRunner
+import com.example.loadwatch.core.network.NetworkModule
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,8 @@ import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
 
-val testJson = Json { ignoreUnknownKeys = true; explicitNulls = false }
+// The same Json the app uses, so the fakes encode and decode bodies exactly as the real network layer does
+val testJson: Json = NetworkModule.provideJson()
 
 val SAST: ZoneId = ZoneId.of("Africa/Johannesburg")
 
