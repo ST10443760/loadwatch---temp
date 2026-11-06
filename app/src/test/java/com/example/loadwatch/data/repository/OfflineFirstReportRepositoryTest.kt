@@ -7,6 +7,7 @@ import com.example.loadwatch.core.network.dto.OutageReportCreateDto
 import com.example.loadwatch.core.network.dto.OutageReportDto
 import com.example.loadwatch.data.remote.ReportRemoteDataSource
 import com.example.loadwatch.data.remote.ScheduleRemoteDataSource
+import com.example.loadwatch.data.sync.SyncEntityType
 import com.example.loadwatch.fakes.FakeAreaStatusDao
 import com.example.loadwatch.fakes.FakeAuthSession
 import com.example.loadwatch.fakes.FakeLoadWatchApi
@@ -109,6 +110,28 @@ class OfflineFirstReportRepositoryTest {
         assertTrue(result is ReportResult.Accepted)
         assertEquals(listOf(clientReportId), sent)
         assertEquals(SyncStatus.SYNCED, reportDao.reports.value.single().syncStatus)
+    }
+
+    @Test
+    fun `offline the report is queued for the sync worker under its client id`() = runTest {
+        api.createReportHandler = { offline() }
+
+        repository.submit(AREA, OutageEventType.POWER_OFF)
+
+        val queued = pendingSyncDao.items.value.single()
+        assertEquals(SyncEntityType.REPORT, queued.entityType)
+        assertEquals(reportDao.reports.value.single().clientReportId, queued.syncId)
+    }
+
+    @Test
+    fun `a report accepted by a manual retry leaves the queue`() = runTest {
+        api.createReportHandler = { offline() }
+        repository.submit(AREA, OutageEventType.POWER_OFF)
+
+        api.createReportHandler = { request -> Response.success(200, serverCopy(request)) }
+        repository.retryUnsent(AREA)
+
+        assertTrue(pendingSyncDao.items.value.isEmpty())
     }
 
     private fun serverCopy(request: OutageReportCreateDto) = OutageReportDto(
