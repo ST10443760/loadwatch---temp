@@ -34,6 +34,10 @@ public static class DbSeeder
         NewArea("eth-kloof", "Kloof", "ESKOM", -29.7900, 30.8330),
     ];
 
+    /// <summary>
+    /// Adds whatever seed data is missing and leaves existing rows alone, so it is safe to run on every
+    /// startup.
+    /// </summary>
     public static async Task SeedAsync(LoadWatchDbContext db, TimeProvider time, CancellationToken ct = default)
     {
         var now = time.GetUtcNow();

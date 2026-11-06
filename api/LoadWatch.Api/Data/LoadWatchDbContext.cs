@@ -3,6 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoadWatch.Api.Data;
 
+/// <summary>
+/// EF Core context for the Azure SQL database. The schema is code-first, and the migrations in Migrations/ are
+/// applied at startup.
+/// </summary>
 public class LoadWatchDbContext(DbContextOptions<LoadWatchDbContext> options) : DbContext(options)
 {
     public DbSet<Area> Areas => Set<Area>();
@@ -16,6 +20,9 @@ public class LoadWatchDbContext(DbContextOptions<LoadWatchDbContext> options) : 
     public DbSet<DeviceToken> DeviceTokens => Set<DeviceToken>();
     public DbSet<AreaStage> AreaStages => Set<AreaStage>();
 
+    /// <summary>
+    /// Configures keys, unique indexes, check constraints, column sizes and delete behaviour for every table.
+    /// </summary>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Area>(entity =>

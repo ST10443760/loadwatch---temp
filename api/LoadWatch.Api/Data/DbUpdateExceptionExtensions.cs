@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoadWatch.Api.Data;
 
+/// <summary>Helpers for telling SQL Server constraint errors apart from other database failures.</summary>
 public static class DbUpdateExceptionExtensions
 {
     // SQL Server error numbers for a duplicate key in a unique index or primary key

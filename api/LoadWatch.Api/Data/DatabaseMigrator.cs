@@ -5,6 +5,8 @@ namespace LoadWatch.Api.Data;
 // Brings the database schema up to date when the API starts, in every environment, so a fresh Azure SQL
 // database needs no manual "dotnet ef database update". Failures propagate to DatabaseStartupService, which
 // retries transient ones and stops the API if the schema still can't be brought up to date.
+// Reference: Microsoft Learn, "Applying Migrations" (apply migrations at runtime),
+// learn.microsoft.com/ef/core/managing-schemas/migrations/applying
 public static class DatabaseMigrator
 {
     public static async Task MigrateAsync(LoadWatchDbContext db, ILogger logger, CancellationToken ct = default)

@@ -10,6 +10,10 @@ public class StartupRetry(ILogger logger, TimeProvider time, Func<TimeSpan, Canc
 
     private readonly Func<TimeSpan, CancellationToken, Task> _delay = delay ?? ((wait, ct) => Task.Delay(wait, time, ct));
 
+    /// <summary>
+    /// Runs one startup step, retrying transient database errors with a growing delay until it succeeds or
+    /// MaxDuration runs out.
+    /// </summary>
     public async Task RunAsync(string description, Func<CancellationToken, Task> step, CancellationToken ct = default)
     {
         var startedAt = time.GetUtcNow();
@@ -62,6 +66,7 @@ public class StartupRetry(ILogger logger, TimeProvider time, Func<TimeSpan, Canc
         }
     }
 
+    /// <summary>Logs the final failure as critical and builds the exception that stops the API.</summary>
     private TimeoutException GiveUp(string description, int attempts, TimeSpan elapsed, Exception lastError)
     {
         logger.LogCritical(lastError, "{Description} still failing after {Attempts} attempts over {Seconds:0} seconds; giving up",
