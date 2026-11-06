@@ -6,6 +6,7 @@ import com.example.loadwatch.data.model.UserSettings
 import java.time.Duration
 import java.time.Instant
 
+/** Whether a received stage-change alert should be shown, and if not, the reason that is logged. */
 sealed interface StageAlertDecision {
     // nextOutageMinutes is set when the next outage starts within the user's lead time, so the alert can say so
     data class Show(val nextOutageMinutes: Long?) : StageAlertDecision

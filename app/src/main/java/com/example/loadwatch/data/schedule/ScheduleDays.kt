@@ -5,6 +5,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 
+/** One day of S06 Schedule, with the outage windows that touch it. */
 data class ScheduleDay(
     val date: LocalDate,
     // Windows overlapping this day, earliest first. Empty means no scheduled outage, if the day is loaded.

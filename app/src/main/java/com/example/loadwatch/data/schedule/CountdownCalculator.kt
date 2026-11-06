@@ -5,6 +5,10 @@ import com.example.loadwatch.data.model.ScheduleEvent
 import java.time.Duration
 import java.time.Instant
 
+/**
+ * The live countdown Home and Compare show: whether the power is on or off now, and how long until that
+ * changes.
+ */
 data class Countdown(
     // OFF inside a scheduled window, ON outside one
     val state: SupplyState,

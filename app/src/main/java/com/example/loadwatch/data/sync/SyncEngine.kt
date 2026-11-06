@@ -27,6 +27,7 @@ import java.time.Clock
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/** Tells the sync worker whether to finish or ask WorkManager for another try later. */
 enum class SyncRunResult {
     // Everything that could be sent was sent, or nothing was waiting
     DONE,
