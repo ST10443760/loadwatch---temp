@@ -6,6 +6,7 @@ import com.example.loadwatch.core.network.dto.AreaSummaryDto
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
+/** Calls the API's area search and area detail endpoints and wraps each response in a [RemoteResult]. */
 class AreaRemoteDataSource @Inject constructor(
     private val api: LoadWatchApi,
     private val json: Json,

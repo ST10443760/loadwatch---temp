@@ -11,6 +11,10 @@ import kotlinx.serialization.json.Json
 import java.io.IOException
 import javax.inject.Inject
 
+/**
+ * How the API answered a community report POST, sorted into the cases the report repository handles
+ * differently.
+ */
 sealed interface ReportPostResult {
     // 201 for a new report, or 200 when this clientReportId was already accepted (a safe retry)
     data class Accepted(val report: OutageReportDto) : ReportPostResult
@@ -26,6 +30,10 @@ sealed interface ReportPostResult {
     data class NetworkFailure(val cause: IOException) : ReportPostResult
 }
 
+/**
+ * Posts community reports to the API and reads the status codes that matter for a report: 201, 200 on a safe
+ * retry, 409 and 400.
+ */
 class ReportRemoteDataSource @Inject constructor(
     private val api: LoadWatchApi,
     private val json: Json,

@@ -6,6 +6,7 @@ import com.example.loadwatch.core.network.dto.UserSettingsUpdateDto
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
+/** Reads and updates the signed-in user's settings on the API. */
 class SettingsRemoteDataSource @Inject constructor(
     private val api: LoadWatchApi,
     private val json: Json,
