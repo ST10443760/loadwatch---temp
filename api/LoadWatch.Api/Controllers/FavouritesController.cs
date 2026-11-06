@@ -13,7 +13,7 @@ namespace LoadWatch.Api.Controllers;
 public class FavouritesController(LoadWatchDbContext db, TimeProvider time)
     : ControllerBase
 {
-    private const int MaxLabelLength = 40;
+    public const int MaxLabelLength = 40;
 
     // GET /api/users/{userId}/favourites (bearer)
     [HttpGet]
