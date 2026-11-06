@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
@@ -47,6 +48,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.loadwatch.R
 import com.example.loadwatch.core.common.LogScreenLifecycle
 import com.example.loadwatch.core.common.SupplyState
+import com.example.loadwatch.core.designsystem.EmptyState
 import com.example.loadwatch.core.designsystem.InlineMessage
 import com.example.loadwatch.core.designsystem.LoadingState
 import com.example.loadwatch.core.designsystem.LabelDialog
@@ -172,14 +174,11 @@ private fun CompareList(state: CompareUiState, viewModel: FavouritesCompareViewM
         }
         if (state.cards.isEmpty()) {
             item(key = "empty") {
-                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text(stringResource(R.string.favourites_empty_title), style = MaterialTheme.typography.titleMedium)
-                    Text(
-                        text = stringResource(R.string.favourites_empty_message),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
+                EmptyState(
+                    icon = Icons.Filled.FavoriteBorder,
+                    title = stringResource(R.string.favourites_empty_title),
+                    message = stringResource(R.string.favourites_empty_message),
+                )
             }
         }
         items(state.cards, key = { it.favourite.favouriteId }) { card ->
