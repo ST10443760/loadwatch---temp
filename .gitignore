@@ -27,3 +27,8 @@ local.properties
 *.keystore
 keystore.properties
 signing.properties
+
+# Built packages and archives belong in GitHub Releases, never in the repo
+*.apk
+*.aab
+*.zip
