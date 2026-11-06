@@ -1,21 +1,32 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
+# R8 rules for the LoadWatch release build.
 #
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Retrofit, OkHttp, kotlinx serialization, Room, Hilt, WorkManager and Firebase ship their own consumer rules in
+# their AARs, which R8 applies automatically. This file only adds what those rules do not cover.
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Readable stack traces in crash reports, without exposing the original file names
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Retrofit reads the generic return types of the LoadWatchApi suspend functions at runtime, such as
+# List<AreaSummaryDto>, so their signatures and annotations must survive R8 full mode
+-keepattributes Signature,InnerClasses,EnclosingMethod,RuntimeVisibleAnnotations,RuntimeVisibleParameterAnnotations
+-keep,allowobfuscation,allowshrinking interface com.example.loadwatch.core.network.LoadWatchApi
+-keep,allowobfuscation,allowshrinking class retrofit2.Response
+-keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# kotlinx serialization: keep the generated serializers of the DTOs and of the type-safe navigation routes, which
+# Navigation looks up from the route class at runtime
+-keepclassmembers @kotlinx.serialization.Serializable class com.example.loadwatch.** {
+    *** Companion;
+    *** INSTANCE;
+    kotlinx.serialization.KSerializer serializer(...);
+}
+-keepclasseswithmembers class com.example.loadwatch.**$$serializer { *; }
+
+# Credential Manager loads its Google Play services provider by reflection (Google sign-in)
+-if class androidx.credentials.CredentialManager
+-keep class androidx.credentials.playservices.** { *; }
+-keep class com.google.android.libraries.identity.googleid.** { *; }
+
+# The sync worker is created by WorkManager from its class name
+-keep class com.example.loadwatch.data.sync.SyncWorker { public <init>(android.content.Context, androidx.work.WorkerParameters); }
