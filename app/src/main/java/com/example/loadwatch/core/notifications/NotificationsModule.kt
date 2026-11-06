@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
+/** Hilt bindings for push messaging and its preferences, so tests can swap in fakes. */
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class NotificationsModule {

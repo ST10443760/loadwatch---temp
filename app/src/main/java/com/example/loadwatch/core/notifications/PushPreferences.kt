@@ -15,6 +15,10 @@ interface PushPreferences {
     var permissionPromptShown: Boolean
 }
 
+/**
+ * [PushPreferences] stored in a private SharedPreferences file. Device-only state that never syncs to the
+ * server.
+ */
 @Singleton
 class SharedPushPreferences @Inject constructor(
     @ApplicationContext context: Context,

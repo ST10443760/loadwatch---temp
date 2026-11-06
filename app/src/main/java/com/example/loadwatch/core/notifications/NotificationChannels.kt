@@ -7,6 +7,9 @@ import androidx.core.app.NotificationManagerCompat
 import com.example.loadwatch.R
 import com.example.loadwatch.core.common.LogTags
 
+/**
+ * Notification channel IDs and setup. Android 8 and later need a channel before any notification can be shown.
+ */
 object NotificationChannels {
     const val STAGE_ALERTS = "stage_alerts"
 
