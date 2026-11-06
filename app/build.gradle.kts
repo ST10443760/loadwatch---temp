@@ -20,6 +20,18 @@ val apiBaseUrl = (localProperties.getProperty("api.base.url") ?: "https://loadwa
     .trim()
     .let { if (it.endsWith("/")) it else "$it/" }
 
+// Release signing comes from Gradle properties (put them in %USERPROFILE%\.gradle\gradle.properties, not the
+// project's gradle.properties) or from environment variables of the same names. Nothing about the keystore is
+// in the repo. Without all four values the release build is still produced, just unsigned.
+fun signingValue(name: String): String? =
+    providers.gradleProperty(name).orElse(providers.environmentVariable(name)).orNull?.takeIf { it.isNotBlank() }
+
+val releaseKeystorePath = signingValue("LOADWATCH_KEYSTORE_PATH")
+val releaseStorePassword = signingValue("LOADWATCH_KEYSTORE_PASSWORD")
+val releaseKeyAlias = signingValue("LOADWATCH_KEY_ALIAS")
+val releaseKeyPassword = signingValue("LOADWATCH_KEY_PASSWORD")
+val hasReleaseSigning = listOf(releaseKeystorePath, releaseStorePassword, releaseKeyAlias, releaseKeyPassword).all { it != null }
+
 android {
     namespace = "com.example.loadwatch"
     compileSdk {
@@ -40,9 +52,26 @@ android {
         buildConfigField("String", "API_BASE_URL", "\"$apiBaseUrl\"")
     }
 
+    signingConfigs {
+        if (hasReleaseSigning) {
+            create("release") {
+                storeFile = file(releaseKeystorePath!!)
+                storePassword = releaseStorePassword
+                keyAlias = releaseKeyAlias
+                keyPassword = releaseKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         release {
+            if (hasReleaseSigning) {
+                signingConfig = signingConfigs.getByName("release")
+            } else {
+                logger.info("LoadWatch: release signing is not configured, so the release APK will be unsigned")
+            }
             isMinifyEnabled = false
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
