@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The LoadWatch mark for screens inside the app: the icon's slate disc and amber mark, cropped to the icon's
+     visible area -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="72dp"
+    android:height="72dp"
+    android:viewportWidth="72"
+    android:viewportHeight="72">
+    <group
+        android:translateX="-18"
+        android:translateY="-18">
+        <path
+            android:fillColor="#FF0F172A"
+            android:pathData="M54,18a36,36 0 1,1 0,72a36,36 0 1,1 0,-72z" />
+        <!-- The thin ring: "watching" -->
+        <path
+            android:pathData="M54,24a30,30 0 1,1 0,60a30,30 0 1,1 0,-60z"
+            android:strokeColor="#FFFBBF24"
+            android:strokeWidth="3" />
+        <!-- The location pin: "this place" -->
+        <path
+            android:pathData="M54,72C50,66 39,58 39,47A15,15 0 1,1 69,47C69,58 58,66 54,72Z"
+            android:strokeColor="#FFFBBF24"
+            android:strokeLineJoin="round"
+            android:strokeWidth="3" />
+        <!-- The lightning bolt inside the pin: "electricity" -->
+        <path
+            android:fillColor="#FFFBBF24"
+            android:pathData="M49,38L49,49L52,49L52,58L59,46L55,46L59,38Z" />
+    </group>
+</vector>
