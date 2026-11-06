@@ -17,7 +17,6 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -49,6 +48,7 @@ import com.example.loadwatch.R
 import com.example.loadwatch.core.common.LogScreenLifecycle
 import com.example.loadwatch.core.common.SupplyState
 import com.example.loadwatch.core.designsystem.InlineMessage
+import com.example.loadwatch.core.designsystem.LoadingState
 import com.example.loadwatch.core.designsystem.LabelDialog
 import com.example.loadwatch.core.designsystem.LoadWatchTheme
 import com.example.loadwatch.core.designsystem.RecoveryState
@@ -83,9 +83,7 @@ fun FavouritesCompareScreen(
         )
 
         when {
-            state.isLoading -> Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
+            state.isLoading -> LoadingState(Modifier.weight(1f))
             state.cards.isEmpty() && state.refreshFailure != null && !state.isRefreshing -> Column(
                 Modifier.weight(1f).verticalScroll(rememberScrollState()),
             ) {

@@ -1,7 +1,6 @@
 package com.example.loadwatch.feature.home
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +11,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -36,6 +34,7 @@ import com.example.loadwatch.R
 import com.example.loadwatch.core.common.LogScreenLifecycle
 import com.example.loadwatch.core.common.SupplyState
 import com.example.loadwatch.core.designsystem.InlineMessage
+import com.example.loadwatch.core.designsystem.LoadingState
 import com.example.loadwatch.core.designsystem.LoadWatchTheme
 import com.example.loadwatch.core.designsystem.RecoveryState
 import com.example.loadwatch.core.designsystem.StageBadge
@@ -68,9 +67,7 @@ fun HomeScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     when (val state = uiState) {
-        HomeUiState.Loading -> Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
-        }
+        HomeUiState.Loading -> LoadingState(modifier)
         HomeUiState.NoArea -> RecoveryState(
             title = stringResource(R.string.home_no_area_title),
             message = stringResource(R.string.home_no_area_message),

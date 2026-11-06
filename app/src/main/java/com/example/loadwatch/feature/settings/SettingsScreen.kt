@@ -22,7 +22,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -61,6 +60,7 @@ import com.example.loadwatch.core.biometric.showBiometricPrompt
 import com.example.loadwatch.core.common.LogScreenLifecycle
 import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.designsystem.InlineMessage
+import com.example.loadwatch.core.designsystem.LoadingState
 import com.example.loadwatch.core.designsystem.RecoveryState
 import com.example.loadwatch.data.local.SettingsRules
 import com.example.loadwatch.data.model.AlertType
@@ -96,7 +96,7 @@ fun SettingsScreen(
 
     val form = state.form
     when {
-        state.isLoading -> Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
+        state.isLoading -> LoadingState(modifier)
         form == null -> Column(modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
             RecoveryState(
                 title = stringResource(R.string.settings_load_failed_title),
