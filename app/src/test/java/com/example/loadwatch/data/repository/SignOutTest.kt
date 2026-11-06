@@ -215,6 +215,11 @@ class SignOutTest {
                 pendingSync.filter { it.status != rejected && !it.nextAttemptAt.isAfter(now) }
             override fun observeAll(): Flow<List<PendingSyncEntity>> = flowOf(pendingSync.toList())
             override suspend fun deleteAll() = delete(pendingSync)
+            override suspend fun deleteForEntity(entityType: String, entityId: String) {
+                pendingSync.removeAll { it.entityType == entityType && it.entityId == entityId }
+            }
+            override suspend fun countUnsent(entityType: String, rejected: PendingSyncStatus) =
+                pendingSync.count { it.entityType == entityType && it.status != rejected }
         }
 
         val recentAreaDao = object : RecentAreaDao {

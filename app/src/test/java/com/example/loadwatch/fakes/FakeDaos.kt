@@ -168,6 +168,10 @@ class FakePendingSyncDao : PendingSyncDao {
     override suspend fun deleteAll() {
         items.value = emptyList()
     }
+    override suspend fun deleteForEntity(entityType: String, entityId: String) =
+        items.update { list -> list.filterNot { it.entityType == entityType && it.entityId == entityId } }
+    override suspend fun countUnsent(entityType: String, rejected: PendingSyncStatus) =
+        items.value.count { it.entityType == entityType && it.status != rejected }
 }
 
 class FakeRecentAreaDao(private val areaDao: FakeAreaDao) : RecentAreaDao {
