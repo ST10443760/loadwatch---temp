@@ -41,6 +41,10 @@ jobs:
       - name: Run unit tests
         run: ./gradlew testDebugUnitTest
 
+      # Fails the run on any lint error, such as an API used above minSdk or a restricted API
+      - name: Run lint
+        run: ./gradlew lintDebug
+
       - name: Upload the debug APK
         uses: actions/upload-artifact@v4
         with:
@@ -54,6 +58,15 @@ jobs:
         with:
           name: android-unit-test-report
           path: app/build/reports/tests/testDebugUnitTest
+          if-no-files-found: ignore
+
+      - name: Upload the lint report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-lint-report
+          path: app/build/reports/lint-results-debug.html
+          if-no-files-found: ignore
 
   api:
     name: API
