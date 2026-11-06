@@ -4,12 +4,13 @@ using Microsoft.EntityFrameworkCore;
 namespace LoadWatch.Api.Data;
 
 // Seeds the Durban area catalogue, the current stage and a rolling schedule so the
-// client always has a next event to count down to.
+// client always has a next event to count down to, plus a past schedule for the outage history.
 public static class DbSeeder
 {
     private const string Municipality = "eThekwini Metropolitan Municipality";
     private const string Province = "KwaZulu-Natal";
     private const int ScheduleDays = 14;
+    private const int HistoryDays = 60;
     private const int SlotsPerDay = 6;
     private static readonly TimeSpan SlotSpacing = TimeSpan.FromHours(4);
     private static readonly TimeSpan SlotLength = TimeSpan.FromMinutes(150);
@@ -49,15 +50,37 @@ public static class DbSeeder
 
         await db.SaveChangesAsync(ct);
 
-        // Top up each area's schedule so it always runs ScheduleDays ahead of today
         var today = DateOnly.FromDateTime(now.ToOffset(Sast).DateTime);
+
+        // Fill in the HistoryDays before each area's earliest window, once, so the outage history has past
+        // months to show. Past windows are never deleted, so the history keeps growing from here.
+        var firstHistoryDay = today.AddDays(-HistoryDays);
+        var earliestStarts = await db.ScheduleEvents
+            .GroupBy(e => e.AreaId)
+            .Select(g => new { AreaId = g.Key, EarliestStart = g.Min(e => e.StartAt) })
+            .ToDictionaryAsync(x => x.AreaId, x => x.EarliestStart, ct);
+        var areaIds = await db.Areas.OrderBy(a => a.AreaId).Select(a => a.AreaId).ToListAsync(ct);
+        for (var index = 0; index < areaIds.Count; index++)
+        {
+            var areaId = areaIds[index];
+            var untilDay = earliestStarts.TryGetValue(areaId, out var earliest)
+                ? DateOnly.FromDateTime(earliest.ToOffset(Sast).DateTime)
+                : today;
+            for (var day = firstHistoryDay; day < untilDay; day = day.AddDays(1))
+            {
+                db.ScheduleEvents.AddRange(BuildDay(areaId, index, day, now));
+            }
+        }
+
+        await db.SaveChangesAsync(ct);
+
+        // Top up each area's schedule so it always runs ScheduleDays ahead of today
         var lastDay = today.AddDays(ScheduleDays);
         var latestStarts = await db.ScheduleEvents
             .GroupBy(e => e.AreaId)
             .Select(g => new { AreaId = g.Key, LatestStart = g.Max(e => e.StartAt) })
             .ToDictionaryAsync(x => x.AreaId, x => x.LatestStart, ct);
 
-        var areaIds = await db.Areas.OrderBy(a => a.AreaId).Select(a => a.AreaId).ToListAsync(ct);
         for (var index = 0; index < areaIds.Count; index++)
         {
             var areaId = areaIds[index];
