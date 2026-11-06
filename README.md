@@ -9,7 +9,7 @@ describes what the app does, how it is built and why, and how to build, run and 
 
 ## Demo video
 
-- Final POE demo: PASTE_YOUTUBE_LINK_HERE
+- Final POE demo: https://youtu.be/58R_FcGHFZ0
 - Part 2 prototype demo: https://youtu.be/Tpmgyyzz67U
 
 ## Contents
