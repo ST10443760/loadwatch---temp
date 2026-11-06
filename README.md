@@ -53,6 +53,7 @@ anything here without upgrading AGP and compileSdk together. The reasons are als
 | Coroutines | 1.10.2 | |
 | Biometric | 1.1.0 | Newest stable release |
 | AppCompat | 1.7.1 | Hosts the biometric prompt and the per-app language before Android 13 |
+| WorkManager | 2.10.5 | Newest 2.10 release; runs the offline sync |
 
 ### API base URL
 
@@ -110,7 +111,7 @@ LoadWatch:
 | `LW.Biometric` | Availability checks, the launch lock and every prompt outcome |
 | `LW.Api` | HTTP traffic and API results, with server errors logged as errors |
 | `LW.Room` | The database opening and settings being written |
-| `LW.Sync` | Reports and settings waiting on the phone, retries and rejections |
+| `LW.Sync` | Changes queued offline, the sync worker starting and finishing, each batch outcome, retries and rejections |
 | `LW.Countdown` | The home countdown rolling over to the next window |
 | `LW.Push` | FCM token registration, area topic changes, incoming stage alerts and whether each was shown |
 
@@ -146,6 +147,45 @@ curl -X POST https://your-loadwatch-api.azurewebsites.net/api/stages/areas/eth-b
 
 The response says whether the alert was `Sent`, `Skipped` (Firebase not configured), `Failed` or `NoChange`.
 Without a configured key the endpoint answers 404, and with the wrong key 403.
+
+### Offline mode and sync
+
+Community reports, favourites and settings all work without a connection:
+
+1. Every change is saved in Room first, so the screen updates at once. If the API cannot be reached, the change
+   also goes into the `pending_sync` queue. A newer change to the same favourite, or to the settings, replaces the
+   older one still waiting, so only the latest state is sent.
+2. Each queued change asks WorkManager for a sync. The job has a network constraint, so it waits while the phone
+   is offline and runs as soon as connectivity returns. If the API is down it retries with exponential backoff,
+   starting at 30 seconds. On launch, anything left from an earlier session is synced too.
+3. The worker sends the whole queue in one request to `POST /api/sync`, and the API answers for each item.
+4. A banner above every main screen shows how many changes are still waiting.
+
+Conflicts are handled like this:
+
+- **Reports** are keyed by their `clientReportId`, so a retry after a lost answer is recognised and never
+  stored twice. A second report of the same event within the duplicate window comes back as a duplicate, and
+  the phone drops its copy.
+- **Settings** use last write wins. The phone sends the time the change was saved. The API keeps whichever copy
+  was written last and sends its copy back.
+- **Favourites** are applied in the order they were made. Saving an area that is already a favourite sets its
+  label, and removing one that is already gone still counts as done. The API's final list replaces the phone's.
+
+Something the API refuses is marked rejected with its reason and is never sent again. Every step is logged
+under `LW.Sync`: queued, sync requested, batch sent, each outcome, retries and rejections.
+
+### Outage history
+
+The Outage history screen opens from Schedule. It shows the selected area's past outages and community
+reports for one month, either as a calendar or as a list. Calendar days are shaded by hours without power,
+and a dot marks days with community reports. Tapping a day shows its outages, how many reports each one
+got, and the reports themselves. Each month is cached in Room, so any month opened before can be seen
+offline. Months go back a year.
+
+The API builds the history from `GET /api/areas/{areaId}/history?month=yyyy-MM`. It uses the schedule windows
+that have started and the community reports. Both tables keep their past rows, so the history grows over time.
+The seeder fills in the previous 60 days once, so a new database already has history to show. Days are South
+African dates whatever the phone's time zone is.
 
 ### Run the API locally
 
