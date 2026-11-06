@@ -6,6 +6,7 @@ import com.example.loadwatch.core.network.LoadWatchApi
 import com.example.loadwatch.core.network.dto.OutageReportCreateDto
 import com.example.loadwatch.core.network.dto.OutageReportDto
 import com.example.loadwatch.core.network.dto.ProblemDetailsDto
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import java.io.IOException
 import javax.inject.Inject
@@ -37,6 +38,10 @@ class ReportRemoteDataSource @Inject constructor(
         } catch (e: IOException) {
             Log.w(LogTags.API, "Report POST failed without a response: ${e.javaClass.simpleName}")
             return ReportPostResult.NetworkFailure(e)
+        } catch (e: SerializationException) {
+            // Kept on the phone and retried, like any other server fault, instead of crashing
+            Log.e(LogTags.API, "Report POST returned a response the app could not read", e)
+            return ReportPostResult.ServerError(UNREADABLE_RESPONSE)
         }
 
         val body = response.body()

@@ -3,6 +3,7 @@ package com.example.loadwatch.data.remote
 import android.util.Log
 import com.example.loadwatch.core.common.LogTags
 import com.example.loadwatch.core.network.dto.ProblemDetailsDto
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import retrofit2.HttpException
 import java.io.IOException
@@ -32,4 +33,11 @@ suspend fun <T> safeApiCall(json: Json, name: String, call: suspend () -> T): Re
     } catch (e: IOException) {
         Log.w(LogTags.API, "$name failed without a response: ${e.message}")
         RemoteResult.NetworkFailure(e)
+    } catch (e: SerializationException) {
+        // The API answered with something the app cannot read; shown as a server problem instead of crashing
+        Log.e(LogTags.API, "$name returned a response the app could not read", e)
+        RemoteResult.HttpFailure(UNREADABLE_RESPONSE, null)
     }
+
+// The status given to a response that arrived but could not be read, treated like any other server fault
+const val UNREADABLE_RESPONSE = 502
