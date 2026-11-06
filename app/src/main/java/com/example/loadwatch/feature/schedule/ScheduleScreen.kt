@@ -13,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -36,6 +37,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.loadwatch.R
 import com.example.loadwatch.core.common.LogScreenLifecycle
+import com.example.loadwatch.core.designsystem.EmptyState
 import com.example.loadwatch.core.designsystem.InlineMessage
 import com.example.loadwatch.core.designsystem.LoadingState
 import com.example.loadwatch.core.designsystem.RecoveryState
@@ -92,10 +94,10 @@ fun ScheduleScreen(
         val state = uiState
         when (state) {
             ScheduleUiState.Loading -> LoadingState()
-            ScheduleUiState.NoArea -> Text(
-                text = stringResource(R.string.home_no_area_message),
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(16.dp),
+            ScheduleUiState.NoArea -> EmptyState(
+                icon = Icons.Filled.LocationOn,
+                title = stringResource(R.string.home_no_area_title),
+                message = stringResource(R.string.home_no_area_message),
             )
             is ScheduleUiState.Unavailable -> PullToRefreshBox(
                 isRefreshing = state.isRefreshing,
