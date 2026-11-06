@@ -5,6 +5,8 @@ namespace LoadWatch.Api.Auth;
 
 // Validates Firebase ID tokens sent as "Authorization: Bearer <token>". Signatures are checked against
 // Google's public keys, discovered from the issuer's OpenID metadata, so no service account file is needed.
+// Reference: Firebase, "Verify ID tokens using a third-party JWT library",
+// firebase.google.com/docs/auth/admin/verify-id-tokens
 public static class FirebaseAuthentication
 {
     public const string ProjectIdKey = "Firebase:ProjectId";
