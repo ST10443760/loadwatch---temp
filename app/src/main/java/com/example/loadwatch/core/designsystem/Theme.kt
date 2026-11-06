@@ -69,7 +69,7 @@ private val LightColors = lightColorScheme(
 )
 
 // Dark first: the app is designed against the dark palette and uses it unless told otherwise.
-// The S09 theme preference (system, light or dark) will drive darkTheme once settings are wired in.
+// MainActivity passes darkTheme from the S09 theme preference (system, light or dark).
 // Dynamic colour is deliberately not used, because supply-state colours must stay consistent.
 @Composable
 fun LoadWatchTheme(
