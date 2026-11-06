@@ -11,7 +11,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 // Attaches the Firebase ID token as "Authorization: Bearer <token>" to user-scoped routes only: settings,
-// favourites and the outage report POST. Public routes are sent without it. The token itself is never logged.
+// favourites, the outage report POST, device registration and the sync batch. Public routes are sent without it. The token itself is never logged.
 class AuthInterceptor @Inject constructor(
     private val authSession: AuthSession,
 ) : Interceptor {
@@ -44,8 +44,12 @@ internal const val AUTHORIZATION_HEADER = "Authorization"
 internal fun Request.withBearer(token: String): Request =
     newBuilder().header(AUTHORIZATION_HEADER, "Bearer $token").build()
 
-// The routes the endpoint specification marks as bearer and the Part 2 app calls
+// The routes the API marks [Authorize]: settings and favourites under /api/users/, the outage report POST,
+// device registration under /api/notifications/ and the offline sync batch. Everything else is public.
 internal fun Request.isUserScoped(): Boolean {
     val path = url.encodedPath
-    return path.contains("/api/users/") || (method == "POST" && path.endsWith("/api/outage-reports"))
+    return path.contains("/api/users/") ||
+        path.contains("/api/notifications/") ||
+        (method == "POST" && path.endsWith("/api/outage-reports")) ||
+        (method == "POST" && path.endsWith("/api/sync"))
 }
