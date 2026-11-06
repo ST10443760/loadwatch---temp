@@ -319,4 +319,58 @@
         <item quantity="one">%1$d change is waiting to sync. It will be sent when you\'re back online.</item>
         <item quantity="other">%1$d changes are waiting to sync. They will be sent when you\'re back online.</item>
     </plurals>
+
+    <!-- Shared states and actions -->
+    <string name="state_loading">Loading…</string>
+    <string name="action_back">Back</string>
+
+    <!-- S10 Outage history -->
+    <string name="history_title">Outage history</string>
+    <string name="history_loading">Loading the outage history…</string>
+    <string name="history_previous_month">Previous month</string>
+    <string name="history_next_month">Next month</string>
+    <string name="history_view_calendar">Calendar</string>
+    <string name="history_view_list">List</string>
+    <!-- %1$s is the outage count, %2$s the hours without power, e.g. "12 outages, about 30 hours without power" -->
+    <string name="history_month_summary">%1$s, %2$s</string>
+    <plurals name="history_month_outages">
+        <item quantity="one">%1$d outage</item>
+        <item quantity="other">%1$d outages</item>
+    </plurals>
+    <plurals name="history_month_hours">
+        <item quantity="one">about %1$d hour without power</item>
+        <item quantity="other">about %1$d hours without power</item>
+    </plurals>
+    <!-- %1$s is a relative time such as "5 minutes ago" -->
+    <string name="history_updated">Updated %1$s</string>
+    <string name="history_cached_offline">You\'re offline. Showing the history saved %1$s.</string>
+    <string name="history_cached_error">The history could not be updated. Showing what was saved %1$s.</string>
+    <string name="history_unavailable_offline">This month has not been saved on your phone yet. Connect to load it, or go to a month you have opened before.</string>
+    <string name="history_empty_title">No outages recorded</string>
+    <!-- %1$s is the area name -->
+    <string name="history_empty_message">LoadWatch has no outages or community reports for %1$s in this month.</string>
+    <string name="history_legend">Darker days had more hours without power. A dot means the community reported on that day.</string>
+    <string name="history_pick_day">Tap a day to see its outages and reports.</string>
+    <string name="history_day_none">No outages or reports on this day.</string>
+    <string name="history_outage_no_reports">No community reports</string>
+    <plurals name="history_outage_reports">
+        <item quantity="one">Confirmed by %1$d report</item>
+        <item quantity="other">Confirmed by %1$d reports</item>
+    </plurals>
+    <string name="history_reports_heading">Community reports</string>
+    <!-- %1$s is a time such as 18:05 -->
+    <string name="history_report_power_off">Power off reported at %1$s</string>
+    <string name="history_report_power_back">Power back on reported at %1$s</string>
+    <!-- Read out for a calendar day; %1$s is a date such as "Friday 7 November" -->
+    <string name="history_day_none_cd">%1$s: no outages</string>
+    <string name="history_day_none_reports_cd">%1$s: no outages, with community reports</string>
+    <!-- %1$d is the number of outages, %2$s the date -->
+    <plurals name="history_day_outages_cd">
+        <item quantity="one">%2$s: %1$d outage</item>
+        <item quantity="other">%2$s: %1$d outages</item>
+    </plurals>
+    <plurals name="history_day_outages_reports_cd">
+        <item quantity="one">%2$s: %1$d outage, with community reports</item>
+        <item quantity="other">%2$s: %1$d outages, with community reports</item>
+    </plurals>
 </resources>

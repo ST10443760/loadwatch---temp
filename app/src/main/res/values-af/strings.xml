@@ -279,4 +279,52 @@
         <item quantity="one">%1$d verandering wag om te sinkroniseer. Dit sal gestuur word wanneer jy weer aanlyn is.</item>
         <item quantity="other">%1$d veranderinge wag om te sinkroniseer. Hulle sal gestuur word wanneer jy weer aanlyn is.</item>
     </plurals>
+
+    <!-- Shared states and actions -->
+    <string name="state_loading">Laai tans…</string>
+    <string name="action_back">Terug</string>
+
+    <!-- S10 Outage history -->
+    <string name="history_title">Onderbrekingsgeskiedenis</string>
+    <string name="history_loading">Laai tans die onderbrekingsgeskiedenis…</string>
+    <string name="history_previous_month">Vorige maand</string>
+    <string name="history_next_month">Volgende maand</string>
+    <string name="history_view_calendar">Kalender</string>
+    <string name="history_view_list">Lys</string>
+    <string name="history_month_summary">%1$s, %2$s</string>
+    <plurals name="history_month_outages">
+        <item quantity="one">%1$d onderbreking</item>
+        <item quantity="other">%1$d onderbrekings</item>
+    </plurals>
+    <plurals name="history_month_hours">
+        <item quantity="one">sowat %1$d uur sonder krag</item>
+        <item quantity="other">sowat %1$d uur sonder krag</item>
+    </plurals>
+    <string name="history_updated">Opgedateer %1$s</string>
+    <string name="history_cached_offline">Jy is vanlyn. Wys die geskiedenis wat %1$s gestoor is.</string>
+    <string name="history_cached_error">Die geskiedenis kon nie opgedateer word nie. Wys wat %1$s gestoor is.</string>
+    <string name="history_unavailable_offline">Hierdie maand is nog nie op jou foon gestoor nie. Verbind om dit te laai, of gaan na \'n maand wat jy al voorheen oopgemaak het.</string>
+    <string name="history_empty_title">Geen onderbrekings aangeteken nie</string>
+    <string name="history_empty_message">LoadWatch het geen onderbrekings of gemeenskapsverslae vir %1$s in hierdie maand nie.</string>
+    <string name="history_legend">Donkerder dae het meer ure sonder krag gehad. \'n Kolletjie beteken die gemeenskap het op daardie dag verslag gedoen.</string>
+    <string name="history_pick_day">Tik op \'n dag om sy onderbrekings en verslae te sien.</string>
+    <string name="history_day_none">Geen onderbrekings of verslae op hierdie dag nie.</string>
+    <string name="history_outage_no_reports">Geen gemeenskapsverslae nie</string>
+    <plurals name="history_outage_reports">
+        <item quantity="one">Bevestig deur %1$d verslag</item>
+        <item quantity="other">Bevestig deur %1$d verslae</item>
+    </plurals>
+    <string name="history_reports_heading">Gemeenskapsverslae</string>
+    <string name="history_report_power_off">Krag af aangemeld om %1$s</string>
+    <string name="history_report_power_back">Krag terug aangemeld om %1$s</string>
+    <string name="history_day_none_cd">%1$s: geen onderbrekings nie</string>
+    <string name="history_day_none_reports_cd">%1$s: geen onderbrekings nie, met gemeenskapsverslae</string>
+    <plurals name="history_day_outages_cd">
+        <item quantity="one">%2$s: %1$d onderbreking</item>
+        <item quantity="other">%2$s: %1$d onderbrekings</item>
+    </plurals>
+    <plurals name="history_day_outages_reports_cd">
+        <item quantity="one">%2$s: %1$d onderbreking, met gemeenskapsverslae</item>
+        <item quantity="other">%2$s: %1$d onderbrekings, met gemeenskapsverslae</item>
+    </plurals>
 </resources>

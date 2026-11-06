@@ -279,4 +279,52 @@
         <item quantity="one">Ushintsho olu-%1$d lulinde ukuvumelaniswa. Luzothunyelwa uma usubuyele ku-inthanethi.</item>
         <item quantity="other">Izinguquko ezingu-%1$d zilinde ukuvumelaniswa. Zizothunyelwa uma usubuyele ku-inthanethi.</item>
     </plurals>
+
+    <!-- Shared states and actions -->
+    <string name="state_loading">Iyalayisha…</string>
+    <string name="action_back">Emuva</string>
+
+    <!-- S10 Outage history -->
+    <string name="history_title">Umlando wokucinywa kukagesi</string>
+    <string name="history_loading">Ilayisha umlando wokucinywa kukagesi…</string>
+    <string name="history_previous_month">Inyanga edlule</string>
+    <string name="history_next_month">Inyanga elandelayo</string>
+    <string name="history_view_calendar">Ikhalenda</string>
+    <string name="history_view_list">Uhlu</string>
+    <string name="history_month_summary">%1$s, %2$s</string>
+    <plurals name="history_month_outages">
+        <item quantity="one">ukucinywa okungu-%1$d</item>
+        <item quantity="other">ukucinywa okungu-%1$d</item>
+    </plurals>
+    <plurals name="history_month_hours">
+        <item quantity="one">cishe ihora elingu-%1$d ngaphandle kukagesi</item>
+        <item quantity="other">cishe amahora angu-%1$d ngaphandle kukagesi</item>
+    </plurals>
+    <string name="history_updated">Kubuyekezwe %1$s</string>
+    <string name="history_cached_offline">Awuxhunyiwe. Kuboniswa umlando owalondolozwa %1$s.</string>
+    <string name="history_cached_error">Umlando awukwazanga ukubuyekezwa. Kuboniswa okwalondolozwa %1$s.</string>
+    <string name="history_unavailable_offline">Le nyanga ayikalondolozwa efonini yakho. Xhuma ukuze uyilayishe, noma uye enyangeni owake wayivula ngaphambilini.</string>
+    <string name="history_empty_title">Akukho ukucinywa okurekhodiwe</string>
+    <string name="history_empty_message">I-LoadWatch ayinakho ukucinywa noma imibiko yomphakathi ye-%1$s kule nyanga.</string>
+    <string name="history_legend">Izinsuku ezimnyama kakhulu zibe namahora amaningi ngaphandle kukagesi. Ichashazi lisho ukuthi umphakathi ubike ngalolo suku.</string>
+    <string name="history_pick_day">Thepha usuku ukuze ubone ukucinywa kwalo nemibiko.</string>
+    <string name="history_day_none">Akukho ukucinywa noma imibiko ngalolu suku.</string>
+    <string name="history_outage_no_reports">Ayikho imibiko yomphakathi</string>
+    <plurals name="history_outage_reports">
+        <item quantity="one">Kuqinisekiswe ngumbiko ongu-%1$d</item>
+        <item quantity="other">Kuqinisekiswe yimibiko engu-%1$d</item>
+    </plurals>
+    <string name="history_reports_heading">Imibiko yomphakathi</string>
+    <string name="history_report_power_off">Kubikwe ukucinywa kukagesi ngo-%1$s</string>
+    <string name="history_report_power_back">Kubikwe ukubuya kukagesi ngo-%1$s</string>
+    <string name="history_day_none_cd">%1$s: akukho ukucinywa</string>
+    <string name="history_day_none_reports_cd">%1$s: akukho ukucinywa, kunemibiko yomphakathi</string>
+    <plurals name="history_day_outages_cd">
+        <item quantity="one">%2$s: ukucinywa okungu-%1$d</item>
+        <item quantity="other">%2$s: ukucinywa okungu-%1$d</item>
+    </plurals>
+    <plurals name="history_day_outages_reports_cd">
+        <item quantity="one">%2$s: ukucinywa okungu-%1$d, kunemibiko yomphakathi</item>
+        <item quantity="other">%2$s: ukucinywa okungu-%1$d, kunemibiko yomphakathi</item>
+    </plurals>
 </resources>
