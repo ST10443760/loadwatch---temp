@@ -30,6 +30,9 @@ import javax.inject.Inject
 sealed interface FavouriteMessage {
     data class Added(val areaName: String) : FavouriteMessage
     data object AlreadyFavourite : FavouriteMessage
+
+    // Changed on this phone while offline; the sync worker sends it later
+    data object SavedOffline : FavouriteMessage
     data class Removed(val areaName: String) : FavouriteMessage
     data object LabelTooLong : FavouriteMessage
     data class Failed(val failure: DataFailure) : FavouriteMessage
@@ -110,7 +113,7 @@ class AreaSelectorViewModel @Inject constructor(
                 pendingArea = if (result == FavouriteResult.LabelTooLong) area else null,
                 message = message,
             )
-            if (addFavouriteMode && (result == FavouriteResult.Saved || result == FavouriteResult.AlreadyFavourite)) {
+            if (addFavouriteMode && result in LEAVING_RESULTS) {
                 _leave.send(Unit)
             }
         }
@@ -141,12 +144,16 @@ class AreaSelectorViewModel @Inject constructor(
     private fun FavouriteResult.toMessage(area: Area): FavouriteMessage = when (this) {
         FavouriteResult.Saved -> FavouriteMessage.Added(area.name)
         FavouriteResult.AlreadyFavourite -> FavouriteMessage.AlreadyFavourite
+        FavouriteResult.SavedOffline -> FavouriteMessage.SavedOffline
         FavouriteResult.LabelTooLong -> FavouriteMessage.LabelTooLong
         FavouriteResult.NotSignedIn -> FavouriteMessage.Failed(DataFailure.NOT_SIGNED_IN)
         is FavouriteResult.Failed -> FavouriteMessage.Failed(failure)
     }
 
     private companion object {
+        // The favourite is saved, so the screen opened to add one has done its job
+        val LEAVING_RESULTS = setOf(FavouriteResult.Saved, FavouriteResult.SavedOffline, FavouriteResult.AlreadyFavourite)
+
         // Matches AreaSelectorRoute.addFavourite
         const val ADD_FAVOURITE_ARG = "addFavourite"
     }

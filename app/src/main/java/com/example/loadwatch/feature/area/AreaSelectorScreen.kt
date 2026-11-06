@@ -242,6 +242,7 @@ private fun RecentAreas(
 private fun favouriteMessageText(message: FavouriteMessage): String = when (message) {
     is FavouriteMessage.Added -> stringResource(R.string.favourite_added, message.areaName)
     FavouriteMessage.AlreadyFavourite -> stringResource(R.string.favourite_already)
+    FavouriteMessage.SavedOffline -> stringResource(R.string.sync_saved_offline)
     is FavouriteMessage.Removed -> stringResource(R.string.favourite_removed, message.areaName)
     FavouriteMessage.LabelTooLong -> stringResource(R.string.label_dialog_too_long, FavouriteLabel.MAX_LENGTH)
     is FavouriteMessage.Failed -> stringResource(

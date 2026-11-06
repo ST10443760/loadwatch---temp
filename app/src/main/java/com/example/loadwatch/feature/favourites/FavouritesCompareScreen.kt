@@ -323,6 +323,7 @@ private fun compareMessageText(message: CompareMessage): String = when (message)
     is CompareMessage.Removed -> stringResource(R.string.favourite_removed, message.areaName)
     is CompareMessage.Relabelled -> stringResource(R.string.favourites_relabelled, message.areaName)
     CompareMessage.LabelTooLong -> stringResource(R.string.label_dialog_too_long, FavouriteLabel.MAX_LENGTH)
+    CompareMessage.SavedOffline -> stringResource(R.string.sync_saved_offline)
     is CompareMessage.Failed -> stringResource(
         when (message.failure) {
             DataFailure.OFFLINE -> R.string.favourite_failed_offline

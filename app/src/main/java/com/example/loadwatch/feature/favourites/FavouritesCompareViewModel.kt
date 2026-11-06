@@ -47,6 +47,7 @@ sealed interface CompareMessage {
     data class Removed(val areaName: String) : CompareMessage
     data class Relabelled(val areaName: String) : CompareMessage
     data object LabelTooLong : CompareMessage
+    data object SavedOffline : CompareMessage
     data class Failed(val failure: DataFailure) : CompareMessage
 }
 
@@ -205,6 +206,7 @@ class FavouritesCompareViewModel @Inject constructor(
 
     private fun FavouriteResult.toMessage(): CompareMessage = when (this) {
         FavouriteResult.LabelTooLong -> CompareMessage.LabelTooLong
+        FavouriteResult.SavedOffline -> CompareMessage.SavedOffline
         FavouriteResult.NotSignedIn -> CompareMessage.Failed(DataFailure.NOT_SIGNED_IN)
         is FavouriteResult.Failed -> CompareMessage.Failed(failure)
         FavouriteResult.Saved, FavouriteResult.AlreadyFavourite -> CompareMessage.Failed(DataFailure.SERVER)
