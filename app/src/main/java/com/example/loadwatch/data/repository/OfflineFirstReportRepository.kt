@@ -29,6 +29,10 @@ import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * [ReportRepository] that stores every report in Room before sending it, so a report is never lost. Reports
+ * that cannot be sent are queued for the sync worker.
+ */
 @Singleton
 class OfflineFirstReportRepository @Inject constructor(
     private val authSession: AuthSession,

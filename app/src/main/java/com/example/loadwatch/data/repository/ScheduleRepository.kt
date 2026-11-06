@@ -29,6 +29,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.abs
 
+/** An area's schedule accuracy, between 0 and 1, and how many community reports it is based on. */
 data class AccuracyScore(val score: Double, val sampleSize: Int)
 
 // Everything Home and Schedule show for an area, read from Room
@@ -47,6 +48,9 @@ data class AreaSchedule(
     val currentStage: Int?,
 )
 
+/**
+ * Whether refreshing an area's schedule from the API worked. On failure, the cached schedule is still shown.
+ */
 sealed interface ScheduleRefreshResult {
     data object Refreshed : ScheduleRefreshResult
     data class Failed(val failure: DataFailure) : ScheduleRefreshResult

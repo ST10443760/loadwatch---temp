@@ -17,6 +17,10 @@ import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * [AreaRepository] that caches every area the API returns in Room and falls back to the cached catalogue when
+ * the API cannot be reached.
+ */
 @Singleton
 class OfflineFirstAreaRepository @Inject constructor(
     private val remote: AreaRemoteDataSource,

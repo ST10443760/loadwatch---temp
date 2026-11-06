@@ -29,6 +29,10 @@ import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * The outcome of saving settings: saved everywhere, saved only on the phone, rejected by the API's rules, or
+ * not saved.
+ */
 sealed interface SaveSettingsResult {
     // Saved on the device and on the API
     data object Saved : SaveSettingsResult
@@ -43,6 +47,10 @@ sealed interface SaveSettingsResult {
     data class Failed(val failure: DataFailure) : SaveSettingsResult
 }
 
+/**
+ * The signed-in user's settings, offline first. Each change is saved in Room, then sent to the API, or queued
+ * for the sync worker when offline. Server copies never overwrite a newer edit made on the phone.
+ */
 @Singleton
 class SettingsRepository @Inject constructor(
     private val authSession: AuthSession,

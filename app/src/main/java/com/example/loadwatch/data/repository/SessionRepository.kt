@@ -7,6 +7,7 @@ import com.example.loadwatch.data.local.SettingsLocalDataSource
 import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
 
+/** Where the app should start, based on whether someone is signed in and has chosen a default area. */
 enum class SessionStatus {
     // Route to S02 SSO Login
     SignedOut,

@@ -13,11 +13,16 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/** Whether a Google ID token was exchanged for a Firebase session. */
 sealed interface SignInResult {
     data object Success : SignInResult
     data object Failed : SignInResult
 }
 
+/**
+ * Signs the user in and out. Signing out also clears the user's data on the phone so the next account starts
+ * clean.
+ */
 @Singleton
 class AuthRepository @Inject constructor(
     private val authSession: AuthSession,

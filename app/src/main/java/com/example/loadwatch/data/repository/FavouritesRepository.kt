@@ -4,6 +4,10 @@ import com.example.loadwatch.data.model.DataFailure
 import com.example.loadwatch.data.model.Favourite
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * The outcome of adding, removing or relabelling a favourite, including saved offline for the sync worker to
+ * send later.
+ */
 sealed interface FavouriteResult {
     data object Saved : FavouriteResult
 

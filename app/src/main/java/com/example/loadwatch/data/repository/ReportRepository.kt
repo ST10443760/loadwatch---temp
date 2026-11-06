@@ -5,6 +5,7 @@ import com.example.loadwatch.data.model.DataFailure
 import com.example.loadwatch.data.model.OutageReport
 import kotlinx.coroutines.flow.Flow
 
+/** The outcome of submitting a community report, as S07 Report explains it to the user. */
 sealed interface ReportResult {
     data class Accepted(val report: OutageReport) : ReportResult
 

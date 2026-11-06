@@ -25,6 +25,10 @@ import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * [FavouritesRepository] that writes each change to Room first and sends it to the API. When offline it queues
+ * the change in the sync queue instead.
+ */
 @Singleton
 class OfflineFirstFavouritesRepository @Inject constructor(
     private val authSession: AuthSession,
