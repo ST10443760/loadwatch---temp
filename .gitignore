@@ -21,3 +21,9 @@ local.properties
 # Firebase service account keys belong in the FIREBASE_SERVICE_ACCOUNT_JSON setting, never in the repo
 *firebase-adminsdk*.json
 *service-account*.json
+
+# Release signing: the keystore and its passwords live outside the repo (see the README)
+*.jks
+*.keystore
+keystore.properties
+signing.properties
