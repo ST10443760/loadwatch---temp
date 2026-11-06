@@ -11,6 +11,10 @@ import com.example.loadwatch.core.database.entity.HistoryOutageEntity
 import com.example.loadwatch.core.database.entity.HistoryReportEntity
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Room access to cached outage history. Each area's month is replaced as a whole, so a refresh never leaves
+ * old and new rows mixed.
+ */
 @Dao
 interface HistoryDao {
 

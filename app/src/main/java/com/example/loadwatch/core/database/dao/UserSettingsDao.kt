@@ -6,6 +6,7 @@ import androidx.room.Upsert
 import com.example.loadwatch.core.database.entity.UserSettingsEntity
 import kotlinx.coroutines.flow.Flow
 
+/** Room access to the signed-in user's settings row, read by Home, Settings and the stage alert handler. */
 @Dao
 interface UserSettingsDao {
 

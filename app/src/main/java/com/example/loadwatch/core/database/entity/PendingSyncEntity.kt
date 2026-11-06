@@ -22,6 +22,10 @@ data class PendingSyncEntity(
     val lastError: String?,
 )
 
+/**
+ * Where a queued change is: waiting for its first send, waiting to retry after a failure, or refused by the
+ * API and kept for the user to see.
+ */
 enum class PendingSyncStatus {
     PENDING,
     RETRYING,

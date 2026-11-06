@@ -8,6 +8,10 @@ import com.example.loadwatch.core.database.entity.ScheduleEventEntity
 import kotlinx.coroutines.flow.Flow
 import java.time.Instant
 
+/**
+ * Room access to cached load-shedding windows: the windows in a time range, the current or next one, and
+ * pruning of ended windows.
+ */
 @Dao
 interface ScheduleEventDao {
 

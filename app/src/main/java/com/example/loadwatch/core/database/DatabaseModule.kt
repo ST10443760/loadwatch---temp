@@ -22,6 +22,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/** Hilt module that builds the single Room [LoadWatchDatabase] and exposes each DAO for injection. */
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {

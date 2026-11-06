@@ -8,6 +8,10 @@ import com.example.loadwatch.core.database.entity.FavouriteAreaEntity
 import com.example.loadwatch.core.database.entity.FavouriteWithArea
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Room access to the signed-in user's favourite areas, in display order, with their area details joined for
+ * S08 Compare.
+ */
 @Dao
 interface FavouriteAreaDao {
 

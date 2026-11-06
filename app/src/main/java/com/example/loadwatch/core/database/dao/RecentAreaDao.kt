@@ -8,6 +8,7 @@ import com.example.loadwatch.core.database.entity.AreaEntity
 import com.example.loadwatch.core.database.entity.RecentAreaEntity
 import kotlinx.coroutines.flow.Flow
 
+/** Room access to the areas the user recently switched to, trimmed to a fixed number for S05 Area Selector. */
 @Dao
 interface RecentAreaDao {
 

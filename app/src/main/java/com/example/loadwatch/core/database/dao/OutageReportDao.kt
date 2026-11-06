@@ -11,6 +11,10 @@ import com.example.loadwatch.core.database.entity.OutageReportEntity
 import kotlinx.coroutines.flow.Flow
 import java.time.Instant
 
+/**
+ * Room access to the user's own community reports and their sync status, used by S07 Report and the sync
+ * engine.
+ */
 @Dao
 interface OutageReportDao {
 

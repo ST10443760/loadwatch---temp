@@ -10,6 +10,10 @@ import com.example.loadwatch.core.database.entity.PendingSyncStatus
 import kotlinx.coroutines.flow.Flow
 import java.time.Instant
 
+/**
+ * Room access to the pending_sync queue: adds and updates queued changes, reads the ones due for sending and
+ * counts what is still waiting.
+ */
 @Dao
 interface PendingSyncDao {
 

@@ -9,6 +9,10 @@ import androidx.room.Upsert
 import com.example.loadwatch.core.database.entity.AreaEntity
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Room access to the cached area catalogue: upserts from the API, lookups by ID and offline search by suburb
+ * or municipality.
+ */
 @Dao
 interface AreaDao {
 

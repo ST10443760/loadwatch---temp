@@ -28,6 +28,10 @@ import com.example.loadwatch.core.database.entity.RecentAreaEntity
 import com.example.loadwatch.core.database.entity.ScheduleEventEntity
 import com.example.loadwatch.core.database.entity.UserSettingsEntity
 
+/**
+ * The on-device Room database (version 4). It caches the area catalogue, schedules, accuracy and history for
+ * offline use, and holds the user's settings, favourites, reports and the pending sync queue.
+ */
 @Database(
     entities = [
         AreaEntity::class,

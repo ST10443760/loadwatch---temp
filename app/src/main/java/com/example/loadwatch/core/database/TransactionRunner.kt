@@ -8,6 +8,7 @@ interface TransactionRunner {
     suspend fun <T> inTransaction(block: suspend () -> T): T
 }
 
+/** [TransactionRunner] backed by Room's withTransaction, so several DAO writes commit or roll back together. */
 class RoomTransactionRunner @Inject constructor(
     private val database: LoadWatchDatabase,
 ) : TransactionRunner {
