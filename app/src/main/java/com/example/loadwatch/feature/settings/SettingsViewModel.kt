@@ -55,6 +55,10 @@ data class SettingsForm(
     }
 }
 
+/**
+ * Everything S09 Settings shows: the saved settings, the form being edited, whether it can be saved, and the
+ * state of the last save.
+ */
 data class SettingsUiState(
     val isLoading: Boolean = true,
     val email: String? = null,
@@ -75,6 +79,10 @@ data class SettingsUiState(
     val canSave: Boolean get() = isDirty && !isSaving && leadTime is LeadTimeInput.Valid
 }
 
+/**
+ * The parts of the Settings state the view model changes itself, combined with the saved settings to build
+ * [SettingsUiState].
+ */
 private data class EditState(
     // True once the first API refresh has finished, whether or not it succeeded
     val loadAttempted: Boolean = false,

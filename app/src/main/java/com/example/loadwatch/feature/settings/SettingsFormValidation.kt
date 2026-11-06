@@ -2,6 +2,7 @@ package com.example.loadwatch.feature.settings
 
 import com.example.loadwatch.data.local.SettingsRules
 
+/** The result of checking the typed lead time: a valid number of minutes, or which rule it broke. */
 sealed interface LeadTimeInput {
     data class Valid(val minutes: Int) : LeadTimeInput
     data object Empty : LeadTimeInput

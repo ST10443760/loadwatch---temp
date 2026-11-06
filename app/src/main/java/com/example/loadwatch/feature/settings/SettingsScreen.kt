@@ -215,6 +215,7 @@ fun SettingsScreen(
     }
 }
 
+/** A section heading in Settings, in the theme's primary colour. */
 @Composable
 private fun Section(title: String, content: @Composable () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -228,11 +229,13 @@ private fun Section(title: String, content: @Composable () -> Unit) {
     }
 }
 
+/** Small explanatory text under a setting. */
 @Composable
 private fun Note(text: String) {
     Text(text = text, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
 }
 
+/** Drop-down of the user's areas for the default area, with a link to search for another one. */
 @Composable
 private fun DefaultAreaPicker(selectedId: String?, choices: List<Area>, onSelect: (String) -> Unit, onFindArea: () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
@@ -339,6 +342,7 @@ private fun BiometricSetting(enabled: Boolean, availability: BiometricAvailabili
     Note(note)
 }
 
+/** A setting label with a switch, where the whole row is the touch target. */
 @Composable
 private fun SwitchRow(label: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit, enabled: Boolean = true) {
     Row(
@@ -352,6 +356,7 @@ private fun SwitchRow(label: String, checked: Boolean, onCheckedChange: (Boolean
     }
 }
 
+/** A setting label with a checkbox, where the whole row is the touch target. */
 @Composable
 private fun CheckboxRow(label: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     Row(
@@ -363,6 +368,7 @@ private fun CheckboxRow(label: String, checked: Boolean, onCheckedChange: (Boole
     }
 }
 
+/** A setting label with a radio button, where the whole row is the touch target. */
 @Composable
 private fun RadioRow(label: String, selected: Boolean, onClick: () -> Unit) {
     Row(
@@ -374,6 +380,10 @@ private fun RadioRow(label: String, selected: Boolean, onClick: () -> Unit) {
     }
 }
 
+/**
+ * The Save changes button and the result of the last save, with retry when the settings only reached the
+ * phone.
+ */
 @Composable
 private fun SaveArea(state: SettingsUiState, onSave: () -> Unit, onRetry: () -> Unit, onDismiss: () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
