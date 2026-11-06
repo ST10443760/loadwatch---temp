@@ -138,3 +138,7 @@ what was already there.
 - The README is rewritten as the final technical report. It covers purpose, features, architecture, design
   decisions, API endpoints, database schema, security, DevOps, languages, screenshots, the demo video, and
   how to build and release.
+- The screenshots section uses real screenshots from a phone instead of placeholders.
+- New `docs/play-store-listing.md` holds the store listing, data safety summary and signing notes.
+- New `docs/ai-usage.md` declares how AI tools were used, and the README links to it.
+- The README has the Final POE demo video link at the top, next to the Part 2 one.
