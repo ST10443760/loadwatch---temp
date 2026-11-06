@@ -19,6 +19,10 @@ sealed interface BiometricOutcome {
     data class Failed(val message: String) : BiometricOutcome
 }
 
+/**
+ * Maps a BiometricPrompt error code to an outcome the lock screen can explain: cancelled, locked out,
+ * unavailable or failed with the system's message.
+ */
 fun biometricOutcomeForError(errorCode: Int, message: CharSequence): BiometricOutcome = when (errorCode) {
     BiometricPrompt.ERROR_USER_CANCELED,
     BiometricPrompt.ERROR_NEGATIVE_BUTTON,

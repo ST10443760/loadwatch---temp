@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
+/** Hilt binding that supplies the Android [BiometricChecker] to view models. */
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class BiometricModule {

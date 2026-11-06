@@ -21,6 +21,9 @@ enum class BiometricAvailability {
 const val APP_AUTHENTICATORS = BiometricManager.Authenticators.BIOMETRIC_WEAK or
     BiometricManager.Authenticators.DEVICE_CREDENTIAL
 
+/**
+ * Maps a BiometricManager.canAuthenticate result code to the availability states the app explains to the user.
+ */
 fun biometricAvailabilityFor(canAuthenticateResult: Int): BiometricAvailability = when (canAuthenticateResult) {
     BiometricManager.BIOMETRIC_SUCCESS -> BiometricAvailability.AVAILABLE
     BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> BiometricAvailability.NONE_ENROLLED
@@ -28,6 +31,10 @@ fun biometricAvailabilityFor(canAuthenticateResult: Int): BiometricAvailability 
     else -> BiometricAvailability.UNAVAILABLE
 }
 
+/**
+ * Reports whether this phone can unlock LoadWatch with biometrics or the screen lock. An interface so tests
+ * can fake it.
+ */
 interface BiometricChecker {
     fun availability(): BiometricAvailability
 }

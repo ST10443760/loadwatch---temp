@@ -7,6 +7,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
+/**
+ * Hilt bindings for authentication: binds [AuthSession] to the Firebase implementation and provides the shared
+ * FirebaseAuth instance.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class AuthModule {

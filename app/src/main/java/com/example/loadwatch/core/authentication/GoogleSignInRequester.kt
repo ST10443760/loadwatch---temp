@@ -15,6 +15,9 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import javax.inject.Inject
 
+/**
+ * Outcome of asking Credential Manager for a Google ID token: the token on success, or why no token came back.
+ */
 sealed interface GoogleSignInResult {
     data class Success(val googleIdToken: String) : GoogleSignInResult
 
