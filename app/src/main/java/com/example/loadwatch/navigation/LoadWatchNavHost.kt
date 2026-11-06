@@ -12,15 +12,16 @@ import com.example.loadwatch.feature.area.AreaSelectorScreen
 import com.example.loadwatch.feature.auth.LoginScreen
 import com.example.loadwatch.feature.auth.SplashScreen
 import com.example.loadwatch.feature.favourites.FavouritesCompareScreen
+import com.example.loadwatch.feature.history.HistoryScreen
 import com.example.loadwatch.feature.home.HomeScreen
 import com.example.loadwatch.feature.report.CommunityConfirmationScreen
 import com.example.loadwatch.feature.schedule.ScheduleScreen
 import com.example.loadwatch.feature.settings.SettingsScreen
 
 // The navigation wireflow (design doc Figure 3): S01 Splash -> S02 SSO -> S03 Onboarding -> S04 Home, with
-// Home as the hub for S05 Area, S06 Schedule, S07 Report, S08 Compare and S09 Settings. No destination is more
-// than two taps from Home. This is the only place that knows about every feature; features never import
-// each other and only expose navigation callbacks.
+// Home as the hub for S05 Area, S06 Schedule (with S10 History), S07 Report, S08 Compare and S09 Settings. No
+// destination is more than two taps from Home. This is the only place that knows about every feature; features
+// never import each other and only expose navigation callbacks.
 @Composable
 fun LoadWatchNavHost(
     navController: NavHostController,
@@ -60,7 +61,15 @@ fun LoadWatchNavHost(
         composable<AreaSelectorRoute> {
             AreaSelectorScreen(onAreaSelected = { navController.popBackStack() })
         }
-        composable<ScheduleRoute> { ScheduleScreen() }
+        composable<ScheduleRoute> {
+            ScheduleScreen(onOpenHistory = { navController.navigate(HistoryRoute) })
+        }
+        composable<HistoryRoute> {
+            HistoryScreen(
+                onBack = { navController.popBackStack() },
+                onChooseArea = { navController.navigate(AreaSelectorRoute()) },
+            )
+        }
         composable<ReportRoute> {
             CommunityConfirmationScreen(onChooseArea = { navController.navigate(AreaSelectorRoute()) })
         }

@@ -2,8 +2,8 @@ package com.example.loadwatch.navigation
 
 import kotlinx.serialization.Serializable
 
-// Type-safe routes for the nine Part 2 screens (S01 to S09). The Final POE screens S10 to S14 attach to
-// these nodes later without changing the graph's shape.
+// Type-safe routes for the screens S01 to S10. Later screens attach to these nodes without changing the graph's
+// shape.
 
 // Session wrapper
 @Serializable data object SplashRoute
@@ -20,6 +20,9 @@ import kotlinx.serialization.Serializable
 @Serializable data class AreaSelectorRoute(val addFavourite: Boolean = false)
 
 @Serializable data object ScheduleRoute
+
+// S10 Outage History opens from S06 Schedule, so it stays two taps from Home
+@Serializable data object HistoryRoute
 
 @Serializable data object ReportRoute
 

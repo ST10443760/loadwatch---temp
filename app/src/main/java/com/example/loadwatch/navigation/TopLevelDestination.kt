@@ -29,10 +29,12 @@ enum class TopLevelDestination(
 
 // Which tab a back stack entry belongs to, or null outside the hub (S01 to S03 have no bottom bar).
 // S05 Area Selector keeps the tab it was opened from selected: Compare when adding a favourite, otherwise Home.
+// S10 History keeps Schedule selected, because it opens from there.
 fun NavBackStackEntry.topLevelDestination(): TopLevelDestination? {
     if (destination.hasRoute(AreaSelectorRoute::class)) {
         return if (toRoute<AreaSelectorRoute>().addFavourite) TopLevelDestination.COMPARE else TopLevelDestination.HOME
     }
+    if (destination.hasRoute(HistoryRoute::class)) return TopLevelDestination.SCHEDULE
     return TopLevelDestination.entries.firstOrNull { tab ->
         destination.hierarchy.any { it.hasRoute(tab.route::class) }
     }
