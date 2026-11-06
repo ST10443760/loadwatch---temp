@@ -59,14 +59,17 @@ class SyncEngine @Inject constructor(
             return SyncRunResult.DONE
         }
 
-        // More than one round only when the queue holds more than one batch, or more was queued meanwhile
+        // More than one round only when the queue holds more than one batch, or more was queued meanwhile. Each item
+        // is sent at most once per run; one the API did not answer waits for the next run.
+        val attempted = mutableSetOf<String>()
         repeat(MAX_ROUNDS) { round ->
-            val due = pendingSyncDao.getDue(clock.instant())
+            val due = pendingSyncDao.getDue(clock.instant()).filter { it.syncId !in attempted }
             if (due.isEmpty()) {
-                Log.i(LogTags.SYNC, if (round == 0) "Nothing waiting to sync" else "Sync finished; the queue is empty")
-                return SyncRunResult.DONE
+                Log.i(LogTags.SYNC, if (round == 0) "Nothing waiting to sync" else "Sync round finished; nothing new to send")
+                return finish()
             }
             val batch = buildBatch(due)
+            attempted += due.map { it.syncId }
             if (batch.items.isEmpty()) return@repeat
             Log.i(
                 LogTags.SYNC,
@@ -95,8 +98,17 @@ class SyncEngine @Inject constructor(
                 }
             }
         }
-        return if (pendingSyncDao.getDue(clock.instant()).isEmpty()) SyncRunResult.DONE else SyncRunResult.RETRY
+        return finish()
     }
+
+    // Anything still waiting, such as an item the API did not answer, needs another run
+    private suspend fun finish(): SyncRunResult =
+        if (pendingSyncDao.getDue(clock.instant()).isEmpty()) {
+            SyncRunResult.DONE
+        } else {
+            Log.i(LogTags.SYNC, "Some changes are still waiting; another sync will run later")
+            SyncRunResult.RETRY
+        }
 
     private data class Batch(val dto: SyncBatchDto, val items: Map<String, PendingSyncEntity>)
 
