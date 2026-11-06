@@ -10,6 +10,10 @@ data class Area(
     val supplier: Supplier,
 )
 
+/**
+ * Who supplies an area's power: Eskom directly or the municipality. UNKNOWN covers any value the app does not
+ * recognise.
+ */
 enum class Supplier {
     ESKOM,
     MUNICIPAL,
