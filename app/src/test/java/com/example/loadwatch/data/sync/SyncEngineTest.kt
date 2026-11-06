@@ -192,6 +192,25 @@ class SyncEngineTest {
     }
 
     @Test
+    fun `a report refused with 401 stays pending and goes through once the token is accepted`() = runTest {
+        queueReport("client-1")
+
+        api.syncHandler = { httpError(401, """{"status":401,"title":"Not signed in"}""") }
+        assertEquals(SyncRunResult.RETRY, engine.syncNow())
+
+        val waiting = pendingDao.items.value.single()
+        assertEquals(PendingSyncStatus.RETRYING, waiting.status)
+        assertEquals("HTTP 401", waiting.lastError)
+        assertEquals(SyncStatus.PENDING, reportDao.reports.value.single().syncStatus)
+
+        api.syncHandler = { SyncResultDto(accepted = listOf("client-1"), syncedAt = now) }
+        assertEquals(SyncRunResult.DONE, engine.syncNow())
+
+        assertTrue(pendingDao.items.value.isEmpty())
+        assertEquals(SyncStatus.SYNCED, reportDao.reports.value.single().syncStatus)
+    }
+
+    @Test
     fun `a retry after a lost answer sends the same client id, which the API accepts once`() = runTest {
         queueReport("client-1")
         api.syncHandler = { offline() }
