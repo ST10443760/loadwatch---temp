@@ -32,3 +32,6 @@ signing.properties
 *.apk
 *.aab
 *.zip
+
+# Android Studio project settings are per machine
+.idea/
