@@ -3,8 +3,10 @@ package com.example.loadwatch.data.repository
 import com.example.loadwatch.core.database.entity.AreaEntity
 import com.example.loadwatch.core.database.entity.FavouriteAreaEntity
 import com.example.loadwatch.core.network.dto.FavouriteAreaDto
+import com.example.loadwatch.core.network.dto.FavouriteChangeDto
 import com.example.loadwatch.data.model.FavouriteLabel
 import com.example.loadwatch.data.remote.FavouritesRemoteDataSource
+import com.example.loadwatch.data.sync.SyncEntityType
 import com.example.loadwatch.fakes.FakeAreaDao
 import com.example.loadwatch.fakes.FakeAreaRepository
 import com.example.loadwatch.fakes.FakeAuthSession
@@ -18,6 +20,7 @@ import com.example.loadwatch.fakes.testSyncQueue
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import retrofit2.Response
@@ -103,6 +106,52 @@ class FavouritesRepositoryTest {
         assertNotNull(areaDao.getById(AREA))
     }
 
+
+    @Test
+    fun `offline a new favourite is saved on the phone and queued`() = runTest {
+        val result = repository.add(AREA, "Home")
+
+        assertEquals(FavouriteResult.SavedOffline, result)
+        val saved = favouriteDao.favourites.value.single()
+        assertEquals("Home", saved.label)
+        assertTrue(saved.favouriteId.startsWith("local-"))
+        val queued = pendingSyncDao.items.value.single()
+        assertEquals(SyncEntityType.FAVOURITE, queued.entityType)
+        assertEquals(AREA, queued.entityId)
+    }
+
+    @Test
+    fun `offline a removal deletes on the phone and replaces the queued add`() = runTest {
+        repository.add(AREA, "Home")
+
+        val result = repository.remove(AREA)
+
+        assertEquals(FavouriteResult.SavedOffline, result)
+        assertTrue(favouriteDao.favourites.value.isEmpty())
+        assertTrue(testJson.decodeFromString<FavouriteChangeDto>(pendingSyncDao.items.value.single().payloadJson).removed)
+    }
+
+    @Test
+    fun `offline a relabel keeps the favourite with its new label`() = runTest {
+        repository.add(AREA, "Home")
+
+        val result = repository.relabel(AREA, "Gran")
+
+        assertEquals(FavouriteResult.SavedOffline, result)
+        assertEquals("Gran", favouriteDao.favourites.value.single().label)
+        assertEquals("Gran", testJson.decodeFromString<FavouriteChangeDto>(pendingSyncDao.items.value.single().payloadJson).label)
+    }
+
+    @Test
+    fun `a refresh keeps the phone's favourites while changes wait to sync`() = runTest {
+        repository.add(AREA, "Home")
+        api.getFavouritesHandler = { emptyList() }
+
+        assertNull(repository.refresh())
+
+        assertEquals(0, api.callCount("getFavourites"))
+        assertEquals(1, favouriteDao.favourites.value.size)
+    }
     private companion object {
         const val AREA = "eth-berea"
     }
