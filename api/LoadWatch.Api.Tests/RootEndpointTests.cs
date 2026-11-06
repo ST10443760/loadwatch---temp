@@ -50,7 +50,9 @@ public class RootEndpointTests(ApiFactory factory) : IClassFixture<ApiFactory>
         stopwatch.Stop();
 
         Assert.Equal(HttpStatusCode.OK, root.StatusCode);
-        Assert.True(stopwatch.Elapsed < TimeSpan.FromSeconds(2), $"/ took {stopwatch.Elapsed}");
+        // 10 seconds leaves room for a slow shared CI runner while staying far below the 30 second connect
+        // timeout that a database call from / would have to wait out
+        Assert.True(stopwatch.Elapsed < TimeSpan.FromSeconds(10), $"/ took {stopwatch.Elapsed}");
         // The database-dependent routes still say they are not ready
         Assert.Equal(HttpStatusCode.ServiceUnavailable, (await client.GetAsync("/health")).StatusCode);
         Assert.Equal(HttpStatusCode.ServiceUnavailable, (await client.GetAsync("/api/stages/current")).StatusCode);
