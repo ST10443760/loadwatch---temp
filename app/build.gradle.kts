@@ -70,7 +70,9 @@ android {
             } else {
                 logger.info("LoadWatch: release signing is not configured, so the release APK will be unsigned")
             }
-            isMinifyEnabled = false
+            // R8 removes unused code and resources; proguard-rules.pro keeps what is only reached by reflection
+            isMinifyEnabled = true
+            isShrinkResources = true
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
