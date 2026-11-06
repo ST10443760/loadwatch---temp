@@ -43,6 +43,7 @@ data class CompareCard(
     val countdown: Countdown?,
 )
 
+/** The result of a change made on S08 Compare, shown as a short message. */
 sealed interface CompareMessage {
     data class Removed(val areaName: String) : CompareMessage
     data class Relabelled(val areaName: String) : CompareMessage
@@ -51,6 +52,7 @@ sealed interface CompareMessage {
     data class Failed(val failure: DataFailure) : CompareMessage
 }
 
+/** Which favourite is being relabelled or removed on S08 Compare, and the last result. */
 data class CompareEditState(
     val editing: Favourite? = null,
     val confirmingRemoval: Favourite? = null,
@@ -58,6 +60,7 @@ data class CompareEditState(
     val message: CompareMessage? = null,
 )
 
+/** Everything S08 Compare shows: one card per favourite, the refresh state and any edit in progress. */
 data class CompareUiState(
     val isLoading: Boolean = true,
     val cards: List<CompareCard> = emptyList(),
@@ -68,6 +71,7 @@ data class CompareUiState(
     val edit: CompareEditState = CompareEditState(),
 )
 
+/** Whether a refresh is running and why the last one failed. */
 private data class RefreshStatus(val isRefreshing: Boolean = false, val failure: DataFailure? = null)
 
 // S08: every favourite side by side with its next event and a live countdown (FR-FAV-01 to 03)

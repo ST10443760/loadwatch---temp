@@ -119,6 +119,10 @@ private fun ReportButtons(enabled: Boolean, onReport: (OutageEventType) -> Unit)
     }
 }
 
+/**
+ * The result of the last report, such as accepted, already reported or saved on this phone, with retry where
+ * it helps.
+ */
 @Composable
 private fun StatusCard(state: ConfirmationUiState, onRetry: () -> Unit, onRetryUnsent: () -> Unit) {
     val submission = state.submission
@@ -176,6 +180,7 @@ private fun StatusCard(state: ConfirmationUiState, onRetry: () -> Unit, onRetryU
     }
 }
 
+/** Card with the area's schedule accuracy score from community reports. */
 @Composable
 private fun AccuracyCard(state: ConfirmationUiState, onRetry: () -> Unit) {
     Card(modifier = Modifier.fillMaxWidth()) {
@@ -201,6 +206,7 @@ private fun AccuracyCard(state: ConfirmationUiState, onRetry: () -> Unit) {
     }
 }
 
+/** The user's recent reports for the area, each with its sync status, such as Accepted or Waiting to send. */
 @Composable
 private fun RecentReports(reports: List<OutageReport>) {
     val zone = ZoneId.systemDefault()

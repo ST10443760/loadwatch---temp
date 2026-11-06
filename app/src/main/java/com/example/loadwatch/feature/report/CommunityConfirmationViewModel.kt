@@ -26,6 +26,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * Everything S07 Report shows: the area, its accuracy, the user's recent reports and the state of the last
+ * submission.
+ */
 data class ConfirmationUiState(
     val isLoading: Boolean = true,
     val area: Area? = null,
@@ -39,6 +43,10 @@ data class ConfirmationUiState(
     val isSending: Boolean get() = submission is SubmissionStatus.Sending
 }
 
+/**
+ * View model for S07 Report. It submits Power is off and Power is back reports for the default area and shows
+ * how they and the area's accuracy change.
+ */
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class CommunityConfirmationViewModel @Inject constructor(

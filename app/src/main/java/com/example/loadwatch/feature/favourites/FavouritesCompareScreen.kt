@@ -140,6 +140,7 @@ fun FavouritesCompareScreen(
     }
 }
 
+/** The saved areas as cards, each with its own live countdown, followed by the Add another area button. */
 @Composable
 private fun CompareList(state: CompareUiState, viewModel: FavouritesCompareViewModel) {
     val zone = ZoneId.systemDefault()
@@ -289,6 +290,7 @@ private fun FavouriteCard(
     }
 }
 
+/** Overflow menu on a favourite card with Edit label and Remove. */
 @Composable
 private fun CardMenu(areaName: String, onEditLabel: () -> Unit, onRemove: () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
@@ -315,6 +317,7 @@ private fun CardMenu(areaName: String, onEditLabel: () -> Unit, onRemove: () -> 
     }
 }
 
+/** Text for the result of removing or relabelling a favourite. */
 @Composable
 private fun compareMessageText(message: CompareMessage): String = when (message) {
     is CompareMessage.Removed -> stringResource(R.string.favourite_removed, message.areaName)
