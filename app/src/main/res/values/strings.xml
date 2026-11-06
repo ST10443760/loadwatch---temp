@@ -211,11 +211,11 @@
     <!-- %1$s is "Power off" or "Power back on" -->
     <string name="report_status_accepted">Report accepted: %1$s. Thanks, it now counts towards this area\'s accuracy score.</string>
     <string name="report_status_already_reported">Already reported. You reported this a few minutes ago, so it is only counted once.</string>
-    <string name="report_status_saved_offline">Saved on this phone, will send when you\'re back online.</string>
+    <string name="report_status_saved_offline">Saved on this phone. It will be sent automatically when you\'re back online.</string>
     <string name="report_status_rejected">LoadWatch could not accept this report. Try again.</string>
     <string name="report_status_rejected_clock">LoadWatch could not accept this report. Check that your phone\'s date and time are correct, then try again.</string>
     <string name="report_status_not_signed_in">Your session has ended, so the report was kept on this phone. Sign in again to send it.</string>
-    <string name="report_status_failed">The LoadWatch server could not take the report right now. It is kept on this phone; try again in a moment.</string>
+    <string name="report_status_failed">The LoadWatch server could not take the report right now. It is kept on this phone and will be sent again automatically.</string>
     <string name="report_retry_sending">Retry sending</string>
     <!-- %1$d is how many reports are waiting on the phone -->
     <string name="report_retry_sending_count">Retry sending (%1$d waiting)</string>
@@ -305,10 +305,18 @@
     <string name="settings_save">Save changes</string>
     <string name="settings_saving">Saving…</string>
     <string name="settings_saved">Settings saved.</string>
-    <string name="settings_saved_on_device">Saved on this phone, but not yet synced to your account.</string>
+    <string name="settings_saved_on_device">Saved on this phone. It will sync to your account automatically when you\'re back online.</string>
     <!-- %1$s lists the fields the API refused, e.g. "notificationLeadMinutes" -->
     <string name="settings_rejected">Some settings were not accepted (%1$s). Check them and try again.</string>
     <string name="settings_failed_offline">You\'re offline. Connect and try again.</string>
     <string name="settings_failed">LoadWatch could not save your settings. Try again.</string>
     <string name="settings_signing_out">Signing out…</string>
+
+    <!-- Offline sync -->
+    <string name="sync_saved_offline">Saved on this phone. It will sync automatically when you\'re back online.</string>
+    <!-- %1$d is how many changes are waiting in the offline queue -->
+    <plurals name="sync_pending_banner">
+        <item quantity="one">%1$d change is waiting to sync. It will be sent when you\'re back online.</item>
+        <item quantity="other">%1$d changes are waiting to sync. They will be sent when you\'re back online.</item>
+    </plurals>
 </resources>

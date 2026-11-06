@@ -186,11 +186,11 @@
     <string name="report_status_sending">Kuthunyelwa umbiko wakho…</string>
     <string name="report_status_accepted">Umbiko wamukelwe: %1$s. Siyabonga, manje usubalwa emaphuzwini okunemba wale ndawo.</string>
     <string name="report_status_already_reported">Sewubikile. Ubike lokhu emizuzwini embalwa edlule, ngakho kubalwa kanye kuphela.</string>
-    <string name="report_status_saved_offline">Kulondolozwe kule foni, kuzothunyelwa uma usubuyele ku-inthanethi.</string>
+    <string name="report_status_saved_offline">Kulondolozwe kule foni. Kuzothunyelwa ngokuzenzakalelayo uma usubuyele ku-inthanethi.</string>
     <string name="report_status_rejected">I-LoadWatch ayikwazanga ukwamukela lo mbiko. Zama futhi.</string>
     <string name="report_status_rejected_clock">I-LoadWatch ayikwazanga ukwamukela lo mbiko. Hlola ukuthi usuku nesikhathi sefoni yakho kulungile, bese uzama futhi.</string>
     <string name="report_status_not_signed_in">Iseshini yakho iphelile, ngakho umbiko ugcinwe kule foni. Ngena futhi ukuze uwuthumele.</string>
-    <string name="report_status_failed">Iseva ye-LoadWatch ayikwazanga ukuthatha umbiko manje. Ugcinwe kule foni; zama futhi emva kwesikhashana.</string>
+    <string name="report_status_failed">Iseva ye-LoadWatch ayikwazanga ukuthatha umbiko manje. Ugcinwe kule foni futhi uzothunyelwa futhi ngokuzenzakalelayo.</string>
     <string name="report_retry_sending">Zama ukuthumela futhi</string>
     <string name="report_retry_sending_count">Zama ukuthumela futhi (%1$d alindile)</string>
     <string name="report_accuracy_cached">Akukwazekanga ukuvuselela amaphuzu.</string>
@@ -267,9 +267,16 @@
     <string name="settings_save">Londoloza izinguquko</string>
     <string name="settings_saving">Iyalondoloza…</string>
     <string name="settings_saved">Izilungiselelo zilondoloziwe.</string>
-    <string name="settings_saved_on_device">Kulondolozwe kule foni, kodwa akukavumelaniswa ne-akhawunti yakho.</string>
+    <string name="settings_saved_on_device">Kulondolozwe kule foni. Kuzovumelaniswa ne-akhawunti yakho ngokuzenzakalelayo uma usubuyele ku-inthanethi.</string>
     <string name="settings_rejected">Ezinye izilungiselelo azamukelwanga (%1$s). Zihlole bese uzama futhi.</string>
     <string name="settings_failed_offline">Awuxhunyiwe. Xhuma bese uzama futhi.</string>
     <string name="settings_failed">I-LoadWatch ayikwazanga ukulondoloza izilungiselelo zakho. Zama futhi.</string>
     <string name="settings_signing_out">Iyaphuma…</string>
+
+    <!-- Offline sync -->
+    <string name="sync_saved_offline">Kulondolozwe kule foni. Kuzovumelaniswa ngokuzenzakalelayo uma usubuyele ku-inthanethi.</string>
+    <plurals name="sync_pending_banner">
+        <item quantity="one">Ushintsho olu-%1$d lulinde ukuvumelaniswa. Luzothunyelwa uma usubuyele ku-inthanethi.</item>
+        <item quantity="other">Izinguquko ezingu-%1$d zilinde ukuvumelaniswa. Zizothunyelwa uma usubuyele ku-inthanethi.</item>
+    </plurals>
 </resources>

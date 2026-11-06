@@ -186,11 +186,11 @@
     <string name="report_status_sending">Stuur jou verslag…</string>
     <string name="report_status_accepted">Verslag aanvaar: %1$s. Dankie, dit tel nou by hierdie gebied se akkuraatheidstelling.</string>
     <string name="report_status_already_reported">Reeds gerapporteer. Jy het dit \'n paar minute gelede gerapporteer, so dit tel net een keer.</string>
-    <string name="report_status_saved_offline">Op hierdie foon gestoor; dit sal gestuur word wanneer jy weer aanlyn is.</string>
+    <string name="report_status_saved_offline">Op hierdie foon gestoor. Dit sal outomaties gestuur word wanneer jy weer aanlyn is.</string>
     <string name="report_status_rejected">LoadWatch kon nie hierdie verslag aanvaar nie. Probeer weer.</string>
     <string name="report_status_rejected_clock">LoadWatch kon nie hierdie verslag aanvaar nie. Maak seker dat jou foon se datum en tyd korrek is en probeer dan weer.</string>
     <string name="report_status_not_signed_in">Jou sessie het verval, so die verslag is op hierdie foon gehou. Meld weer aan om dit te stuur.</string>
-    <string name="report_status_failed">Die LoadWatch-bediener kon nie nou die verslag ontvang nie. Dit word op hierdie foon gehou; probeer binnekort weer.</string>
+    <string name="report_status_failed">Die LoadWatch-bediener kon nie nou die verslag ontvang nie. Dit word op hierdie foon gehou en sal outomaties weer gestuur word.</string>
     <string name="report_retry_sending">Probeer weer stuur</string>
     <string name="report_retry_sending_count">Probeer weer stuur (%1$d wag)</string>
     <string name="report_accuracy_cached">Kon nie die telling verfris nie.</string>
@@ -267,9 +267,16 @@
     <string name="settings_save">Stoor veranderinge</string>
     <string name="settings_saving">Stoor…</string>
     <string name="settings_saved">Instellings gestoor.</string>
-    <string name="settings_saved_on_device">Op hierdie foon gestoor, maar nog nie met jou rekening gesinkroniseer nie.</string>
+    <string name="settings_saved_on_device">Op hierdie foon gestoor. Dit sal outomaties met jou rekening sinkroniseer wanneer jy weer aanlyn is.</string>
     <string name="settings_rejected">Sommige instellings is nie aanvaar nie (%1$s). Gaan hulle na en probeer weer.</string>
     <string name="settings_failed_offline">Jy is vanlyn. Verbind en probeer weer.</string>
     <string name="settings_failed">LoadWatch kon nie jou instellings stoor nie. Probeer weer.</string>
     <string name="settings_signing_out">Meld af…</string>
+
+    <!-- Offline sync -->
+    <string name="sync_saved_offline">Op hierdie foon gestoor. Dit sal outomaties sinkroniseer wanneer jy weer aanlyn is.</string>
+    <plurals name="sync_pending_banner">
+        <item quantity="one">%1$d verandering wag om te sinkroniseer. Dit sal gestuur word wanneer jy weer aanlyn is.</item>
+        <item quantity="other">%1$d veranderinge wag om te sinkroniseer. Hulle sal gestuur word wanneer jy weer aanlyn is.</item>
+    </plurals>
 </resources>
