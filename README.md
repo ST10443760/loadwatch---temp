@@ -26,6 +26,7 @@ describes what the app does, how it is built and why, and how to build, run and 
 10. [Languages supported](#10-languages-supported)
 11. [Screenshots](#11-screenshots)
 12. [How to build and run](#12-how-to-build-and-run)
+13. [AI usage](#13-ai-usage)
 
 ## 1. Purpose
 
@@ -609,4 +610,7 @@ A `null` stage puts the area back on the national stage.
 4. Turn Aeroplane mode off. Within moments the banner disappears and the report shows as *Accepted*. Logcat
    on `LW.Sync` shows the worker starting, the batch sent and the outcome.
 
-See [RELEASE_NOTES.md](RELEASE_NOTES.md) for everything that changed since the Part 2 prototype.
+## 13. AI usage
+
+How AI tools were used in this project, what I did myself and how the output was checked is declared in
+[docs/ai-usage.md](docs/ai-usage.md).
