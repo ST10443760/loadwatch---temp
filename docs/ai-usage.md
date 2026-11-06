@@ -27,7 +27,7 @@ Verification was an important part of the development process:
 - Azure log streams and Firebase and database consoles to verify actual application behaviour and persisted data.
 - Manual testing on physical hardware, including offline scenarios.
 
-The isiZulu and Afrikaans translations were AI-generated. [I have not had them independently verified by a fluent speaker.]
+The isiZulu and Afrikaans translations were AI-generated. I have not had them independently verified by a fluent speaker.
 
 ## Limitations and accountability
 
