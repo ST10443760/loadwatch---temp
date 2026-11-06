@@ -91,6 +91,9 @@ what was already there.
 - A response from the API that the app cannot read, such as a malformed date, is shown as a server problem
   instead of crashing the app.
 - Settings edits made in quick succession are no longer lost.
+- The countdown's day suffix and the lead time stepper's minus and plus symbols moved into `strings.xml`, so
+  they are translated too.
+- Navigation logs where Back leads without reading the restricted back stack, so lint passes.
 - Logging across the app, with a consistent `LW.*` tag per area (lifecycle, navigation, state, auth,
   biometric, API, Room, sync, countdown and push). Screen states are logged each time they change kind.
 
@@ -100,6 +103,8 @@ what was already there.
   needs.
 - Release signing reads the keystore path, passwords and alias from Gradle properties or environment
   variables. Keystores and signing files are git-ignored.
+- `app/google-services.json` now includes the release key's SHA-1 fingerprint, so Google sign-in works in the
+  signed build.
 - The version is now 2.0 (version code 2).
 
 ### API
@@ -108,6 +113,9 @@ what was already there.
   the same way.
 - Stage changes and their alert checks run under one lock, so the demo endpoint always reports the alert it
   caused.
+- Firebase service account key files are git-ignored, so one can never be committed by mistake.
+- `LoadWatch.Api.http` has sample requests for the test stage change, history and sync endpoints.
+- The unused "not implemented" helper was removed now that no endpoint is a placeholder.
 
 ### Tests and CI
 
