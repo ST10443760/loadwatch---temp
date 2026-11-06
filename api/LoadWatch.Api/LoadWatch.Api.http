@@ -14,3 +14,26 @@ Content-Type: application/json
 X-Stage-Test-Key: your-test-key
 
 { "stage": null }
+
+### Berea's outage history for one month (anonymous)
+GET {{LoadWatch.Api_HostAddress}}/api/areas/eth-berea/history?month=2026-11
+
+### Send what a phone queued while offline. Needs a Firebase ID token.
+POST {{LoadWatch.Api_HostAddress}}/api/sync
+Content-Type: application/json
+Authorization: Bearer your-firebase-id-token
+
+{
+  "reports": [
+    { "clientReportId": "2f1c6a1e-0000-4000-8000-000000000001", "areaId": "eth-berea", "eventType": "POWER_OFF",
+      "reportedAt": "2026-11-06T16:05:00Z", "clientCreatedAt": "2026-11-06T16:05:00Z" }
+  ],
+  "favourites": [
+    { "changeId": "fav-1", "areaId": "eth-kloof", "label": "Work", "removed": false, "changedAt": "2026-11-06T16:06:00Z" }
+  ],
+  "settings": {
+    "changeId": "settings-1", "changedAt": "2026-11-06T16:07:00Z", "defaultAreaId": "eth-berea",
+    "notificationLeadMinutes": 30, "notificationsEnabled": true, "enabledAlertTypes": "POWER_OFF,STAGE_CHANGE",
+    "languageCode": "en", "themePreference": "dark", "biometricEnabled": false
+  }
+}
