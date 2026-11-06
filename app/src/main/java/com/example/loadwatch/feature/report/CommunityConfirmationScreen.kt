@@ -167,7 +167,7 @@ private fun StatusCard(state: ConfirmationUiState, onRetry: () -> Unit, onRetryU
             )
         }
 
-        // Reports waiting on the phone can always be sent again by hand; automatic sync is Final POE scope
+        // Reports waiting on the phone are sent by the sync worker once online, and can also be sent by hand
         if (state.unsentCount > 0 && !state.isSending && submission !is SubmissionStatus.SavedOffline) {
             OutlinedButton(onClick = onRetryUnsent, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.report_retry_sending_count, state.unsentCount))

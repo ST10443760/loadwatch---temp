@@ -69,7 +69,7 @@ class ReportSubmission(
         retryUnsent(areaId, eventType = current.eventTypeOrNull())
     }
 
-    // The manual "Retry sending" for PENDING reports; the automatic sync worker is Final POE scope
+    // The manual "Retry sending" for PENDING reports; the sync worker also sends them on its own once online
     fun retryUnsent(areaId: String, eventType: OutageEventType? = null) {
         if (isBusy) return
         _status.value = SubmissionStatus.Sending(eventType)
