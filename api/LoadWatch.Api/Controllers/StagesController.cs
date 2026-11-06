@@ -10,6 +10,10 @@ using Microsoft.Extensions.Options;
 
 namespace LoadWatch.Api.Controllers;
 
+/// <summary>
+/// The national load-shedding stage, and a key-protected demo endpoint that changes one area's stage and sends
+/// its alert at once.
+/// </summary>
 [ApiController]
 [Route("api/stages")]
 public class StagesController(LoadWatchDbContext db) : ControllerBase

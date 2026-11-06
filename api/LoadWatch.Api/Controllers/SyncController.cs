@@ -9,6 +9,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoadWatch.Api.Controllers;
 
+/// <summary>
+/// Applies a batch of changes the phone made offline: community reports, favourite changes and the latest
+/// settings. Each item gets its own outcome, so one bad item never fails the batch.
+/// </summary>
 [ApiController]
 [Authorize]
 [Route("api/sync")]
@@ -69,6 +73,10 @@ public class SyncController(
             outcome.Accepted, outcome.Duplicates, outcome.Superseded, outcome.Rejected, settings, favourites, time.GetUtcNow());
     }
 
+    /// <summary>
+    /// Stores each queued report through the shared report rules and sorts it into accepted, duplicate or
+    /// rejected.
+    /// </summary>
     private async Task SyncReportsAsync(
         string userId, IReadOnlyList<OutageReportCreate> items, Outcome outcome, CancellationToken ct)
     {
@@ -101,6 +109,10 @@ public class SyncController(
         }
     }
 
+    /// <summary>
+    /// Applies favourite changes in the order they were made on the phone. An unknown area or an invalid label
+    /// is rejected.
+    /// </summary>
     private async Task SyncFavouritesAsync(
         string userId, IReadOnlyList<FavouriteChange> items, Outcome outcome, CancellationToken ct)
     {
@@ -197,6 +209,9 @@ public class SyncController(
         outcome.Accepted.Add(id);
     }
 
+    /// <summary>
+    /// Collects the per-item results while the batch is applied, before they become the SyncResult.
+    /// </summary>
     private sealed class Outcome
     {
         public List<string> Accepted { get; } = [];

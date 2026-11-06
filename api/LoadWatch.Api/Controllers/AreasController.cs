@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoadWatch.Api.Controllers;
 
+/// <summary>
+/// Area catalogue endpoints: search by suburb or municipality, and one area's details. Both are anonymous.
+/// </summary>
 [ApiController]
 [Route("api/areas")]
 public class AreasController(LoadWatchDbContext db) : ControllerBase

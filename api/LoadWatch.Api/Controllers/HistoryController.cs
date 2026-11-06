@@ -7,6 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoadWatch.Api.Controllers;
 
+/// <summary>
+/// An area's outage history for one month, grouped by South African day. Anonymous, like the schedule it is
+/// built from.
+/// </summary>
 [ApiController]
 [Route("api/areas/{areaId}/history")]
 public class HistoryController(LoadWatchDbContext db, OutageHistoryService history) : ControllerBase

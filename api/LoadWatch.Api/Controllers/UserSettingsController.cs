@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoadWatch.Api.Controllers;
 
+/// <summary>
+/// Reads and replaces the signed-in user's settings. The same rules apply as in the offline sync batch.
+/// </summary>
 [ApiController]
 [Authorize]
 [Route("api/users/{userId}/settings")]

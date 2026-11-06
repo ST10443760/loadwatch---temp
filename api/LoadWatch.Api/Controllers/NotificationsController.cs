@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoadWatch.Api.Controllers;
 
+/// <summary>
+/// Registers a phone's FCM token for the signed-in user, so stage-change alerts can reach the device.
+/// </summary>
 [ApiController]
 [Authorize]
 [Route("api/notifications")]
@@ -74,6 +77,10 @@ public class NotificationsController(LoadWatchDbContext db, TimeProvider time, I
         return Created("/api/notifications/registrations", created);
     }
 
+    /// <summary>
+    /// Gives an existing token to the signed-in user, moving it from another account if needed, and refreshes
+    /// its timestamp.
+    /// </summary>
     private async Task<ActionResult<DeviceToken>> UpdateRegistration(
         DeviceToken registration, string userId, DateTimeOffset now, CancellationToken ct)
     {

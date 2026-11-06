@@ -9,6 +9,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoadWatch.Api.Controllers;
 
+/// <summary>
+/// Community outage reports: submitting one (signed in), listing an area's recent reports and reading its
+/// accuracy score (both anonymous).
+/// </summary>
 [ApiController]
 [Route("api")]
 public class OutageReportsController(

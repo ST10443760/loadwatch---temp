@@ -7,6 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoadWatch.Api.Controllers;
 
+/// <summary>
+/// The signed-in user's favourite areas: list, add and remove. RouteUserIdFilter makes sure the {userId} in the
+/// path is the token's user.
+/// </summary>
 [ApiController]
 [Authorize]
 [Route("api/users/{userId}/favourites")]

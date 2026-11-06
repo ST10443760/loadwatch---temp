@@ -6,6 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoadWatch.Api.Controllers;
 
+/// <summary>
+/// Load-shedding schedule endpoints: an area's outage windows in a time range, and its next or current event
+/// for the countdown.
+/// </summary>
 [ApiController]
 [Route("api/schedules")]
 public class SchedulesController(LoadWatchDbContext db, TimeProvider time) : ControllerBase
