@@ -7,6 +7,7 @@ import android.os.Build
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -32,6 +33,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.loadwatch.R
 import com.example.loadwatch.core.common.LogTags
+import com.example.loadwatch.core.designsystem.PendingSyncBanner
 import com.example.loadwatch.feature.lock.AppLockScreen
 
 // App shell: on launch, asks for biometrics before anything else when biometric unlock is on. The screens are not
@@ -54,7 +56,10 @@ fun LoadWatchApp(appViewModel: AppViewModel = hiltViewModel()) {
 // Hosts the navigation graph, shows the bottom bar on the hub's destinations, returns to S02 when the session
 // ends, and offers biometric unlock once after signing in.
 @Composable
-private fun UnlockedApp(appViewModel: AppViewModel) {
+private fun UnlockedApp(
+    appViewModel: AppViewModel,
+    syncStatusViewModel: SyncStatusViewModel = hiltViewModel(),
+) {
     val navController = rememberNavController()
     LogNavigationTransitions(navController)
 
@@ -71,6 +76,7 @@ private fun UnlockedApp(appViewModel: AppViewModel) {
     }
 
     val backStackEntry by navController.currentBackStackEntryAsState()
+    val unsentCount by syncStatusViewModel.unsentCount.collectAsStateWithLifecycle()
     val selectedDestination = backStackEntry?.topLevelDestination()
 
     // Shown on the hub only, so it never interrupts onboarding
@@ -112,10 +118,16 @@ private fun UnlockedApp(appViewModel: AppViewModel) {
             }
         },
     ) { innerPadding ->
-        LoadWatchNavHost(
-            navController = navController,
-            modifier = Modifier.padding(innerPadding),
-        )
+        Column(Modifier.padding(innerPadding)) {
+            // Changes made offline wait in the sync queue; the banner shows on the hub until they are sent
+            if (selectedDestination != null && unsentCount > 0) {
+                PendingSyncBanner(count = unsentCount)
+            }
+            LoadWatchNavHost(
+                navController = navController,
+                modifier = Modifier.weight(1f),
+            )
+        }
     }
 }
 
