@@ -24,6 +24,8 @@ import javax.inject.Singleton
 
 // Posts a stage-change alert in the user's chosen language. If notifications are not allowed (denied on Android 13+,
 // or turned off in system settings) the alert is logged and dropped; nothing is retried or forced.
+// Reference: Android Developers, "Notification runtime permission",
+// developer.android.com/develop/ui/views/notifications/notification-permission
 @Singleton
 class StageAlertNotifier @Inject constructor(
     @ApplicationContext private val context: Context,

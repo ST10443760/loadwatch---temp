@@ -19,6 +19,7 @@ import javax.inject.Inject
 
 // Receives FCM messages and token refreshes. Stage alerts arrive as data messages, so this runs whether the app is in
 // the foreground, in the background or closed, and decides itself whether to show anything.
+// Reference: Firebase, "Receive messages in an Android app", firebase.google.com/docs/cloud-messaging/android/receive
 @AndroidEntryPoint
 class LoadWatchMessagingService : FirebaseMessagingService() {
 

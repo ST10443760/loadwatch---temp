@@ -6,6 +6,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 // Firebase keeps topic changes made offline and applies them once the phone is back online
+// Reference: Firebase, "Topic messaging on Android", firebase.google.com/docs/cloud-messaging/android/topic-messaging
 @Singleton
 class FirebasePushMessaging @Inject constructor() : PushMessaging {
 

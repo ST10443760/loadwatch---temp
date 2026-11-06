@@ -8,6 +8,8 @@ import com.example.loadwatch.core.common.LogTags
 // Switches the app's language without touching the phone's. On Android 13+ this is the system's per-app language;
 // on older versions AppCompat recreates the activity in the new locale and stores the choice itself. Setting the
 // language the app already uses is skipped, so this never causes a needless recreation. Call on the main thread.
+// Reference: Android Developers, "Per-app language preferences",
+// developer.android.com/guide/topics/resources/app-languages
 fun applyAppLanguage(languageTag: String) {
     val current = AppCompatDelegate.getApplicationLocales().toLanguageTags()
     if (current == languageTag) return
