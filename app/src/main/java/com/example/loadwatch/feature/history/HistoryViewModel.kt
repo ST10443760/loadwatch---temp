@@ -49,6 +49,7 @@ data class CalendarCell(
     val isFuture: Boolean,
 )
 
+/** What S10 Outage history shows for the selected month: loading, no area, unavailable, or the month's days. */
 sealed interface HistoryUiState {
     data object Loading : HistoryUiState
     data object NoArea : HistoryUiState
@@ -86,12 +87,14 @@ sealed interface HistoryUiState {
     }
 }
 
+/** The area whose history is shown: still loading, none chosen, or a selected area. */
 private sealed interface ActiveArea {
     data object Loading : ActiveArea
     data object None : ActiveArea
     data class Selected(val area: Area) : ActiveArea
 }
 
+/** Whether a refresh is running and why the last one failed. */
 private data class RefreshStatus(val isRefreshing: Boolean = false, val failure: DataFailure? = null)
 
 // S10 Outage History: the selected area's past outages and community reports as a month calendar or a list, from

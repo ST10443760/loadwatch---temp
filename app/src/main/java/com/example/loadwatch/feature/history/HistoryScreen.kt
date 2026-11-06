@@ -153,6 +153,7 @@ fun HistoryScreen(
     }
 }
 
+/** Top bar of S10 Outage history with the back button and the area's name. */
 @Composable
 private fun Header(areaName: String?, onBack: () -> Unit) {
     Row(
@@ -180,6 +181,10 @@ private fun Header(areaName: String?, onBack: () -> Unit) {
     }
 }
 
+/**
+ * Previous and next month buttons and the Calendar or List switch. The arrows stop at the oldest month kept
+ * and at the current month.
+ */
 @Composable
 private fun MonthControls(
     month: YearMonth,
@@ -223,6 +228,7 @@ private fun MonthControls(
     }
 }
 
+/** Shows the selected month as a calendar or a list, with the summary above it. */
 @Composable
 private fun HistoryContent(
     state: HistoryUiState.Ready,
@@ -278,6 +284,10 @@ private fun HistoryContent(
     }
 }
 
+/**
+ * The month's outage count, hours without power, and when it was last updated, with a retry when the refresh
+ * failed.
+ */
 @Composable
 private fun Summary(state: HistoryUiState.Ready, onRetry: () -> Unit) {
     val updated = formatRelativeTime(state.fetchedAt, state.deviceNow)
@@ -315,6 +325,10 @@ private fun Summary(state: HistoryUiState.Ready, onRetry: () -> Unit) {
     }
 }
 
+/**
+ * Month calendar, Monday first. Each day is shaded by hours without power and has a dot when the community
+ * reported on it.
+ */
 @Composable
 private fun MonthGrid(state: HistoryUiState.Ready, onSelectDay: (LocalDate) -> Unit) {
     val locale = currentLocale()
@@ -395,6 +409,7 @@ private fun DayCell(cell: CalendarCell, isSelected: Boolean, onClick: () -> Unit
     }
 }
 
+/** The outages and community reports for one day. */
 @Composable
 private fun DayCard(day: HistoryDay, today: LocalDate) {
     Card(modifier = Modifier.fillMaxWidth()) {
@@ -428,6 +443,7 @@ private fun DayCard(day: HistoryDay, today: LocalDate) {
     }
 }
 
+/** One past outage with its stage, time range and how many community reports fall inside it. */
 @Composable
 private fun OutageRow(outage: HistoryOutage) {
     Row(
@@ -455,6 +471,7 @@ private fun OutageRow(outage: HistoryOutage) {
     }
 }
 
+/** TalkBack description of a calendar day, so the shading and the report dot are read out. */
 @Composable
 private fun describeDay(cell: CalendarCell): String {
     val date = formatLongDate(cell.date, today = null)
@@ -466,6 +483,7 @@ private fun describeDay(cell: CalendarCell): String {
     }
 }
 
+/** The app's current locale, which follows the language chosen in Settings. */
 @Composable
 @ReadOnlyComposable
 private fun currentLocale(): Locale = LocalConfiguration.current.locales[0]
@@ -473,6 +491,7 @@ private fun currentLocale(): Locale = LocalConfiguration.current.locales[0]
 // Monday first, as South African calendars are laid out
 private fun weekDays(): List<DayOfWeek> = (0L..6L).map { DayOfWeek.MONDAY.plus(it) }
 
+/** Formats a month heading, such as November 2026, in the app's language. */
 @Composable
 @ReadOnlyComposable
 private fun formatMonth(month: YearMonth): String =
