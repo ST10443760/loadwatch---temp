@@ -17,6 +17,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 // Firebase Authentication with Google as the only provider. Never logs tokens or user ids.
+// Reference: Firebase, "Authenticate with Google on Android", firebase.google.com/docs/auth/android/google-signin
 @Singleton
 class FirebaseAuthSession @Inject constructor(
     private val firebaseAuth: FirebaseAuth,

@@ -10,6 +10,8 @@ import com.example.loadwatch.core.common.LogTags
 
 // Shows the system's fingerprint or face prompt, with the PIN, pattern or password offered as the fallback.
 // The prompt draws its own Cancel and "Use PIN" options, so no negative button is set.
+// Reference: Android Developers, "Show a biometric authentication dialog",
+// developer.android.com/identity/sign-in/biometric-auth
 fun FragmentActivity.showBiometricPrompt(
     title: String,
     subtitle: String?,

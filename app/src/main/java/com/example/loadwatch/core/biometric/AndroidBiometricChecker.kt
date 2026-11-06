@@ -9,6 +9,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 // Asks the system each time, because the user can add or remove a fingerprint or screen lock while the app runs
+// Reference: Android Developers, "Show a biometric authentication dialog" (check that biometric
+// authentication is available)
 @Singleton
 class AndroidBiometricChecker @Inject constructor(
     @ApplicationContext private val context: Context,
