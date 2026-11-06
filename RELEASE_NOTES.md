@@ -3,22 +3,22 @@
 ## Version 2.0: Final POE release
 
 These notes cover every change since the Part 2 prototype (version 1.0, commit `7ad0c1f`, 27 October 2026).
-Items marked **NEW** are features that did not exist in the Part 2 prototype. The rest improve or extend
+Items marked **NEW in the final version** did not exist in the Part 2 prototype. The rest improve or extend
 what was already there.
 
-### Summary of new features
+### New in the final version
 
-| Feature | Status |
-|---|---|
-| Biometric unlock | **NEW** |
-| Offline sync with background WorkManager sync | **NEW** |
-| Push notifications (Firebase Cloud Messaging) | **NEW** |
-| Stage-change alerts (user-defined feature 4) | **NEW** |
-| isiZulu and Afrikaans | **NEW** |
-| Outage history and calendar (user-defined feature 5) | **NEW** |
-| New app icon | **NEW** |
+| Feature | In Part 2 | In the final version |
+|---|---|---|
+| Biometric unlock | No | **NEW** |
+| Offline sync with background WorkManager sync | No | **NEW** |
+| Push notifications (Firebase Cloud Messaging) | No | **NEW** |
+| Stage-change alerts (user-defined feature 4) | No | **NEW** |
+| isiZulu and Afrikaans | No | **NEW** |
+| Outage history and calendar (user-defined feature 5) | No | **NEW** |
+| New app icon | No | **NEW** |
 
-### Biometric unlock (NEW)
+### Biometric unlock (NEW in the final version)
 
 - Biometric unlock can be turned on under Settings → Security. It is only saved after the phone has shown
   it can unlock.
@@ -28,7 +28,7 @@ what was already there.
 - Cancelled prompts, too many attempts, and phones without a sensor or screen lock are each explained, and
   the lock screen always offers Sign out.
 
-### Offline mode and sync (NEW)
+### Offline mode and sync (NEW in the final version)
 
 - Community reports, favourites (add, remove, relabel) and settings now work without a connection. Each
   change is saved on the phone at once and queued in `pending_sync`.
@@ -43,7 +43,7 @@ what was already there.
   settings in one request. It answers for each item: accepted, duplicate, superseded or rejected.
 - Every sync step is logged under `LW.Sync`.
 
-### Push notifications and stage-change alerts (NEW)
+### Push notifications and stage-change alerts (NEW in the final version)
 
 - The app registers its FCM token with the API on sign-in and whenever Firebase rotates it. It follows one
   topic per phone, `area-<areaId>`, and moves it when the area changes or the user signs out.
@@ -59,7 +59,7 @@ what was already there.
   - The Firebase Admin SDK, configured from the `FIREBASE_SERVICE_ACCOUNT_JSON` environment variable.
   - A key-protected demo endpoint that changes an area's stage.
 
-### isiZulu and Afrikaans (NEW)
+### isiZulu and Afrikaans (NEW in the final version)
 
 - Every string in the app is translated into isiZulu (`values-zu`) and Afrikaans (`values-af`), including
   notifications.
@@ -67,7 +67,7 @@ what was already there.
   Android 13 and later the language also appears in the system's per-app language settings.
 - A unit test fails the build if a translation is missing or changes a placeholder.
 
-### Outage history and calendar (NEW)
+### Outage history and calendar (NEW in the final version)
 
 - New screen S10 Outage history, opened from Schedule. It shows the selected area's past outages and
   community reports for one month, as a calendar or a list, going back a year.
@@ -77,7 +77,7 @@ what was already there.
 - API: the placeholder history route is replaced by `GET /api/areas/{areaId}/history?month=yyyy-MM`, grouped
   by South African day. The seeder fills in the previous 60 days once, so a new database has history to show.
 
-### New app icon (NEW)
+### New app icon (NEW in the final version)
 
 - A custom adaptive icon from the design: an amber location pin with a lightning bolt inside, in a thin amber
   ring, on deep slate.
